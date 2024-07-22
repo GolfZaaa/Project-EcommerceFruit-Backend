@@ -1,0 +1,6 @@
+@ProjectEcommerceFruit_HostAddress = http://localhost:5037
+
+GET {{ProjectEcommerceFruit_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
