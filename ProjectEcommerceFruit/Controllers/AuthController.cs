@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectEcommerceFruit.Dtos;
-using ProjectEcommerceFruit.Service.IService;
+using ProjectEcommerceFruit.Service.UserS;
 using System.Security.Claims;
 
 namespace ProjectEcommerceFruit.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly IAuthService _authService;
         private readonly IConfiguration _configuration;
@@ -32,13 +30,7 @@ namespace ProjectEcommerceFruit.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login(LoginDto request)
-        {
-            var token = await _authService.LoginAsync(request);
-
-            return Ok(token);
-        }
-
+        public async Task<IActionResult> Login(LoginDto request) => Ok(await _authService.LoginAsync(request));
 
         [HttpGet("[action]"), Authorize(Roles = "Admin")]
         public IActionResult test()
@@ -56,9 +48,7 @@ namespace ProjectEcommerceFruit.Controllers
             return Ok(new { user, role });
         }
 
-
         [HttpGet("[action]"), Authorize]
-
         public async Task<IActionResult> GetToken()
         {
             var token = _authService.GetTokenDetail();

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectEcommerceFruit.Data;
 
@@ -11,9 +12,11 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240723072747_createStoreDb")]
+    partial class createStoreDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,53 +24,6 @@ namespace ProjectEcommerceFruit.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.Address", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Detail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("District")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("GPS")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsUsed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsUsed_Store")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("PostCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Province")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("SubDistrict")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Addresses");
-                });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Role", b =>
                 {
@@ -100,11 +56,11 @@ namespace ProjectEcommerceFruit.Migrations
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Store", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ID")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"));
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
@@ -120,7 +76,7 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ID");
 
                     b.HasIndex("UserId");
 
@@ -135,16 +91,9 @@ namespace ProjectEcommerceFruit.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -158,43 +107,12 @@ namespace ProjectEcommerceFruit.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            FullName = "Admin1",
-                            PasswordHash = "$2a$11$d9qkAAPEHQECVUoOA6xhH.zkWFXtlvkPoFeTRnSCaZyYrhonraiYG",
-                            PhoneNumber = 123456789,
-                            RoleId = 1,
-                            Username = "Admin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            FullName = "User Haha",
-                            PasswordHash = "$2a$11$vgSgDOVZ8CH0Yg1RoLaLM.T7wdKXHeelniYKndnP.3pyyeWNkVuGi",
-                            PhoneNumber = 987654321,
-                            RoleId = 2,
-                            Username = "User1"
-                        });
-                });
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.Address", b =>
-                {
-                    b.HasOne("ProjectEcommerceFruit.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Store", b =>
                 {
                     b.HasOne("ProjectEcommerceFruit.Models.User", "User")
-                        .WithMany("Stores")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -211,11 +129,6 @@ namespace ProjectEcommerceFruit.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.User", b =>
-                {
-                    b.Navigation("Stores");
                 });
 #pragma warning restore 612, 618
         }
