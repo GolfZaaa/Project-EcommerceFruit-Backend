@@ -15,5 +15,6 @@ namespace ProjectEcommerceFruit.Models
         public Role Role { get; set; }
 
         public ICollection<Store> Stores { get; set; } = new List<Store>();
+        public ICollection<Address> Addresses { get; set; } = new List<Address>();
     }
 }

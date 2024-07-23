@@ -10,6 +10,6 @@
         public int UserId { get; set; }
         public User User { get; set; }
         
-        public bool Hidden { get; set; }
+        public bool Hidden { get; set; } = false;
     } 
 }

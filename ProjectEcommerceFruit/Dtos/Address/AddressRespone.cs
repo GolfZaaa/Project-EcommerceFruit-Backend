@@ -1,6 +1,6 @@
 ﻿namespace ProjectEcommerceFruit.Dtos.Address
 {
-    public class AddressRequest
+    public class AddressRespone
     {
         public int Id { get; set; }
         public string Province { get; set; }
@@ -11,5 +11,8 @@
         public bool IsUsed_Store { get; set; }
         public bool IsUsed { get; set; }
         public string? GPS { get; set; }
+
+        public int UserId { get; set; }
+        public UserDto User { get; set; }
     }
 }

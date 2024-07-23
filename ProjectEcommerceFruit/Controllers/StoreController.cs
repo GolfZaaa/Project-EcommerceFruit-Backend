@@ -15,6 +15,7 @@ namespace ProjectEcommerceFruit.Controllers
             _storeService = storeService;
         }
 
+        //ของ admin
         [HttpGet("[action]")]
         public async Task<ActionResult> GetStore()
             => Ok(await _storeService.GetStoreAsync());

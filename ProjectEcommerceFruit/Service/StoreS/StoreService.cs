@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Azure.Core;
 using Microsoft.EntityFrameworkCore;
 using ProjectEcommerceFruit.Data;
 using ProjectEcommerceFruit.Dtos.Store;
@@ -21,14 +20,17 @@ namespace ProjectEcommerceFruit.Service.StoreS
             _mapper = mapper;
         }
 
+        //ของ admin
         public async Task<List<StoreRespone>> GetStoreAsync()
-            => _mapper.Map<List<StoreRespone>>(await _context.Stores.Include(x=>x.User).ToListAsync());
+            => _mapper.Map<List<StoreRespone>>(await _context.Stores
+                .Include(x=>x.User)
+                .Where(x=>!x.Hidden).ToListAsync());
 
         public async Task<StoreRespone> GetStoreByUserIdAsync()
             => _mapper.Map<StoreRespone>(
                 await _context.Stores
                 .Include(x=>x.User)
-                .FirstOrDefaultAsync(x => x.UserId.Equals(
+                .FirstOrDefaultAsync(x => !x.Hidden && x.UserId.Equals(
                     _authService.GetUserByIdAsync().Result.Id)));
 
         //autherize หน้า controller ด้วย
@@ -38,7 +40,9 @@ namespace ProjectEcommerceFruit.Service.StoreS
 
             if (user is null) return "user is null";
 
-            if (user.Stores.Count == 0)
+            var store = await _context.Stores.FirstOrDefaultAsync(x=>x.Id.Equals(request.ID));
+
+            if (store is null)
             {
                 var newStore = _mapper.Map<Store>(request);
                 newStore.CreatedAt = DateTime.Now;
@@ -46,8 +50,8 @@ namespace ProjectEcommerceFruit.Service.StoreS
                 user.Stores.Add(newStore);
             }else
             {
-                _mapper.Map(request, user.Stores);
-                _context.Stores.UpdateRange(user.Stores);
+                _mapper.Map(request, store);
+                _context.Stores.Update(store);
             }
 
             return await _context.SaveChangesAsync() > 0;

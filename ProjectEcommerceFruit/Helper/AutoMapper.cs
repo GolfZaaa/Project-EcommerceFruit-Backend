@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using ProjectEcommerceFruit.Dtos;
+using ProjectEcommerceFruit.Dtos.Address;
 using ProjectEcommerceFruit.Dtos.Store;
 using ProjectEcommerceFruit.Models;
 
@@ -15,6 +16,11 @@ namespace ProjectEcommerceFruit.Helper
             CreateMap<User, UserDto>();
 
             CreateMap<StoreRequest, Store>();
+
+            CreateMap<Address, AddressRespone>()
+                .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
+
+            CreateMap<AddressRequest, Address>();
         }
     }
 }

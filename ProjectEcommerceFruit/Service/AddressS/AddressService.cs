@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjectEcommerceFruit.Data;
+using ProjectEcommerceFruit.Dtos.Address;
 using ProjectEcommerceFruit.Dtos.Store;
 using ProjectEcommerceFruit.Models;
 using ProjectEcommerceFruit.Service.UserS;
@@ -20,27 +21,40 @@ namespace ProjectEcommerceFruit.Service.AddressS
             _mapper = mapper;
         }
 
-        public async Task<List<Address>> GetAddressByUserIdAsync()
-            => await _context.Addresses.Where(x=>x.Id.Equals(_authService.GetUserByIdAsync().Result.Id)).ToListAsync();
+        public async Task<List<AddressRespone>> GetAddressByUserIdAsync()
+            => _mapper.Map<List<AddressRespone>>(await _context.Addresses.Where(x=>x.Id.Equals(_authService.GetUserByIdAsync().Result.Id)).ToListAsync());
 
-        public async Task<Object> CreateUpdateAddressAsync(StoreRequest request)
+        //autherize ใน controller ด้วย
+        public async Task<Object> CreateUpdateAddressAsync(AddressRequest request)
         {
             var user = await _authService.GetUserByIdAsync();
 
             if (user is null) return "user is null";
 
-            if (user.Stores.Count == 0)
-            {
-                var newStore = _mapper.Map<Store>(request);
-                newStore.CreatedAt = DateTime.Now;
+            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
-                user.Stores.Add(newStore);
+            if (address is null)
+            {
+                var newAddress = _mapper.Map<Address>(request); 
+                
+                user.Addresses.Add(newAddress);
             }
             else
             {
-                _mapper.Map(request, user.Stores);
-                _context.Stores.UpdateRange(user.Stores);
+                _mapper.Map(request, address);
+                _context.Addresses.Update(address);
             }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+        
+        public async Task<Object> RemoveAddressByIdAsync(int storeId)
+        {
+            var result = await _context.Addresses.FirstOrDefaultAsync(x => x.Id.Equals(storeId));
+
+            if (result is null) return "address is null";
+
+            _context.Addresses.Remove(result);
 
             return await _context.SaveChangesAsync() > 0;
         }
