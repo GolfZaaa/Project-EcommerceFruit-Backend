@@ -17,7 +17,7 @@ namespace ProjectEcommerceFruit.Controllers
 
         //ของ admin
         [HttpGet("[action]")]
-        public async Task<ActionResult> GetStore()
+        public async Task<IActionResult> GetStore()
             => Ok(await _storeService.GetStoreAsync());
 
         [HttpGet("[action]"), Authorize]
@@ -25,11 +25,11 @@ namespace ProjectEcommerceFruit.Controllers
          => Ok(await _storeService.GetStoreByUserIdAsync());
 
         [HttpPost("[action]"), Authorize]
-        public async Task<Object> CreateUpdateStore(StoreRequest request)
+        public async Task<IActionResult> CreateUpdateStore(StoreRequest request)
          => Ok(await _storeService.CreateUpdateStoreAsync(request));
 
         [HttpDelete("[action]")]
-        public async Task<Object> RemoveStoreById(int storeId)
+        public async Task<IActionResult> RemoveStoreById(int storeId)
          => Ok(await _storeService.RemoveStoreByIdAsync(storeId));
     }
 }

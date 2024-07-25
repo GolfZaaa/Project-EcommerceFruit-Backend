@@ -51,5 +51,10 @@ namespace ProjectEcommerceFruit.Data
         public DbSet<Store> Stores { get; set; }
         public DbSet<Address> Addresses { get; set; }
 
+        public DbSet<ProductGI> ProductGIs { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Images> Images { get; set; }
+        
+        public DbSet<Product> Products { get; set; }
     }
 }

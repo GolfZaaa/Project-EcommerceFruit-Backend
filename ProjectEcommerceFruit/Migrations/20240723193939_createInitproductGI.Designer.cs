@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectEcommerceFruit.Data;
 
@@ -11,9 +12,11 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240723193939_createInitproductGI")]
+    partial class createInitproductGI
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,67 +87,6 @@ namespace ProjectEcommerceFruit.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-                });
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.Images", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImageName")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ProductGIId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductGIId");
-
-                    b.ToTable("Images");
-                });
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.Product", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Detail")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Images")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.Property<int>("ProductGIId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Sold")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("Status")
-                        .HasColumnType("bit");
-
-                    b.Property<int>("Weight")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductGIId");
-
-                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.ProductGI", b =>
@@ -276,7 +218,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$8oZ2XgFT8.24qBP/Mn5IAO0d0u1qQeJx6eQ29BJflOBH67zpGGplW",
+                            PasswordHash = "$2a$11$dhmBp3YqPfIcOy7UA25ffeMPToCMP5x9Bw2TBJocfYr2FYe4iyxX.",
                             PhoneNumber = 123456789,
                             RoleId = 1,
                             Username = "Admin"
@@ -285,7 +227,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$db13v5XNlVvJy1zbO7PY..yOMHZy9d9I4H/PYbbgp1Vo4tqExeIAS",
+                            PasswordHash = "$2a$11$r1nj/CyZd/YrIcoKrembzOGICBLrDMK9Ckmb3fojc7cJy3khJAghO",
                             PhoneNumber = 987654321,
                             RoleId = 2,
                             Username = "User1"
@@ -303,28 +245,6 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.Images", b =>
-                {
-                    b.HasOne("ProjectEcommerceFruit.Models.ProductGI", "ProductGI")
-                        .WithMany("Images")
-                        .HasForeignKey("ProductGIId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductGI");
-                });
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.Product", b =>
-                {
-                    b.HasOne("ProjectEcommerceFruit.Models.ProductGI", "ProductGI")
-                        .WithMany()
-                        .HasForeignKey("ProductGIId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("ProductGI");
-                });
-
             modelBuilder.Entity("ProjectEcommerceFruit.Models.ProductGI", b =>
                 {
                     b.HasOne("ProjectEcommerceFruit.Models.Category", "Category")
@@ -334,7 +254,7 @@ namespace ProjectEcommerceFruit.Migrations
                         .IsRequired();
 
                     b.HasOne("ProjectEcommerceFruit.Models.Store", "Store")
-                        .WithMany("ProductGIs")
+                        .WithMany()
                         .HasForeignKey("StoreId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -364,16 +284,6 @@ namespace ProjectEcommerceFruit.Migrations
                         .IsRequired();
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.ProductGI", b =>
-                {
-                    b.Navigation("Images");
-                });
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.Store", b =>
-                {
-                    b.Navigation("ProductGIs");
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.User", b =>

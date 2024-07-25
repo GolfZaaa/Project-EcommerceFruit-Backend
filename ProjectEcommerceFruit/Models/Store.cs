@@ -11,5 +11,7 @@
         public User User { get; set; }
         
         public bool Hidden { get; set; } = false;
+
+        public ICollection<ProductGI> ProductGIs { get; set; } = new List<ProductGI>();
     } 
 }

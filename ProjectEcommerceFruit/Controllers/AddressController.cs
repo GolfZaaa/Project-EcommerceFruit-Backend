@@ -17,15 +17,15 @@ namespace ProjectEcommerceFruit.Controllers
         }
 
         [HttpGet("[action]"), Authorize]
-        public async Task<ActionResult> GetAddressByUserId()
+        public async Task<IActionResult> GetAddressByUserId()
          => Ok(await _addressService.GetAddressByUserIdAsync()); 
         
         [HttpPost("[action]"), Authorize]
-        public async Task<ActionResult> CreateUpdateAddress(AddressRequest request)
+        public async Task<IActionResult> CreateUpdateAddress(AddressRequest request)
          => Ok(await _addressService.CreateUpdateAddressAsync(request));
 
         [HttpDelete("[action]")]
-        public async Task<ActionResult> RemoveAddressById(int storeId)
+        public async Task<IActionResult> RemoveAddressById(int storeId)
          => Ok(await _addressService.RemoveAddressByIdAsync(storeId));
     }
 }
