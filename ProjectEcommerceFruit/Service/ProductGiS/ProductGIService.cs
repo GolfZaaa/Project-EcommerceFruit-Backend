@@ -128,9 +128,8 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
 
             if (cate is null)
             {
-                var category = new Category { Id = request.Id, Name = request.Name };
-
-                await _context.Categories.AddAsync(category);
+                await _context.Categories
+                    .AddAsync(new Category { Id = request.Id, Name = request.Name });
             }
             else
             {
@@ -143,10 +142,11 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
         public async Task<Object> RemoveCategoryAsync(int categoryId)
         {
             var cate = _context.Categories.FirstOrDefault(x => x.Id == categoryId);
-            if (cate is not null)
-            {
-                _context.Categories.Remove(cate);
-            }
+
+            if (cate is null) return "category is null";
+
+            _context.Categories.Remove(cate);
+
             return await _context.SaveChangesAsync() > 0;
         }
 

@@ -32,7 +32,9 @@ namespace ProjectEcommerceFruit.Helper
 
             CreateMap<ProductGIRequest, ProductGI>();
 
-            CreateMap<Product, ProductRespone>();
+            CreateMap<Product, ProductRespone>()
+                .ForMember(dest => dest.ProductGI, opt => opt.MapFrom(src => src.ProductGI));
+            CreateMap<ProductRequest, Product>();
 
         }
     }
