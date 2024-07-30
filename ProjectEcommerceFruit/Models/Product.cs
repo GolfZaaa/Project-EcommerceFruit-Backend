@@ -13,5 +13,7 @@
 
         public int ProductGIId { get; set; }
         public ProductGI ProductGI { get; set; }
+
+        public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
     }
 }

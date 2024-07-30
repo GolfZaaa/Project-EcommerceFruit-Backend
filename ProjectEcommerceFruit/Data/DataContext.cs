@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using ProjectEcommerceFruit.Models;
 using System.Data;
 
@@ -30,7 +31,7 @@ namespace ProjectEcommerceFruit.Data
                     Id = 1,
                     FullName = "Admin1",
                     PhoneNumber = 0123456789,
-                    Username = "Admin",
+                    Username = "admin",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
                     RoleId = 1,
                 },
@@ -39,11 +40,26 @@ namespace ProjectEcommerceFruit.Data
                     Id = 2,
                     FullName = "User Haha",
                     PhoneNumber = 0987654321,
-                    Username = "User1",
+                    Username = "user1",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
                     RoleId = 2,
                 }
                 );
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.User)
+                .WithMany(u => u.CartItems)
+                .HasForeignKey(ci => ci.UserId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<CartItem>()
+                .HasOne(ci => ci.Product)
+                .WithMany(p => p.CartItems)
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            //modelBuilder.Entity<User>().HasMany(x => x.CartItems).GetInfrastructure()!.OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Product>().HasMany(x => x.CartItems).GetInfrastructure()!.OnDelete(DeleteBehavior.Cascade);
         }
 
         public DbSet<User> Users { get; set; }
@@ -56,5 +72,8 @@ namespace ProjectEcommerceFruit.Data
         public DbSet<Images> Images { get; set; }
         
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<CartItem> CartItems { get; set; }
+
     }
 }

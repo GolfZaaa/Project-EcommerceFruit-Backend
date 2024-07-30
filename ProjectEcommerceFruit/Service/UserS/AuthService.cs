@@ -25,13 +25,22 @@ namespace ProjectEcommerceFruit.Service.UserS
         
         public async Task<List<User>> GetUsers()
         {
-            return await _dataContext.Users.OrderByDescending(x => x.Id).ToListAsync();
+            return await _dataContext.Users
+                .Include(x=>x.Stores)
+                    .ThenInclude(x=>x.ProductGIs)
+                        .ThenInclude(x=>x.Images)
+                .Include(x=>x.Addresses)
+                .Include(x=>x.CartItems).OrderByDescending(x => x.Id).ToListAsync();
         }
 
         private string GetUserId() => _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Name)!;
 
         public async Task<User> GetUserByIdAsync()
-            => await _dataContext.Users.FirstOrDefaultAsync(x => x.Id.Equals(Convert.ToInt32(GetUserId())));
+            => await _dataContext.Users
+                .Include(x => x.Stores)
+                    .ThenInclude(x => x.ProductGIs)
+                        .ThenInclude(x => x.Images)
+                .Include(x => x.Addresses).FirstOrDefaultAsync(x => x.Id.Equals(Convert.ToInt32(GetUserId())));
 
         public async Task<User> RegisterAsync(RegisterDto request)
         {
