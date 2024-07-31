@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ProjectEcommerceFruit.Dtos;
 using ProjectEcommerceFruit.Dtos.Address;
+using ProjectEcommerceFruit.Dtos.Order;
 using ProjectEcommerceFruit.Dtos.Product;
 using ProjectEcommerceFruit.Dtos.ProductGI;
 using ProjectEcommerceFruit.Dtos.Store;
@@ -35,6 +36,12 @@ namespace ProjectEcommerceFruit.Helper
             CreateMap<Product, ProductRespone>()
                 .ForMember(dest => dest.ProductGI, opt => opt.MapFrom(src => src.ProductGI));
             CreateMap<ProductRequest, Product>();
+
+            CreateMap<OrderRequest, Order>();
+            CreateMap<Order, OrderRespone>();
+
+            CreateMap<OrderItem, OrderItemRespone>()
+                .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
 
         }
     }

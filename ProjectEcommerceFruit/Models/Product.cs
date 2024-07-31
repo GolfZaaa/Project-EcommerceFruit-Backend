@@ -1,4 +1,6 @@
-﻿namespace ProjectEcommerceFruit.Models
+﻿using System.Text.Json.Serialization;
+
+namespace ProjectEcommerceFruit.Models
 {
     public class Product
     {
@@ -15,5 +17,7 @@
         public ProductGI ProductGI { get; set; }
 
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+        [JsonIgnore]
+        public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     }
 }

@@ -26,7 +26,7 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> AddToCart(AddToCartDto request)
             => Ok(await _cartService.AddToCartAsync(request));
 
-        [HttpPost("[action]"), Authorize]
+        [HttpPost("[action]")]
         public async Task<IActionResult> RemoveToCart(RemoveToCartDto request)
             => Ok(await _cartService.RemoveToCartAsync(request));
     }

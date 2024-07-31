@@ -58,6 +58,18 @@ namespace ProjectEcommerceFruit.Data
                 .HasForeignKey(ci => ci.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(ci => ci.Order)
+                .WithMany(u => u.OrderItems)
+                .HasForeignKey(ci => ci.OrderId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<OrderItem>()
+                .HasOne(ci => ci.Product)
+                .WithMany(u => u.OrderItems)
+                .HasForeignKey(ci => ci.ProductId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             //modelBuilder.Entity<User>().HasMany(x => x.CartItems).GetInfrastructure()!.OnDelete(DeleteBehavior.Cascade);
             //modelBuilder.Entity<Product>().HasMany(x => x.CartItems).GetInfrastructure()!.OnDelete(DeleteBehavior.Cascade);
         }
@@ -75,5 +87,8 @@ namespace ProjectEcommerceFruit.Data
 
         public DbSet<CartItem> CartItems { get; set; }
 
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderItem> OrderItems { get; set; }
     }
 }
+ 

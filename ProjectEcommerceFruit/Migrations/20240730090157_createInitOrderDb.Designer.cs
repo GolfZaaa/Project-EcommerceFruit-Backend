@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectEcommerceFruit.Data;
 
@@ -11,9 +12,11 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240730090157_createInitOrderDb")]
+    partial class createInitOrderDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -167,32 +170,6 @@ namespace ProjectEcommerceFruit.Migrations
                     b.HasIndex("AddressId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.OrderItem", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Weight")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("OrderItems");
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Product", b =>
@@ -364,7 +341,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$glCxQRtrbevSPvk25buAxuV97NBBfC2vA2P2j9W20nq4fInFm/LSO",
+                            PasswordHash = "$2a$11$8in.MokZGflZkYiaHVaN4.xJBNRcXUjYwmKlnFddKKd933jYzzCha",
                             PhoneNumber = 123456789,
                             RoleId = 1,
                             Username = "admin"
@@ -373,7 +350,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$A8fa.Yw2608gaUJWz8/GKemv5Q.L8HfImj2f9opwT8NTMbYaR9ZVG",
+                            PasswordHash = "$2a$11$NluL74KMaXMUlyqtXONzMuNOiIkPQSZmBCvomvi0wK2Ib95J3phb.",
                             PhoneNumber = 987654321,
                             RoleId = 2,
                             Username = "user1"
@@ -432,25 +409,6 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Navigation("Address");
                 });
 
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.OrderItem", b =>
-                {
-                    b.HasOne("ProjectEcommerceFruit.Models.Order", "Order")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("ProjectEcommerceFruit.Models.Product", "Product")
-                        .WithMany("OrderItems")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Order");
-
-                    b.Navigation("Product");
-                });
-
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Product", b =>
                 {
                     b.HasOne("ProjectEcommerceFruit.Models.ProductGI", "ProductGI")
@@ -503,16 +461,9 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("ProjectEcommerceFruit.Models.Order", b =>
-                {
-                    b.Navigation("OrderItems");
-                });
-
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Product", b =>
                 {
                     b.Navigation("CartItems");
-
-                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.ProductGI", b =>

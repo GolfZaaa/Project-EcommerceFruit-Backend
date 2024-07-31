@@ -1,4 +1,6 @@
-﻿namespace ProjectEcommerceFruit.Models
+﻿using System.Text.Json.Serialization;
+
+namespace ProjectEcommerceFruit.Models
 {
     public class Address
     {

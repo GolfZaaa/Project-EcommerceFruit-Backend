@@ -54,7 +54,9 @@ namespace ProjectEcommerceFruit.Service.UserS
             {
                 Username = request.Username,
                 PasswordHash = passwordHash,
-                RoleId = request.RoleId
+                RoleId = request.RoleId,
+                FullName = request.FullName,
+                PhoneNumber = request.PhoneNumber,
             };
 
             try
