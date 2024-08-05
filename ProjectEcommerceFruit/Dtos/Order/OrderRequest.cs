@@ -3,7 +3,7 @@
     public class OrderRequest
     {
         public int Id { get; set; }
-        public string PaymentImage { get; set; }
+        public IFormFile? PaymentImage { get; set; }
         public DateTime CreatedAt { get; set; }
         public int Status { get; set; }
         public string ShippingType { get; set; }

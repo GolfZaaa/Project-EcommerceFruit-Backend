@@ -13,7 +13,7 @@ namespace ProjectEcommerceFruit.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=DESKTOP-E89K85P; Database=ProjectSellFruit; Trusted_connection=true; TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-DTGB06O\\SQLEXPRESS; Database=ProjectSellFruit; Trusted_connection=true; TrustServerCertificate=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -75,8 +75,11 @@ namespace ProjectEcommerceFruit.Data
         }
 
         public DbSet<User> Users { get; set; }
+
         public DbSet<Role> Roles { get; set; }
+
         public DbSet<Store> Stores { get; set; }
+
         public DbSet<Address> Addresses { get; set; }
 
         public DbSet<ProductGI> ProductGIs { get; set; }
@@ -88,6 +91,7 @@ namespace ProjectEcommerceFruit.Data
         public DbSet<CartItem> CartItems { get; set; }
 
         public DbSet<Order> Orders { get; set; }
+
         public DbSet<OrderItem> OrderItems { get; set; }
     }
 }

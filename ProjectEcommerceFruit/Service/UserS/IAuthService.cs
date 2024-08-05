@@ -1,4 +1,5 @@
 ﻿using ProjectEcommerceFruit.Dtos;
+using ProjectEcommerceFruit.Dtos.User;
 using ProjectEcommerceFruit.Models;
 
 namespace ProjectEcommerceFruit.Service.UserS
@@ -9,6 +10,6 @@ namespace ProjectEcommerceFruit.Service.UserS
         Task<User> GetUserByIdAsync();
         Task<User> RegisterAsync(RegisterDto request);
         Task<string> LoginAsync(LoginDto request);
-        Task<object> GetTokenDetail();
+        Task<UserRespone> GetTokenDetail();
     }
 }

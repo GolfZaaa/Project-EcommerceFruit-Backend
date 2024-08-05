@@ -5,6 +5,7 @@ using ProjectEcommerceFruit.Dtos.Order;
 using ProjectEcommerceFruit.Dtos.Product;
 using ProjectEcommerceFruit.Dtos.ProductGI;
 using ProjectEcommerceFruit.Dtos.Store;
+using ProjectEcommerceFruit.Dtos.User;
 using ProjectEcommerceFruit.Models;
 
 namespace ProjectEcommerceFruit.Helper
@@ -43,6 +44,8 @@ namespace ProjectEcommerceFruit.Helper
             CreateMap<OrderItem, OrderItemRespone>()
                 .ForMember(dest => dest.Product, opt => opt.MapFrom(src => src.Product));
 
+            CreateMap<User, UserRespone>()
+                .ForMember(dest => dest.Stores, opt => opt.MapFrom(src => src.Stores));
         }
     }
 }

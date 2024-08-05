@@ -11,6 +11,69 @@
             _configuration = configuration;
         }
 
+        public bool IsUpload(IFormFile formFile)
+        {
+            return formFile != null;
+        }
+
+        public async Task<string> UploadImage(IFormFile formFile, string pathName)
+        {
+            string fileName = null;
+
+            if (formFile != null && formFile.Length > 0)
+            {
+                // Handle file upload
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+                string uploadPath = Path.Combine(wwwRootPath, pathName);
+
+                if (!Directory.Exists(uploadPath))
+                {
+                    Directory.CreateDirectory(uploadPath);
+                }
+
+                fileName = Guid.NewGuid().ToString() + Path.GetExtension(formFile.FileName);
+                string filePath = Path.Combine(uploadPath, fileName);
+
+                using (var stream = File.Create(filePath))
+                {
+                    await formFile.CopyToAsync(stream);
+                }
+            }
+
+            return fileName;
+        }
+
+        public string Validation(IFormFile formFile)
+        {
+            if (!ValidationExtension(formFile.FileName))
+            {
+                return "Invalid File Extension";
+            }
+
+            if (!ValidationSize(formFile.Length))
+            {
+                return "The file is too large";
+            }
+
+            return null;
+        }
+
+        public Task DeleteFileImage(string file, string pathName)
+        {
+            string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+            var filePath = Path.Combine(pathName, file);
+            var oldImagePath = Path.Combine(wwwRootPath, filePath);
+            if (System.IO.File.Exists(oldImagePath))
+            {
+                System.IO.File.Delete(oldImagePath);
+            }
+
+            return Task.CompletedTask;
+        }
+
+        //---------------------------- หลายรูป ----------------------------//
+
         public bool IsUpload(IFormFileCollection formFiles)
         {
             return formFiles != null && formFiles?.Count > 0;

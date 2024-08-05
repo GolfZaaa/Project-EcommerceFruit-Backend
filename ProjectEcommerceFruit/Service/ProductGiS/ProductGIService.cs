@@ -39,7 +39,7 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
 
             var store = await _context.Stores.FirstOrDefaultAsync(x => x.UserId.Equals(userId));
 
-            return _mapper.Map<List<ProductGIRespone>>(await _context.ProductGIs.Where(x => x.StoreId.Equals(store.Id)).ToListAsync());
+            return _mapper.Map<List<ProductGIRespone>>(await _context.ProductGIs.Include(x => x.Category).Where(x => x.StoreId.Equals(store.Id)).ToListAsync());
         }
 
         //autherize หน้า controller ด้วย
@@ -149,6 +149,7 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
 
             return await _context.SaveChangesAsync() > 0;
         }
+
 
         //-------------------------------------another-------------------------------------//
 

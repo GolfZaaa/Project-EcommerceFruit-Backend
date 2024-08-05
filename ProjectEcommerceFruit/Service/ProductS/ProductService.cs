@@ -35,11 +35,37 @@ namespace ProjectEcommerceFruit.Service.ProductS
             _uploadFileService = uploadFileService;
         }
 
+        public async Task<List<ProductRespone>> GetProductAsync(int categoryId)
+        {
+            var products = await _context.Products
+                .Include(x => x.ProductGI)
+                    .ThenInclude(x => x.Category).ToListAsync();
+
+            return _mapper.Map<List<ProductRespone>>(categoryId > 0
+                ? products.Where(x => x.ProductGI.CategoryId == categoryId).ToList() : products.ToList());
+
+            //var products = await _context.Products
+            //    .Include(x => x.ProductGI)
+            //        .ThenInclude(x => x.Category).ToListAsync();
+
+            //return _mapper.Map<List<ProductRespone>>(products);
+        }
+
+        //public async Task<List<ProductRespone>> GetProductByCategoryAsync(int categoryId)
+        //{
+        //    var products = await _context.Products
+        //        .Include(x => x.ProductGI)
+        //            .ThenInclude(x => x.Category).ToListAsync();
+
+        //    return _mapper.Map<List<ProductRespone>>(categoryId > 0 
+        //        ? products.Where(x=>x.ProductGI.CategoryId == categoryId).ToList() : products.ToList());
+        //}
+
         public async Task<List<ProductRespone>> GetProductByStoreAsync(int storeId)
         {
             var products = await _context.Products
                 .Include(x => x.ProductGI)
-                    .ThenInclude(x=>x.Category)
+                    .ThenInclude(x => x.Category)
                 .Where(x => x.ProductGI.StoreId.Equals(storeId)).ToListAsync();
 
             return _mapper.Map<List<ProductRespone>>(products);
@@ -120,6 +146,5 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
             return (errorMessge, imageNames);
         }
-
     }
 }

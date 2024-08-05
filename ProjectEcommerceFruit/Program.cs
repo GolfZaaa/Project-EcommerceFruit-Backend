@@ -40,7 +40,7 @@ builder.Services.AddAuthentication().AddJwtBearer(options =>
             builder.Configuration.GetSection("AppSettings:Token").Value!))
     };
 });
- 
+
 builder.Services.AddDbContext<DataContext>();
 builder.Services.AddHttpContextAccessor();
 
@@ -56,6 +56,24 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory(contain
     .InstancePerLifetimeScope();
 }));
 
+#region Cors
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(MyAllowSpecificOrigins,
+            policy =>
+            {
+                policy.AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    //.WithOrigins("http://localhost:3000")
+                    .SetIsOriginAllowed(x => true);
+            });
+});
+//AllowCredentials() ͹حҵ��� client ��ء���ͧ Api ��
+
+#endregion
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -67,6 +85,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseCors(MyAllowSpecificOrigins);
 
 app.UseAuthentication();
 app.UseAuthorization();

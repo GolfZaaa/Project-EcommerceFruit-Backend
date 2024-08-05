@@ -39,13 +39,11 @@ namespace ProjectEcommerceFruit.Controllers
         }
 
         [HttpGet("[action]"), Authorize]
-        public IActionResult GetTokenDetail()
+        public async Task<IActionResult> GetTokenDetail()
         {
-            var user = User.FindFirstValue(ClaimTypes.Name);
+            var token = await _authService.GetTokenDetail();
 
-            var role = User.FindFirstValue(ClaimTypes.Role);
-
-            return Ok(new { user, role });
+            return Ok(token);
         }
 
         [HttpGet("[action]"), Authorize]

@@ -148,7 +148,6 @@ namespace ProjectEcommerceFruit.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("PaymentImage")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ShippingType")
@@ -364,7 +363,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$glCxQRtrbevSPvk25buAxuV97NBBfC2vA2P2j9W20nq4fInFm/LSO",
+                            PasswordHash = "$2a$11$H70jB99Br62wpZyjdDt2BOO7wrQWN4CtrbwjGMFejmSPvH/nINlb.",
                             PhoneNumber = 123456789,
                             RoleId = 1,
                             Username = "admin"
@@ -373,7 +372,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$A8fa.Yw2608gaUJWz8/GKemv5Q.L8HfImj2f9opwT8NTMbYaR9ZVG",
+                            PasswordHash = "$2a$11$G3hlUoze/r2FEGXxUEcPsuO471FCzc0THSTWx6tl/YWGKE4O0ONjO",
                             PhoneNumber = 987654321,
                             RoleId = 2,
                             Username = "user1"

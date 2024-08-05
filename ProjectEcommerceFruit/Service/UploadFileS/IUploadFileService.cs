@@ -1,7 +1,13 @@
-﻿namespace ProjectEcommerceFruit.Service.UploadFileS
+﻿ namespace ProjectEcommerceFruit.Service.UploadFileS
 {
     public interface IUploadFileService
     {
+        //--------------------------- รูปเดียว -----------------------------//
+        bool IsUpload(IFormFile formFile);
+        string Validation(IFormFile formFile);
+        Task<string> UploadImage(IFormFile formFile, string pathName);
+        Task DeleteFileImage(string file, string pathName);
+
         //---------------------------- หลายรูป ----------------------------//
         //ตรวจสอบมีการอัพโหลดไฟล์เข้ามาหรือไม่
         bool IsUpload(IFormFileCollection formFiles);

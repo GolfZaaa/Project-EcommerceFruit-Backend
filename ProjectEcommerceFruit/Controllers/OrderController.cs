@@ -25,7 +25,7 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _orderService.GetOrdersByUserAsync());
 
         [HttpPost("[action]"), Authorize]
-        public async Task<IActionResult> CreateUpdateOrderById(OrderRequest request)
+        public async Task<IActionResult> CreateUpdateOrderById([FromForm] OrderRequest request)
             => Ok(await _orderService.CreateUpdateOrderByIdAsync(request));
 
         [HttpPost("[action]")]

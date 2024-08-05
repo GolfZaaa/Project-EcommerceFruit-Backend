@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using ProjectEcommerceFruit.Data;
 using ProjectEcommerceFruit.Dtos;
+using ProjectEcommerceFruit.Dtos.User;
 using ProjectEcommerceFruit.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,22 +17,27 @@ namespace ProjectEcommerceFruit.Service.UserS
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly DataContext _dataContext;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public AuthService(IHttpContextAccessor httpContextAccessor, DataContext dataContext, IConfiguration configuration)
+        public AuthService(IHttpContextAccessor httpContextAccessor,
+            DataContext dataContext,
+            IConfiguration configuration,
+            IMapper mapper)
         {
             _httpContextAccessor = httpContextAccessor;
             _dataContext = dataContext;
             _configuration = configuration;
+            _mapper = mapper;
         }
-        
+
         public async Task<List<User>> GetUsers()
         {
             return await _dataContext.Users
-                .Include(x=>x.Stores)
-                    .ThenInclude(x=>x.ProductGIs)
-                        .ThenInclude(x=>x.Images)
-                .Include(x=>x.Addresses)
-                .Include(x=>x.CartItems).OrderByDescending(x => x.Id).ToListAsync();
+                .Include(x => x.Stores)
+                    .ThenInclude(x => x.ProductGIs)
+                        .ThenInclude(x => x.Images)
+                .Include(x => x.Addresses)
+                .Include(x => x.CartItems).OrderByDescending(x => x.Id).ToListAsync();
         }
 
         private string GetUserId() => _httpContextAccessor.HttpContext!.User.FindFirstValue(ClaimTypes.Name)!;
@@ -85,16 +92,11 @@ namespace ProjectEcommerceFruit.Service.UserS
             return token;
         }
 
-        public async Task<object> GetTokenDetail()
+        public async Task<UserRespone> GetTokenDetail()
         {
-            var user = string.Empty;
-            var role = string.Empty;
-            if (_httpContextAccessor.HttpContext != null)
-            {
-                user = _httpContextAccessor.HttpContext.User.Identity.Name;
-                role = _httpContextAccessor.HttpContext.User.FindFirstValue(ClaimTypes.Role);
-            }
-            return new { user, role };
+            var user = await _dataContext.Users.Include(x => x.Stores).FirstOrDefaultAsync(x => x.Id.Equals(Convert.ToInt32(GetUserId())));
+
+            return _mapper.Map<UserRespone>(user);
         }
 
         private string CreateToken(User user)

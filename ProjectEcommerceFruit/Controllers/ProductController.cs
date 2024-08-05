@@ -14,7 +14,11 @@ namespace ProjectEcommerceFruit.Controllers
         public ProductController(IProductService productService)
         {
             _productService = productService;
-        } 
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetProduct(int categoryId)
+            => Ok(await _productService.GetProductAsync(categoryId));
 
         [HttpGet("[action]")]
         public async Task<IActionResult> GetProductByStore(int storeId)
@@ -23,7 +27,7 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateUpdateProduct(ProductRequest request)
             => Ok(await _productService.CreateUpdateProductAsync(request));
-        
+
         [HttpDelete("[action]")]
         public async Task<IActionResult> RemoveProductById(int storeId)
             => Ok(await _productService.RemoveProductByIdAsync(storeId));
