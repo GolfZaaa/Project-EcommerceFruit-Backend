@@ -58,7 +58,9 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
 
             var GI = _mapper.Map<ProductGI>(request);
 
-            var store = await _context.Stores.FirstOrDefaultAsync(x => x.Id.Equals(user.Id));
+            var store = await _context.Stores.FirstOrDefaultAsync(x => x.UserId.Equals(user.Id));
+
+            if (store is null) return "store is null";
 
             GI.StoreId = store.Id;
 
