@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ProjectEcommerceFruit.Data;
@@ -49,6 +50,19 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
                 .Where(x => x.Address.UserId.Equals(user.Id)).ToListAsync();
+
+            return _mapper.Map<List<OrderRespone>>(orders);
+        }
+
+        public async Task<List<OrderRespone>> GetOrdersByStoreAsync(int storeId)
+        {
+            var orders = await _context.Orders
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x=>x.Store)
+                .Where(x => x.OrderItems
+                .Select(oi => oi.Product.ProductGI.StoreId).Contains(storeId)).ToListAsync();
 
             return _mapper.Map<List<OrderRespone>>(orders);
         }

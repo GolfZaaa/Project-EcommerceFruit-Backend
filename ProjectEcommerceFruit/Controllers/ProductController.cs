@@ -29,7 +29,7 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _productService.CreateUpdateProductAsync(request));
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> RemoveProductById(int storeId)
-            => Ok(await _productService.RemoveProductByIdAsync(storeId));
+        public async Task<IActionResult> RemoveProductById(int productId)
+            => Ok(await _productService.RemoveProductByIdAsync(productId));
     }
 }

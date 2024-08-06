@@ -78,6 +78,9 @@ namespace ProjectEcommerceFruit.Service.ProductS
             if (product is null)
             {
                 var newProduct = _mapper.Map<Product>(request);
+                newProduct.CreatedAt = DateTime.Now;
+                newProduct.Sold = 0;
+                newProduct.Status = true;
 
                 await _context.Products.AddAsync(newProduct);
             }

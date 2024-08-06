@@ -7,6 +7,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
     {
         Task<List<Order>> GetOrdersAsync();
         Task<List<OrderRespone>> GetOrdersByUserAsync();
+        Task<List<OrderRespone>> GetOrdersByStoreAsync(int storeId);
         Task<Object> CreateUpdateOrderByIdAsync(OrderRequest request);
         Task<Object> ConfirmOrderAsync(int orderId);
         Task<Object> CancelOrderAsync(int orderId);
