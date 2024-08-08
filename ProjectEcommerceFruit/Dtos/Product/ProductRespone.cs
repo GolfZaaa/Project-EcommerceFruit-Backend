@@ -6,7 +6,8 @@ namespace ProjectEcommerceFruit.Dtos.Product
     {
         public int Id { get; set; }
         public string? Images { get; set; }
-        public int Weight { get; set; } 
+        public double Weight { get; set; } 
+        public int Quantity { get; set; } 
         public double Price { get; set; }
         public int Sold { get; set; }
         public string Detail { get; set; }

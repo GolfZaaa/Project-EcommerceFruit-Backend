@@ -12,8 +12,8 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240806024738_InitialCreate1")]
-    partial class InitialCreate1
+    [Migration("20240807024502_createInitDb")]
+    partial class createInitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -369,7 +369,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$809O4Bv94bdcvM5B0u8ImeskG.FQ2QXcwQb9gZlBQERtw.XBcc2Ia",
+                            PasswordHash = "$2a$11$aBpjKhFkWGoXJj5UJxP6FewUqUrClZPBH0MuKMkhieqTeAqJLM03O",
                             PhoneNumber = 123456789,
                             RoleId = 1,
                             Username = "admin"
@@ -378,7 +378,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$3Bou2.tW.EDKbtv3ReJ9pOC42NKEwf0KuWLm7394AyZNN2fS6nYFe",
+                            PasswordHash = "$2a$11$hsiwuofCDA0IBeUlBHpj8evcrittSuhMOeIxoHQR7GXswJEhk0e0u",
                             PhoneNumber = 987654321,
                             RoleId = 2,
                             Username = "user1"

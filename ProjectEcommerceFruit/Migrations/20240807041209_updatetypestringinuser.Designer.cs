@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectEcommerceFruit.Data;
 
@@ -11,9 +12,11 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240807041209_updatetypestringinuser")]
+    partial class updatetypestringinuser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -80,10 +83,10 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -182,7 +185,7 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Quantity")
+                    b.Property<int>("Weight")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -227,8 +230,8 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<double>("Weight")
-                        .HasColumnType("float");
+                    b.Property<int>("Weight")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -367,7 +370,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$CtjLVLJdcAnCVSMI1uKqUONO6DxNBxzyeBjpbRQXAtCe/vppevYjW",
+                            PasswordHash = "$2a$11$jPE2bi9hEqg8BmniNaN.cu9rxKu2yZPGve6y0AClvJ7D2AvjkqK4K",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -376,7 +379,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$n5QCizhiTAR.uQ4vdmBbKOgm8xT80hJSpnk/e684.O6ZvvYmhoQTm",
+                            PasswordHash = "$2a$11$WQi131enZUmf5fNd1tHcNe0279CwgHSc8i/aSwDSBwvrKrNa0poX6",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"

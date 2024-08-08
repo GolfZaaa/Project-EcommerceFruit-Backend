@@ -53,13 +53,13 @@ namespace ProjectEcommerceFruit.Service.UserS
         {
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
-            var result = await _dataContext.Users.FirstOrDefaultAsync(x => x.Username.Equals(request.Username));
+            var result = await _dataContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber.Equals(request.PhoneNumber));
 
             if (result != null) return null;
 
             var user = new User()
             {
-                Username = request.Username,
+                Username = "",
                 PasswordHash = passwordHash,
                 RoleId = request.RoleId,
                 FullName = request.FullName,
@@ -81,9 +81,9 @@ namespace ProjectEcommerceFruit.Service.UserS
 
         public async Task<string> LoginAsync(LoginDto request)
         {
-            var user = await _dataContext.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.Username.Equals(request.Username));
+            var user = await _dataContext.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.PhoneNumber.Equals(request.PhoneNumber));
 
-            if (user == null) { return "UserName Wrong"; }
+            if (user == null) { return "PhoneNumber Wrong"; }
 
             if (!BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash)) { return "Password Wrong"; }
 

@@ -34,7 +34,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
             _webHostEnvironment = webHostEnvironment;
             _uploadFileService = uploadFileService;
         }
-
+         
         public async Task<List<ProductRespone>> GetProductAsync(int categoryId)
         {
             var products = await _context.Products

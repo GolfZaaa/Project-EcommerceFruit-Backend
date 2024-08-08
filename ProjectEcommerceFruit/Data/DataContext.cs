@@ -30,7 +30,7 @@ namespace ProjectEcommerceFruit.Data
                 {
                     Id = 1,
                     FullName = "Admin1",
-                    PhoneNumber = 0123456789,
+                    PhoneNumber = "0123456789",
                     Username = "admin",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
                     RoleId = 1,
@@ -39,7 +39,7 @@ namespace ProjectEcommerceFruit.Data
                 {
                     Id = 2,
                     FullName = "User Haha",
-                    PhoneNumber = 0987654321,
+                    PhoneNumber = "0987654321",
                     Username = "user1",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
                     RoleId = 2,

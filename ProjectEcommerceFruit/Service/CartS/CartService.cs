@@ -33,8 +33,8 @@ namespace ProjectEcommerceFruit.Service.CartS
                 StoreId = ci.Product.ProductGI.StoreId,
                 StoreName = ci.Product.ProductGI.Store.Name, // สมมติว่ามี Store.Name
                 CartItemId = ci.Id,
-                ProductName = ci.Product.ProductGI.Name, // สมมติว่ามี Name ใน ProductGI
-                Weight = ci.Weight,
+                ProductName = ci.Product.ProductGI.Name, // สมมติว่ามี Name ใน ProductGI 
+                Quantity = ci.Quantity,
                 Product = ci.Product,
                 Price = ci.Product.Price
             })
@@ -45,9 +45,9 @@ namespace ProjectEcommerceFruit.Service.CartS
                 StoreName = group.Key.StoreName,
                 Products = group.Select(item => new
                 {
-                    item.Product.Id,
+                    item.Product.Id, 
                     item.Product.Images,
-                    WeightInCartItem = item.Weight,
+                    QuantityInCartItem = item.Quantity,
                     item.Product.Weight,
                     item.Product.Price,
                     item.Product.Sold,
@@ -78,19 +78,19 @@ namespace ProjectEcommerceFruit.Service.CartS
                 {
                     UserId = user.Id,
                     ProductId = request.ProductId,
-                    Weight = request.Weight,
+                    Quantity = request.Quantity,
                 };
 
                 _context.CartItems.Add(newcartItem);
             }else
             {
-                if (request.Weight + cartItem.Weight > product.Weight)
+                if (request.Quantity + cartItem.Quantity > product.Quantity)
                 {
-                    cartItem.Weight = product.Weight;
+                    cartItem.Quantity = product.Quantity;
                 }
                 else
                 {
-                    cartItem.Weight += request.Weight;
+                    cartItem.Quantity += request.Quantity;
                 }
             }
             
@@ -103,9 +103,9 @@ namespace ProjectEcommerceFruit.Service.CartS
 
             if (cartItem is null) return "cartItem is null";
 
-            cartItem.Weight -= request.Weight;
-
-            if (cartItem.Weight <= 0) _context.CartItems.Remove(cartItem);
+            cartItem.Quantity -= request.Quantity;
+             
+            if (cartItem.Quantity <= 0) _context.CartItems.Remove(cartItem);
 
             return await _context.SaveChangesAsync() > 0;
         }

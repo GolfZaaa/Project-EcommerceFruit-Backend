@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectEcommerceFruit.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class createInitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -192,6 +192,7 @@ namespace ProjectEcommerceFruit.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Images = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Weight = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Sold = table.Column<int>(type: "int", nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -278,8 +279,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", "$2a$11$H70jB99Br62wpZyjdDt2BOO7wrQWN4CtrbwjGMFejmSPvH/nINlb.", 123456789, 1, "admin" },
-                    { 2, "User Haha", "$2a$11$G3hlUoze/r2FEGXxUEcPsuO471FCzc0THSTWx6tl/YWGKE4O0ONjO", 987654321, 2, "user1" }
+                    { 1, "Admin1", "$2a$11$aBpjKhFkWGoXJj5UJxP6FewUqUrClZPBH0MuKMkhieqTeAqJLM03O", 123456789, 1, "admin" },
+                    { 2, "User Haha", "$2a$11$hsiwuofCDA0IBeUlBHpj8evcrittSuhMOeIxoHQR7GXswJEhk0e0u", 987654321, 2, "user1" }
                 });
 
             migrationBuilder.CreateIndex(

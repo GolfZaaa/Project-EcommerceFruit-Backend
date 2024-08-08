@@ -107,7 +107,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     var orderItem = new OrderItem
                     {
                         ProductId = item.Id,
-                        Weight = item.WeightInCartItem,
+                        Quantity = item.QuantityInCartItem,
                         Order = newOrder,
                     };
                     newOrder.OrderItems.Add(orderItem);
@@ -151,8 +151,8 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 var product = await _context.Products
                     .FirstOrDefaultAsync(x => x.Id == item.ProductId);
 
-                product.Sold += item.Weight;
-                product.Weight -= item.Weight;
+                product.Sold += item.Quantity;
+                product.Quantity -= item.Quantity;
             }
 
             return await _context.SaveChangesAsync() > 0;
@@ -181,7 +181,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     StoreName = ci.Product.ProductGI.Store.Name,
                     CartItemId = ci.Id,
                     ProductName = ci.Product.ProductGI.Name,
-                    Weight = ci.Weight,
+                    Quantity = ci.Quantity,
                     Product = ci.Product,
                     Price = ci.Product.Price
                 })
@@ -195,8 +195,8 @@ namespace ProjectEcommerceFruit.Service.OrderS
                         Id = item.Product.Id,
                         CartItemId = item.CartItemId,
                         Images = item.Product.Images,
-                        WeightInCartItem = item.Weight,
-                        Weight = item.Product.Weight,
+                        QuantityInCartItem = item.Quantity,
+                        Weight = item.Product.Quantity, 
                         Price = item.Product.Price,
                         Sold = item.Product.Sold,
                         Detail = item.Product.Detail,
