@@ -57,12 +57,17 @@ namespace ProjectEcommerceFruit.Service.OrderS
         public async Task<List<OrderRespone>> GetOrdersByStoreAsync(int storeId)
         {
             var orders = await _context.Orders
+                .Include(x => x.Address)
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
                         .ThenInclude(x => x.ProductGI)
                             .ThenInclude(x=>x.Store)
-                .Where(x => x.OrderItems
-                .Select(oi => oi.Product.ProductGI.StoreId).Contains(storeId)).ToListAsync();
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                         .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Category)
+                 .Where(x => x.OrderItems.Any(oi => oi.Product.ProductGI.StoreId == storeId))
+                .ToListAsync();
 
             return _mapper.Map<List<OrderRespone>>(orders);
         }
@@ -136,7 +141,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<object> ConfirmOrderAsync(int orderId)
+        public async Task<object> ConfirmOrderAsync(int orderId,string trackingId)
         {
             var order = await _context.Orders
                 .Include(x => x.OrderItems)
@@ -145,6 +150,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
             if (order == null) return "order is null";
 
             order.Status = 1;
+            order.Tag = trackingId;
 
             foreach (var item in order.OrderItems)
             {

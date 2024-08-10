@@ -23,7 +23,7 @@ namespace ProjectEcommerceFruit.Dtos.Order
     public class OrderItemRespone
     {
         public int Id { get; set; }
-        public int Weight { get; set; }
+        public int Quantity { get; set; }
 
         public int ProductId { get; set; }
         public ProductRespone Product { get; set; }

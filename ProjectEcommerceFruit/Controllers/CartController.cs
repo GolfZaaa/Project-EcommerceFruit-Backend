@@ -19,6 +19,10 @@ namespace ProjectEcommerceFruit.Controllers
         }
 
         [HttpGet("[action]"), Authorize]
+        public async Task<IActionResult> GetCartItemByUser()
+            => Ok(await _cartService.GetCartItemByUserAsync());
+
+        [HttpGet("[action]"), Authorize]
         public async Task<IActionResult> GetCartItemByUserOrderByStore()
             => Ok(await _cartService.GetCartItemByUserOrderByStoreAsync());
 

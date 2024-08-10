@@ -21,7 +21,30 @@ namespace ProjectEcommerceFruit.Service.CartS
             _authService = authService;
             _mapper = mapper;
         }
-         
+
+        public async Task<object> GetCartItemByUserAsync()
+        {
+            var user = await _authService.GetUserByIdAsync();
+
+            var cartItems = await _context.CartItems
+                            .Where(ci => ci.UserId == user.Id)
+                            .Select(ci => new
+                            {
+                                ci.Product.Id,
+                                ci.Product.Images,
+                                WeightInCartItem = ci.Quantity,
+                                ci.Product.Weight,
+                                ci.Product.Price,
+                                ci.Product.Sold,
+                                ci.Product.Detail,
+                                ci.Product.Status,
+                                ci.Product.CreatedAt
+                            })
+                            .ToListAsync();
+
+            return cartItems;
+        }
+
         public async Task<object> GetCartItemByUserOrderByStoreAsync()
         {
             var user = await _authService.GetUserByIdAsync();

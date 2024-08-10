@@ -6,6 +6,7 @@ namespace ProjectEcommerceFruit.Service.CartS
 {
     public interface ICartService
     {
+        Task<Object> GetCartItemByUserAsync();
         Task<Object> GetCartItemByUserOrderByStoreAsync();
         Task<Object> AddToCartAsync(AddToCartDto request);
         Task<Object> RemoveToCartAsync(RemoveToCartDto request);

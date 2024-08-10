@@ -33,11 +33,11 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _orderService.CreateUpdateOrderByIdAsync(request));
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> ConfirmOrder(int orderId)
-            => Ok(await _orderService.ConfirmOrderAsync(orderId));
+        public async Task<IActionResult> ConfirmOrder([FromForm] int orderId,[FromForm] string trackingId)
+            => Ok(await _orderService.ConfirmOrderAsync(orderId, trackingId));
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> CancelOrder(int orderId)
+        public async Task<IActionResult> CancelOrder([FromForm] int orderId)
             => Ok(await _orderService.CancelOrderAsync(orderId));
     }
 }

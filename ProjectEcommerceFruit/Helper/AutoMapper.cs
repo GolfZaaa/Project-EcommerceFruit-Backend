@@ -18,6 +18,7 @@ namespace ProjectEcommerceFruit.Helper
                 .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
 
             CreateMap<User, UserDto>();
+            CreateMap<UserDto, User>();
 
             CreateMap<StoreRequest, Store>();
 

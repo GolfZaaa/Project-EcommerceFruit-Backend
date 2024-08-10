@@ -24,9 +24,9 @@ namespace ProjectEcommerceFruit.Controllers
         {
             var user = await _authService.RegisterAsync(request);
 
-            if (user == null) return BadRequest("UserName has already");
+            if (user == null) return BadRequest("User has already");
 
-            return Ok(await _authService.GetUsers());
+            return Ok(user);
         }
 
         [HttpPost("[action]")]

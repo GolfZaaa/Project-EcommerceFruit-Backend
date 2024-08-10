@@ -8,7 +8,7 @@ namespace ProjectEcommerceFruit.Service.UserS
     {
         Task<List<User>> GetUsers();
         Task<User> GetUserByIdAsync();
-        Task<User> RegisterAsync(RegisterDto request);
+        Task<UserDto> RegisterAsync(RegisterDto request);
         Task<string> LoginAsync(LoginDto request);
         Task<UserRespone> GetTokenDetail();
     }

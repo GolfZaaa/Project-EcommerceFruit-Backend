@@ -49,15 +49,16 @@ namespace ProjectEcommerceFruit.Service.UserS
                         .ThenInclude(x => x.Images)
                 .Include(x => x.Addresses).FirstOrDefaultAsync(x => x.Id.Equals(Convert.ToInt32(GetUserId())));
 
-        public async Task<User> RegisterAsync(RegisterDto request)
+        public async Task<UserDto> RegisterAsync(RegisterDto request)
         {
-            string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
 
             var result = await _dataContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber.Equals(request.PhoneNumber));
 
             if (result != null) return null;
 
-            var user = new User()
+            string passwordHash = BCrypt.Net.BCrypt.HashPassword(request.Password);
+
+            var user = new UserDto()
             {
                 Username = "",
                 PasswordHash = passwordHash,
@@ -68,7 +69,7 @@ namespace ProjectEcommerceFruit.Service.UserS
 
             try
             {
-                await _dataContext.Users.AddAsync(user);
+                await _dataContext.Users.AddAsync(_mapper.Map<User>(user));
                 await _dataContext.SaveChangesAsync();
             }
             catch (Exception ex)
