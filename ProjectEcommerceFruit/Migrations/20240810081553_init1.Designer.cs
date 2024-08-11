@@ -12,8 +12,8 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240807024502_createInitDb")]
-    partial class createInitDb
+    [Migration("20240810081553_init1")]
+    partial class init1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,10 +83,10 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Weight")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -185,7 +185,7 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
-                    b.Property<int>("Weight")
+                    b.Property<int>("Quantity")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -230,8 +230,8 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<bool>("Status")
                         .HasColumnType("bit");
 
-                    b.Property<int>("Weight")
-                        .HasColumnType("int");
+                    b.Property<double>("Weight")
+                        .HasColumnType("float");
 
                     b.HasKey("Id");
 
@@ -348,8 +348,9 @@ namespace ProjectEcommerceFruit.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RoleId")
                         .HasColumnType("int");
@@ -369,8 +370,8 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$aBpjKhFkWGoXJj5UJxP6FewUqUrClZPBH0MuKMkhieqTeAqJLM03O",
-                            PhoneNumber = 123456789,
+                            PasswordHash = "$2a$11$rJ5BXesaIsW.gBbfGGsOCeVu8Hg8FYOPfwFPmuXIk2Lmsk.2G0IIC",
+                            PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
                         },
@@ -378,8 +379,8 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$hsiwuofCDA0IBeUlBHpj8evcrittSuhMOeIxoHQR7GXswJEhk0e0u",
-                            PhoneNumber = 987654321,
+                            PasswordHash = "$2a$11$NNQojFHjXw8ZTp1gk3VaMeFJutztws1RRaFuzFgrfw7dp1RQO.tD6",
+                            PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"
                         });
