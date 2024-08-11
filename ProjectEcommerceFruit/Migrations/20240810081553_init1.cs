@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectEcommerceFruit.Migrations
 {
     /// <inheritdoc />
-    public partial class createInitDb : Migration
+    public partial class init1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -48,7 +48,7 @@ namespace ProjectEcommerceFruit.Migrations
                     FullName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    PhoneNumber = table.Column<int>(type: "int", nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -191,7 +191,7 @@ namespace ProjectEcommerceFruit.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Images = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Weight = table.Column<int>(type: "int", nullable: false),
+                    Weight = table.Column<double>(type: "float", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Sold = table.Column<int>(type: "int", nullable: false),
@@ -217,7 +217,7 @@ namespace ProjectEcommerceFruit.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Weight = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -244,7 +244,7 @@ namespace ProjectEcommerceFruit.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Weight = table.Column<int>(type: "int", nullable: false),
+                    Quantity = table.Column<int>(type: "int", nullable: false),
                     ProductId = table.Column<int>(type: "int", nullable: false),
                     OrderId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -279,8 +279,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", "$2a$11$aBpjKhFkWGoXJj5UJxP6FewUqUrClZPBH0MuKMkhieqTeAqJLM03O", 123456789, 1, "admin" },
-                    { 2, "User Haha", "$2a$11$hsiwuofCDA0IBeUlBHpj8evcrittSuhMOeIxoHQR7GXswJEhk0e0u", 987654321, 2, "user1" }
+                    { 1, "Admin1", "$2a$11$rJ5BXesaIsW.gBbfGGsOCeVu8Hg8FYOPfwFPmuXIk2Lmsk.2G0IIC", "0123456789", 1, "admin" },
+                    { 2, "User Haha", "$2a$11$NNQojFHjXw8ZTp1gk3VaMeFJutztws1RRaFuzFgrfw7dp1RQO.tD6", "0987654321", 2, "user1" }
                 });
 
             migrationBuilder.CreateIndex(

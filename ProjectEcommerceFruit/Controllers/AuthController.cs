@@ -41,6 +41,7 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Login(LoginDto request) => Ok(await _authService.LoginAsync(request));
 
+
         [HttpGet("[action]"), Authorize(Roles = "Admin")]
         public IActionResult test()
         {
