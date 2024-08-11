@@ -62,7 +62,6 @@ namespace ProjectEcommerceFruit.Service.UserS
 
         public async Task<UserDto> RegisterAsync(RegisterDto request)
         {
-
             var result = await _dataContext.Users.FirstOrDefaultAsync(x => x.PhoneNumber.Equals(request.PhoneNumber));
 
             if (result != null) return null;
