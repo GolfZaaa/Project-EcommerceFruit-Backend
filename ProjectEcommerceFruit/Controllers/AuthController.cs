@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ProjectEcommerceFruit.Dtos;
+using ProjectEcommerceFruit.Dtos.User;
 using ProjectEcommerceFruit.Service.UserS;
 using System.Security.Claims;
 
@@ -19,6 +20,14 @@ namespace ProjectEcommerceFruit.Controllers
             _configuration = configuration;
         }
 
+        [HttpPost("[action]"), Authorize]
+        public async Task<IActionResult> EditUser(EditUser request)
+        {
+            var token = await _authService.EditUserAsync(request);
+
+            return Ok(token);
+        }
+         
         [HttpPost("[action]")]
         public async Task<IActionResult> Register(RegisterDto request)
         {

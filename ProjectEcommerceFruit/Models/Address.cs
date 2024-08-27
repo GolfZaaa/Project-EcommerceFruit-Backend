@@ -13,7 +13,8 @@ namespace ProjectEcommerceFruit.Models
         public bool IsUsed_Store { get; set; }
         public bool IsUsed { get; set; }
         public string? GPS { get; set; }
-
+        public DateTime CreatedAt { get; set; }
+         
         public int UserId { get; set; }
         public User User { get; set; }
     }

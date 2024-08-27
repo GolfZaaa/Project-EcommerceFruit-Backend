@@ -22,9 +22,25 @@ namespace ProjectEcommerceFruit.Service.AddressS
         }
 
         public async Task<List<AddressRespone>> GetAddressByUserIdAsync()
-            => _mapper.Map<List<AddressRespone>>(await _context.Addresses.Where(x=>x.Id.Equals(_authService.GetUserByIdAsync().Result.Id)).ToListAsync());
+            => _mapper.Map<List<AddressRespone>>(
+                await _context.Addresses
+                .Where(x=>x.UserId ==
+                    _authService.GetUserByIdAsync().Result.Id).OrderByDescending(x=>x.CreatedAt).ToListAsync());
 
-        //autherize ใน controller ด้วย
+        public async Task<AddressRespone> GetAddressgotoOrderByUserIdAsync()  
+            => _mapper.Map<AddressRespone>(
+                await _context.Addresses
+                .FirstOrDefaultAsync(x => x.UserId ==
+                    _authService.GetUserByIdAsync().Result.Id && x.IsUsed == true));
+
+        public async Task<AddressRespone> GetAddressByStoreAsync()
+            => _mapper.Map<AddressRespone>(
+                await _context.Addresses
+                .FirstOrDefaultAsync(x => x.UserId.Equals(
+                    _authService.GetUserByIdAsync().Result.Id) 
+                && x.IsUsed_Store));
+
+        //autherize ใน controller ด้วย 
         public async Task<Object> CreateUpdateAddressAsync(AddressRequest request)
         {
             var user = await _authService.GetUserByIdAsync();
@@ -35,8 +51,9 @@ namespace ProjectEcommerceFruit.Service.AddressS
 
             if (address is null)
             {
-                var newAddress = _mapper.Map<Address>(request); 
-                
+                var newAddress = _mapper.Map<Address>(request);
+                newAddress.CreatedAt = DateTime.Now; 
+
                 user.Addresses.Add(newAddress);
             }
             else
@@ -55,6 +72,39 @@ namespace ProjectEcommerceFruit.Service.AddressS
             if (result is null) return "address is null";
 
             _context.Addresses.Remove(result);
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> IsUsedAddressAsync(int addressId,bool storeormine)
+        {
+            var address = await _context.Addresses.FirstOrDefaultAsync(x => x.Id.Equals(addressId));
+
+            var addresses =  
+               await _context.Addresses
+               .Where(x => x.UserId ==
+                   _authService.GetUserByIdAsync().Result.Id).ToListAsync() ;
+
+            if (address is null || addresses is null) return false;
+             
+            if (storeormine is true)
+            { 
+                foreach (var item in addresses)
+                {
+                    item.IsUsed_Store = false;
+                }
+
+                address.IsUsed_Store = true;
+            }
+            else
+            {
+                foreach (var item in addresses)
+                {
+                    item.IsUsed = false;
+                }
+
+                address.IsUsed = true;
+            }
 
             return await _context.SaveChangesAsync() > 0;
         }

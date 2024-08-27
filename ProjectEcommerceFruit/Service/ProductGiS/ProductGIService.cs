@@ -39,7 +39,10 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
 
             var store = await _context.Stores.FirstOrDefaultAsync(x => x.UserId.Equals(userId));
 
-            return _mapper.Map<List<ProductGIRespone>>(await _context.ProductGIs.Include(x => x.Category).Where(x => x.StoreId.Equals(store.Id)).ToListAsync());
+            return _mapper.Map<List<ProductGIRespone>>(await _context.ProductGIs
+                .Include(x => x.Category)
+                .Include(x => x.Images)
+                .Where(x => x.StoreId.Equals(store.Id)).ToListAsync());
         }
 
         //autherize หน้า controller ด้วย

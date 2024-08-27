@@ -45,6 +45,46 @@ namespace ProjectEcommerceFruit.Service.CartS
             return cartItems;
         }
 
+        //public async Task<object> GetCartItemByUserOrderByStoreAsync()
+        //{
+        //    var user = await _authService.GetUserByIdAsync();
+
+        //    var cartItemsByStore = await _context.CartItems
+        //    .Where(ci => ci.UserId == user.Id)
+        //    .Select(ci => new
+        //    {
+        //        StoreId = ci.Product.ProductGI.StoreId,
+        //        StoreName = ci.Product.ProductGI.Store.Name, // สมมติว่ามี Store.Name
+        //        CartItemId = ci.Id,
+        //        ProductName = ci.Product.ProductGI.Name, // สมมติว่ามี Name ใน ProductGI 
+        //        Quantity = ci.Quantity,
+        //        Product = ci.Product,
+        //        Price = ci.Product.Price
+        //    })
+        //    .GroupBy(item => new { item.StoreId, item.StoreName })
+        //    .Select(group => new
+        //    {
+        //        StoreId = group.Key.StoreId,
+        //        StoreName = group.Key.StoreName,
+        //        Products = group.Select(item => new
+        //        {
+        //            item.Product.Id, 
+        //            item.Product.Images,
+        //            QuantityInCartItem = item.Quantity,
+        //            item.Product.Weight,
+        //            item.Product.Price,
+        //            item.Product.Sold,
+        //            item.Product.Detail,
+        //            item.Product.Status,
+        //            item.Product.CreatedAt,
+        //        }).ToList()
+        //    })
+        //    .ToListAsync();
+
+        //    return cartItemsByStore; 
+        //}
+
+
         public async Task<object> GetCartItemByUserOrderByStoreAsync()
         {
             var user = await _authService.GetUserByIdAsync();
@@ -61,14 +101,16 @@ namespace ProjectEcommerceFruit.Service.CartS
                 Product = ci.Product,
                 Price = ci.Product.Price
             })
-            .GroupBy(item => new { item.StoreId, item.StoreName })
+            .GroupBy(item => new { item.StoreId, item.StoreName, item.ProductName, item.CartItemId })
             .Select(group => new
             {
                 StoreId = group.Key.StoreId,
                 StoreName = group.Key.StoreName,
+                ProductName = group.Key.ProductName,
+                CartItemId = group.Key.CartItemId,
                 Products = group.Select(item => new
                 {
-                    item.Product.Id, 
+                    item.Product.Id,
                     item.Product.Images,
                     QuantityInCartItem = item.Quantity,
                     item.Product.Weight,
@@ -81,7 +123,7 @@ namespace ProjectEcommerceFruit.Service.CartS
             })
             .ToListAsync();
 
-            return cartItemsByStore; 
+            return cartItemsByStore;
         }
 
         public async Task<object> AddToCartAsync(AddToCartDto request)

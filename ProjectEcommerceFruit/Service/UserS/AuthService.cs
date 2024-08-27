@@ -49,6 +49,17 @@ namespace ProjectEcommerceFruit.Service.UserS
                         .ThenInclude(x => x.Images)
                 .Include(x => x.Addresses).FirstOrDefaultAsync(x => x.Id.Equals(Convert.ToInt32(GetUserId())));
 
+        public async Task<object> EditUserAsync(EditUser request)
+        {
+            var user = await GetUserByIdAsync();
+
+            if (user == null) return "user is null";
+
+            user.FullName = request.FullName;
+
+            return await _dataContext.SaveChangesAsync() > 0;
+        }
+
         public async Task<UserDto> RegisterAsync(RegisterDto request)
         {
 

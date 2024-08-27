@@ -21,6 +21,10 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _productService.GetProductAsync(categoryId));
 
         [HttpGet("[action]")]
+        public async Task<IActionResult> GetProductById(int productId)
+            => Ok(await _productService.GetProductByIdAsync(productId));
+
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetProductByStore(int storeId)
             => Ok(await _productService.GetProductByStoreAsync(storeId));
 

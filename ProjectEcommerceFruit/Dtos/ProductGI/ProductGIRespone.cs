@@ -14,5 +14,15 @@ namespace ProjectEcommerceFruit.Dtos.ProductGI
 
         public int StoreId { get; set; }
         public StoreRespone Store { get; set; }
+
+        public ICollection<ImageRespone> Images { get; set; } = new List<ImageRespone>();
+    }
+
+    public class ImageRespone
+    {
+        public int Id { get; set; }
+        public string? ImageName { get; set; }
+
+        public int ProductGIId { get; set; }
     }
 }
