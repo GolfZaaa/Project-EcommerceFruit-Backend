@@ -12,8 +12,8 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240810081553_init1")]
-    partial class init1
+    [Migration("20240827094103_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,6 +32,9 @@ namespace ProjectEcommerceFruit.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Detail")
                         .IsRequired()
@@ -370,7 +373,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$rJ5BXesaIsW.gBbfGGsOCeVu8Hg8FYOPfwFPmuXIk2Lmsk.2G0IIC",
+                            PasswordHash = "$2a$11$rzGMpBHnhAcmwS2Wn8J6COQKRnLxteoGF4MwbTFyP91s5Oowz8BGW",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -379,7 +382,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$NNQojFHjXw8ZTp1gk3VaMeFJutztws1RRaFuzFgrfw7dp1RQO.tD6",
+                            PasswordHash = "$2a$11$lA8lUkVgkBUUVxGUuVHiZ.o3WvG7ywZxUb7REu7XIwRVP4gux8oF6",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"

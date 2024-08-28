@@ -40,9 +40,6 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> RemoveProductById(int productId)
             => Ok(await _productService.RemoveProductByIdAsync(productId));
 
-        [HttpGet("[action]")]
-        public async Task<IActionResult> GetProductById(int productId)
-    => Ok(await _productService.GetProductByIdAsync(productId));
 
     }
 }
