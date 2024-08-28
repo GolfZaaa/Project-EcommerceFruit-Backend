@@ -8,6 +8,7 @@ namespace ProjectEcommerceFruit.Dtos.Order
     public class OrderRespone
     {
         public int Id { get; set; }
+        public string OrderId { get; set; }
         public string? PaymentImage { get; set; }
         public DateTime CreatedAt { get; set; }
         public int Status { get; set; }

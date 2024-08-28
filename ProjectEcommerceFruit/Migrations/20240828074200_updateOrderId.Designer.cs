@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectEcommerceFruit.Data;
 
@@ -11,9 +12,11 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240828074200_updateOrderId")]
+    partial class updateOrderId
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -151,6 +154,7 @@ namespace ProjectEcommerceFruit.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OrderId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentImage")
@@ -164,6 +168,7 @@ namespace ProjectEcommerceFruit.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Tag")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -372,7 +377,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$Tbk3NMJiJW1D2PzrcXG9.uY/KW5tYqB574S9Hie4.2JMZLsO6hawO",
+                            PasswordHash = "$2a$11$IJVjom1gYUL691WFH7qpO.4kIdb/9bUebZRAB6viJBwAkNriE6n/a",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -381,7 +386,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$ThsbRWqW3ObWiRUcfa9FH.tVI..1wOH/60jSApFvi7/KL1oKgyUGS",
+                            PasswordHash = "$2a$11$fcLJCJmkBw5HBHgjtOBCvegMsfaLdoIUUIvAVE0xuTVneUH757sf.",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"

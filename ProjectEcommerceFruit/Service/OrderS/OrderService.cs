@@ -49,6 +49,8 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 .Include(x => x.Address)
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
+                        .ThenInclude(x=>x.ProductGI)
+                            .ThenInclude(x=>x.Category)
                 .Where(x => x.Address.UserId.Equals(user.Id)).ToListAsync();
 
             return _mapper.Map<List<OrderRespone>>(orders);
@@ -106,6 +108,11 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 await _context.Orders.AddAsync(newOrder);
 
                 if (cartItems.Count > 0) await _context.SaveChangesAsync();
+
+                newOrder.OrderId =
+                   "KRU" + "-"
+                   + request.StoreId
+                   + "-" + newOrder.Id;
 
                 foreach (var item in cartItems)
                 {
@@ -189,7 +196,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     ProductName = ci.Product.ProductGI.Name,
                     Quantity = ci.Quantity,
                     Product = ci.Product,
-                    Price = ci.Product.Price
+                    Price = ci.Product.Price,
                 })
                 .GroupBy(item => new { item.StoreId, item.StoreName })
                 .Select(group => new
