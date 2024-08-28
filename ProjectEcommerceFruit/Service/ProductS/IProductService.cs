@@ -10,7 +10,6 @@ namespace ProjectEcommerceFruit.Service.ProductS
         Task<List<ProductRespone>> GetProductByStoreAsync(int storeId);
         Task<Object> CreateUpdateProductAsync(ProductRequest request);
         Task<Object> RemoveProductByIdAsync(int productId);
-        Task<Object> GetProductByIdAsync(int productId);
 
     }
 }

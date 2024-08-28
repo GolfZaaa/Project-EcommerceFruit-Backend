@@ -161,14 +161,5 @@ namespace ProjectEcommerceFruit.Service.ProductS
         }
 
 
-        public async Task<object> GetProductByIdAsync(int productId)
-        {
-            var product = await _context.Products.Include(x => x.ProductGI).ThenInclude(x => x.Category).FirstOrDefaultAsync(x => x.Id == productId);
-            if (product == null)
-            {
-                return null;
-            }
-            return product;
-        }
     }
 }

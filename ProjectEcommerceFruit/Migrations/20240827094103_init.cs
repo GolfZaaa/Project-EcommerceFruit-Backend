@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectEcommerceFruit.Migrations
 {
     /// <inheritdoc />
-    public partial class init1 : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -76,6 +76,7 @@ namespace ProjectEcommerceFruit.Migrations
                     IsUsed_Store = table.Column<bool>(type: "bit", nullable: false),
                     IsUsed = table.Column<bool>(type: "bit", nullable: false),
                     GPS = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -279,8 +280,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", "$2a$11$rJ5BXesaIsW.gBbfGGsOCeVu8Hg8FYOPfwFPmuXIk2Lmsk.2G0IIC", "0123456789", 1, "admin" },
-                    { 2, "User Haha", "$2a$11$NNQojFHjXw8ZTp1gk3VaMeFJutztws1RRaFuzFgrfw7dp1RQO.tD6", "0987654321", 2, "user1" }
+                    { 1, "Admin1", "$2a$11$rzGMpBHnhAcmwS2Wn8J6COQKRnLxteoGF4MwbTFyP91s5Oowz8BGW", "0123456789", 1, "admin" },
+                    { 2, "User Haha", "$2a$11$lA8lUkVgkBUUVxGUuVHiZ.o3WvG7ywZxUb7REu7XIwRVP4gux8oF6", "0987654321", 2, "user1" }
                 });
 
             migrationBuilder.CreateIndex(
