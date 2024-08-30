@@ -87,9 +87,10 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
             var user = await _authService.GetUserByIdAsync();
 
+            var newOrder = _mapper.Map<Order>(request);
+
             if (order is null)
             {
-                var newOrder = _mapper.Map<Order>(request);
 
                 var address = user.Addresses.FirstOrDefault(x => x.IsUsed);
 
@@ -111,8 +112,9 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
                 newOrder.OrderId =
                    "KRU" + "-"
-                   + request.StoreId
-                   + "-" + newOrder.Id;
+                   + user.Id + "-"
+                   + request.StoreId + "-" 
+                   + newOrder.Id;
 
                 foreach (var item in cartItems)
                 {

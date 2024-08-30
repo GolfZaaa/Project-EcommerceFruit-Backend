@@ -13,7 +13,7 @@ namespace ProjectEcommerceFruit.Dtos.Order
         public DateTime CreatedAt { get; set; }
         public int Status { get; set; }
         public string ShippingType { get; set; }
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         public int AddressId { get; set; }
         public AddressRespone Address { get; set; }

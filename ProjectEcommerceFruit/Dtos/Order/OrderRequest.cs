@@ -5,7 +5,7 @@
         public int Id { get; set; }
         public IFormFile? PaymentImage { get; set; }  
         public string ShippingType { get; set; }
-        public string Tag { get; set; }
+        public string? Tag { get; set; }
 
         public int StoreId { get; set; }
     }
