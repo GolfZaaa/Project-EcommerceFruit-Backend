@@ -372,7 +372,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$Tbk3NMJiJW1D2PzrcXG9.uY/KW5tYqB574S9Hie4.2JMZLsO6hawO",
+                            PasswordHash = "$2a$11$rQGzb72ByQCRpvmsx0aZ6eV9/FKXrI0.BCARBtBtggzgIIB3eoDfS",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -381,7 +381,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$ThsbRWqW3ObWiRUcfa9FH.tVI..1wOH/60jSApFvi7/KL1oKgyUGS",
+                            PasswordHash = "$2a$11$N1QkRdye/qe2DejTY/HT7OpgKpowqCYy.d0pj/zBwSoFMkfzAZlhe",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"
