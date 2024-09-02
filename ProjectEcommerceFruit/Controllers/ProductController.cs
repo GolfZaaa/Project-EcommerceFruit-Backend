@@ -41,5 +41,11 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _productService.RemoveProductByIdAsync(productId));
 
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> ProductAll()
+        {
+            var result = await _productService.ProductAllAsync();
+            return Ok(result);
+        }
     }
 }
