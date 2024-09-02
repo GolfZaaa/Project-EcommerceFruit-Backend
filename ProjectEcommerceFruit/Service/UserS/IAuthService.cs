@@ -12,5 +12,7 @@ namespace ProjectEcommerceFruit.Service.UserS
         Task<UserDto> RegisterAsync(RegisterDto request);
         Task<string> LoginAsync(LoginDto request);
         Task<UserRespone> GetTokenDetail();
+        Task<Object> UserAllAsync();
+
     }
 }

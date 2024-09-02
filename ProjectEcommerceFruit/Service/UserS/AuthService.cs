@@ -131,5 +131,13 @@ namespace ProjectEcommerceFruit.Service.UserS
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
+
+        public async Task<object> UserAllAsync()
+        {
+            var result = await _dataContext.Users.ToListAsync();
+            return result;
+        }
+
+
     }
 }

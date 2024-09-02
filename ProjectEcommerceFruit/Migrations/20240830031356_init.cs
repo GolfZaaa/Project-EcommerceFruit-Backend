@@ -119,11 +119,12 @@ namespace ProjectEcommerceFruit.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    OrderId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PaymentImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
                     ShippingType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Tag = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -280,8 +281,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", "$2a$11$rzGMpBHnhAcmwS2Wn8J6COQKRnLxteoGF4MwbTFyP91s5Oowz8BGW", "0123456789", 1, "admin" },
-                    { 2, "User Haha", "$2a$11$lA8lUkVgkBUUVxGUuVHiZ.o3WvG7ywZxUb7REu7XIwRVP4gux8oF6", "0987654321", 2, "user1" }
+                    { 1, "Admin1", "$2a$11$rQGzb72ByQCRpvmsx0aZ6eV9/FKXrI0.BCARBtBtggzgIIB3eoDfS", "0123456789", 1, "admin" },
+                    { 2, "User Haha", "$2a$11$N1QkRdye/qe2DejTY/HT7OpgKpowqCYy.d0pj/zBwSoFMkfzAZlhe", "0987654321", 2, "user1" }
                 });
 
             migrationBuilder.CreateIndex(
