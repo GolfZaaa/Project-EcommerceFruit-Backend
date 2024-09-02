@@ -12,8 +12,8 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240828074200_updateOrderId")]
-    partial class updateOrderId
+    [Migration("20240830031356_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -154,7 +154,6 @@ namespace ProjectEcommerceFruit.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("OrderId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PaymentImage")
@@ -168,7 +167,6 @@ namespace ProjectEcommerceFruit.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Tag")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
@@ -377,7 +375,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$IJVjom1gYUL691WFH7qpO.4kIdb/9bUebZRAB6viJBwAkNriE6n/a",
+                            PasswordHash = "$2a$11$rQGzb72ByQCRpvmsx0aZ6eV9/FKXrI0.BCARBtBtggzgIIB3eoDfS",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -386,7 +384,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$fcLJCJmkBw5HBHgjtOBCvegMsfaLdoIUUIvAVE0xuTVneUH757sf.",
+                            PasswordHash = "$2a$11$N1QkRdye/qe2DejTY/HT7OpgKpowqCYy.d0pj/zBwSoFMkfzAZlhe",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"

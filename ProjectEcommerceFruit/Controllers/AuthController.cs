@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using Azure.Core;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -70,5 +71,14 @@ namespace ProjectEcommerceFruit.Controllers
             var accessToken = await HttpContext.GetTokenAsync("access_token");
             return Ok(accessToken);
         }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> UserAll()
+        {
+            var result = await _authService.UserAllAsync();
+            return Ok(result);
+        }
+
+
     }
 }
