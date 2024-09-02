@@ -199,6 +199,12 @@ namespace ProjectEcommerceFruit.Service.ProductS
             return (errorMessge, imageName);
         }
 
+        public async Task<dynamic> ProductAllAsync()
+        {
+            var result = await _context.Products.Include(x=>x.Images).ToListAsync();
+            return result;
+        }
+
 
     }
 }

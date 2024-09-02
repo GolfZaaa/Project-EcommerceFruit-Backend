@@ -31,5 +31,12 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpDelete("[action]")]
         public async Task<IActionResult> RemoveStoreById(int storeId)
          => Ok(await _storeService.RemoveStoreByIdAsync(storeId));
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> StoreAll()
+        {
+            var result = await _storeService.StoreAllAsync();
+            return Ok(result);
+        }
     }
 }

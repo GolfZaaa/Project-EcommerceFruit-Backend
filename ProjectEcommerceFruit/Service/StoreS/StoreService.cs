@@ -69,5 +69,28 @@ namespace ProjectEcommerceFruit.Service.StoreS
 
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<dynamic> StoreAllAsync()
+        {
+            var result = await _context.Stores
+                .Include(x => x.User) 
+                .Select(store => new
+                {
+                    store.Id,
+                    store.Name,
+                    store.Description,
+                    store.Hidden,
+                    store.CreatedAt,
+                    User = new
+                    {
+                        store.User.Id,
+                        store.User.FullName 
+                    }
+                })
+                .ToListAsync();
+
+            return result;
+        }
+
     }
 }
