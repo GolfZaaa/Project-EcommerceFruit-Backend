@@ -3,7 +3,7 @@
     public class ProductInfo
     {
         public int Id { get; set; }
-        public string Images { get; set; }
+        public string? Images { get; set; }
         public int QuantityInCartItem { get; set; }
         public int CartItemId { get; set; }
         public int Weight { get; set; }  

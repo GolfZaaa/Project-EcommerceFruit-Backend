@@ -10,6 +10,7 @@ namespace ProjectEcommerceFruit.Models
         public int Quantity { get; set; }
         public double Price { get; set; }
         public int Sold { get; set; }
+        public DateTime Expire { get; set; }
         public string Detail { get; set; }
         public bool Status { get; set; } //สินค้าหมด
         public DateTime CreatedAt { get; set; }

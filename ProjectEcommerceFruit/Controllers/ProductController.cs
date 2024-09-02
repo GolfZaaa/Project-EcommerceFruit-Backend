@@ -29,7 +29,7 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _productService.GetProductByStoreAsync(storeId));
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> CreateUpdateProduct(ProductRequest request)
+        public async Task<IActionResult> CreateUpdateProduct([FromForm] ProductRequest request)
             => Ok(await _productService.CreateUpdateProductAsync(request));
 
         [HttpDelete("[action]")]

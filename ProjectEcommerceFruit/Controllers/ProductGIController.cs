@@ -27,6 +27,10 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> RemoveProductGI(int productGIId)
             => Ok(await _productGIService.RemoveProductGIAsync(productGIId));
 
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> RemoveImage(int productGiId)
+            => Ok(await _productGIService.RemoveImageAsync(productGiId));
+
         //--------------------------------------category--------------------------------------------//
 
         [HttpGet("[action]")]

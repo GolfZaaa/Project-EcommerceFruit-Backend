@@ -91,7 +91,6 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
             if (order is null)
             {
-
                 var address = user.Addresses.FirstOrDefault(x => x.IsUsed);
 
                 if (address is null) return "address is null";

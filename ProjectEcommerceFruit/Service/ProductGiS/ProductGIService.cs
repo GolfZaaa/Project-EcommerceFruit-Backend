@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ProjectEcommerceFruit.Data;
@@ -6,7 +7,6 @@ using ProjectEcommerceFruit.Dtos.ProductGI;
 using ProjectEcommerceFruit.Models;
 using ProjectEcommerceFruit.Service.UploadFileS;
 using ProjectEcommerceFruit.Service.UserS;
-using System.Net;
 
 namespace ProjectEcommerceFruit.Service.ProductGiS
 {
@@ -118,6 +118,19 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
             {
                 _context.ProductGIs.Remove(productGI);
             }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<object> RemoveImageAsync(int productGiId)
+        {
+            var result = await _context.Images.FirstOrDefaultAsync(x=>x.Id.Equals(productGiId));
+
+            if (result is null) return false;
+                
+            await _uploadFileService.DeleteFileImage(result.ImageName, _pathImage);
+
+            _context.Images.Remove(result);
 
             return await _context.SaveChangesAsync() > 0;
         }

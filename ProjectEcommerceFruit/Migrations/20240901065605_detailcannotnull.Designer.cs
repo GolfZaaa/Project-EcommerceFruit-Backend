@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ProjectEcommerceFruit.Data;
 
@@ -11,9 +12,11 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20240901065605_detailcannotnull")]
+    partial class detailcannotnull
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -214,9 +217,6 @@ namespace ProjectEcommerceFruit.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("Expire")
-                        .HasColumnType("datetime2");
-
                     b.Property<string>("Images")
                         .HasColumnType("nvarchar(max)");
 
@@ -375,7 +375,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$2ZQ09xGYtZIfNRQcWoHXHe0E/VTj01.u2FlV6CKmu1rCy8CSXCS4a",
+                            PasswordHash = "$2a$11$Cok2vmfEY7FXfjQdFWT2A.DXqz55XphmE9ne1rJrRnMJ.YyozRLxK",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -384,7 +384,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$vUMSaS/D/eoLzmtI4uuAkeVLful11lm5kxL9fHgtvbGP3oGUymuxa",
+                            PasswordHash = "$2a$11$HbamJgHk2yrS3WSRAJQYleqOQjuJLERbYn/C2enSfMY3LSEluY6q6",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"
