@@ -84,7 +84,7 @@ namespace ProjectEcommerceFruit.Service.CartS
         //    return cartItemsByStore; 
         //}
 
-
+         
         public async Task<object> GetCartItemByUserOrderByStoreAsync()
         {
             var user = await _authService.GetUserByIdAsync();

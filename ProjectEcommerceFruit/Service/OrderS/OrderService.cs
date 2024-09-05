@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using ProjectEcommerceFruit.Data;
 using ProjectEcommerceFruit.Dtos.Order;
 using ProjectEcommerceFruit.Dtos.Product;
+using ProjectEcommerceFruit.Dtos.User;
 using ProjectEcommerceFruit.Models;
 using ProjectEcommerceFruit.Service.CartS;
 using ProjectEcommerceFruit.Service.UploadFileS;
@@ -146,7 +147,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 _context.Orders.Update(order);
             }
 
-            return await _context.SaveChangesAsync() > 0;
+            return await _context.SaveChangesAsync() > 0 ? _mapper.Map<UserRespone>(user) : false;
         }
 
         public async Task<object> ConfirmOrderAsync(int orderId,string trackingId)

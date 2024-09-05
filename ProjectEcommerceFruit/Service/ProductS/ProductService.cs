@@ -34,7 +34,16 @@ namespace ProjectEcommerceFruit.Service.ProductS
             _webHostEnvironment = webHostEnvironment;
             _uploadFileService = uploadFileService;
         }
-         
+
+        public async Task<List<ProductRespone>> SearchProductAsync(string productName)
+        {
+            var products = await _context.Products
+                .Include(x => x.ProductGI)
+                .Where(x => x.ProductGI.Name.Contains(productName)).ToListAsync();
+
+            return _mapper.Map<List<ProductRespone>>(products);
+        }
+        
         public async Task<List<ProductRespone>> GetProductAsync(int categoryId)
         {
             var products = await _context.Products
