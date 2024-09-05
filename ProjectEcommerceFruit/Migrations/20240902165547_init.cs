@@ -197,6 +197,7 @@ namespace ProjectEcommerceFruit.Migrations
                     Quantity = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<double>(type: "float", nullable: false),
                     Sold = table.Column<int>(type: "int", nullable: false),
+                    Expire = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -281,8 +282,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", "$2a$11$rQGzb72ByQCRpvmsx0aZ6eV9/FKXrI0.BCARBtBtggzgIIB3eoDfS", "0123456789", 1, "admin" },
-                    { 2, "User Haha", "$2a$11$N1QkRdye/qe2DejTY/HT7OpgKpowqCYy.d0pj/zBwSoFMkfzAZlhe", "0987654321", 2, "user1" }
+                    { 1, "Admin1", "$2a$11$5MmRpwc.YapBlV1ijz48rumDZo3AR/YxzjK.GbQS7hupi1lCkG3P2", "0123456789", 1, "admin" },
+                    { 2, "User Haha", "$2a$11$OxubkCWj27AjaaIPMJveXey2bn3fDKuvHy/Y0vrNfCI2nGZJk/BsG", "0987654321", 2, "user1" }
                 });
 
             migrationBuilder.CreateIndex(

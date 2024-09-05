@@ -15,5 +15,6 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
         Task<List<Category>> GetCategoriesAsync();
         Task<bool> CreateUpdateCategoryAsync(Category request);
         Task<Object> RemoveCategoryAsync(int categoryId);
+        Task<dynamic> ProductGIAllAsync();
     }
 }
