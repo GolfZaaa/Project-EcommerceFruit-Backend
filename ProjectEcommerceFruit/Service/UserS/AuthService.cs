@@ -92,7 +92,7 @@ namespace ProjectEcommerceFruit.Service.UserS
 
         public async Task<string> LoginAsync(LoginDto request)
         {
-            var user = await _dataContext.Users.Include(x => x.Role).FirstOrDefaultAsync(x => x.PhoneNumber.Equals(request.PhoneNumber));
+            var user = await _dataContext.Users.Where(x=>x.Hidden == false).Include(x => x.Role).FirstOrDefaultAsync(x => x.PhoneNumber.Equals(request.PhoneNumber));
 
             if (user == null) { return "PhoneNumber Wrong"; }
 
@@ -138,6 +138,13 @@ namespace ProjectEcommerceFruit.Service.UserS
             return result;
         }
 
+        public async Task<object> DeleteUserAsync(int id)
+        {
+            var result = await _dataContext.Users.FirstOrDefaultAsync(x => x.Id == id);
+            if(result == null) { return "Don't Have User"; }
+            result.Hidden = !result.Hidden;
+            return await _dataContext.SaveChangesAsync() > 0;
+        }
 
     }
 }

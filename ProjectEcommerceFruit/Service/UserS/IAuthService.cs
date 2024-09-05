@@ -13,6 +13,7 @@ namespace ProjectEcommerceFruit.Service.UserS
         Task<string> LoginAsync(LoginDto request);
         Task<UserRespone> GetTokenDetail();
         Task<Object> UserAllAsync();
+        Task<Object> DeleteUserAsync(int id);
 
     }
 }
