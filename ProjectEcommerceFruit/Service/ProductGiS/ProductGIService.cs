@@ -213,5 +213,19 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
 
             return (errorMessge, imageNames);
         }
+
+        public async Task<dynamic> ProductGIAllAsync()
+        {
+            var result = await _context.ProductGIs.Include(x=>x.Category).Include(x=>x.Store)
+                .Select(x=> new
+                {
+                    x.Name,
+                    CategoryName = x.Category.Name,
+                    StoreName = x.Store.Name,
+                })
+                .ToListAsync();
+            return result;
+        }
+
     }
 }

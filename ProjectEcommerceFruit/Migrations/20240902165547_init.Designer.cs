@@ -12,8 +12,8 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240902022141_update-expire-in-product")]
-    partial class updateexpireinproduct
+    [Migration("20240902165547_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -378,7 +378,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$2ZQ09xGYtZIfNRQcWoHXHe0E/VTj01.u2FlV6CKmu1rCy8CSXCS4a",
+                            PasswordHash = "$2a$11$5MmRpwc.YapBlV1ijz48rumDZo3AR/YxzjK.GbQS7hupi1lCkG3P2",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -387,7 +387,7 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$vUMSaS/D/eoLzmtI4uuAkeVLful11lm5kxL9fHgtvbGP3oGUymuxa",
+                            PasswordHash = "$2a$11$OxubkCWj27AjaaIPMJveXey2bn3fDKuvHy/Y0vrNfCI2nGZJk/BsG",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"
