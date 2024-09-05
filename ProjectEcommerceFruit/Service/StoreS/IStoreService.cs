@@ -10,5 +10,7 @@ namespace ProjectEcommerceFruit.Service.StoreS
         Task<Object> CreateUpdateStoreAsync(StoreRequest request);
         Task<Object> RemoveStoreByIdAsync(int storeId);
         Task<dynamic> StoreAllAsync();
+        Task<Object> DeleteStoreAsync(int id);
+
     }
 }

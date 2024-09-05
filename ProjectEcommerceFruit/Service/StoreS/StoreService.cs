@@ -92,5 +92,14 @@ namespace ProjectEcommerceFruit.Service.StoreS
             return result;
         }
 
+
+        public async Task<object> DeleteStoreAsync(int id)
+        {
+            var result = await _context.Stores.FirstOrDefaultAsync(x => x.Id == id);
+            if (result == null) { return "Don't Have Store"; }
+            _context.Remove(result);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
     }
 }

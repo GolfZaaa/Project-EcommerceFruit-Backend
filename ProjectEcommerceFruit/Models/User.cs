@@ -9,7 +9,7 @@ namespace ProjectEcommerceFruit.Models
         public string Username { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty;
         public string PhoneNumber { get; set; } = string.Empty;
-
+        public bool Hidden { get; set; } = false;
         public int RoleId { get; set; }
         [JsonIgnore]
         public Role Role { get; set; }

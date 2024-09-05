@@ -38,5 +38,13 @@ namespace ProjectEcommerceFruit.Controllers
             var result = await _storeService.StoreAllAsync();
             return Ok(result);
         }
+
+        //[HttpDelete("[action]"), Authorize]
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> DeleteStore(int id)
+        {
+            var result = await _storeService.DeleteStoreAsync(id);
+            return Ok(result);
+        }
     }
 }
