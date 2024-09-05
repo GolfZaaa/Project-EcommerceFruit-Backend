@@ -5,7 +5,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
 {
     public interface IOrderService
     {
-        Task<List<Order>> GetOrdersAsync();
+        Task<List<OrderRespone>> GetOrdersAsync();
         Task<List<OrderRespone>> GetOrdersByUserAsync();
         Task<List<OrderRespone>> GetOrdersByStoreAsync(int storeId);
         Task<Object> CreateUpdateOrderByIdAsync(OrderRequest request);

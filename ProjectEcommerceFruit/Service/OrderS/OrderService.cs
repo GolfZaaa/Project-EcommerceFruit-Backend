@@ -36,11 +36,13 @@ namespace ProjectEcommerceFruit.Service.OrderS
             _uploadFileService = uploadFileService;
         }
 
-        public async Task<List<Order>> GetOrdersAsync()
-            => await _context.Orders
+        public async Task<List<OrderRespone>> GetOrdersAsync()
+            => _mapper.Map<List<OrderRespone>>(await _context.Orders
                 .Include(x => x.Address)
+                    .ThenInclude(x => x.User)
+                        .ThenInclude(x=>x.Role)
                 .Include(x => x.OrderItems)
-                    .ThenInclude(x => x.Product).ToListAsync();
+                    .ThenInclude(x => x.Product).ToListAsync());
 
         public async Task<List<OrderRespone>> GetOrdersByUserAsync()
         {
