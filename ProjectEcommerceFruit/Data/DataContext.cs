@@ -93,6 +93,9 @@ namespace ProjectEcommerceFruit.Data
         public DbSet<Order> Orders { get; set; }
 
         public DbSet<OrderItem> OrderItems { get; set; }
-    }
+
+        public DbSet<SystemSetting> SystemSettings { get; set; }
+        public DbSet<SlideShow> SlideShows { get; set; }
+    } 
 }
  

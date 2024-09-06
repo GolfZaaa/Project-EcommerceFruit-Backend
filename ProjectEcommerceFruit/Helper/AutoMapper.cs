@@ -5,6 +5,7 @@ using ProjectEcommerceFruit.Dtos.Order;
 using ProjectEcommerceFruit.Dtos.Product;
 using ProjectEcommerceFruit.Dtos.ProductGI;
 using ProjectEcommerceFruit.Dtos.Store;
+using ProjectEcommerceFruit.Dtos.SystemSetting;
 using ProjectEcommerceFruit.Dtos.User;
 using ProjectEcommerceFruit.Models;
 
@@ -52,6 +53,14 @@ namespace ProjectEcommerceFruit.Helper
 
             CreateMap<User, UserRespone>()
                 .ForMember(dest => dest.Stores, opt => opt.MapFrom(src => src.Stores));
+
+            CreateMap<SystemSettingRequest, SystemSetting>();
+            CreateMap<SlideShowRequest, SlideShow>();
+
+            CreateMap<SystemSetting, SystemSettingRespone>()
+                .ForMember(dest => dest.SlideShows, opt => opt.MapFrom(src => src.SlideShows));
+
+            CreateMap<SlideShow, SlideShowRespone>();
         }
     }
 }
