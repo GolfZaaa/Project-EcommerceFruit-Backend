@@ -149,7 +149,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
             if (result is null) return "product is null";
 
-            _context.Products.Remove(result);
+            result.Status = !result.Status;
 
             return await _context.SaveChangesAsync() > 0;
         }

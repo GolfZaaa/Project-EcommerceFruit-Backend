@@ -122,6 +122,18 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task<Object> HiddenProductGIAsync(int productGIId)
+        {
+            var productGI = _context.ProductGIs.FirstOrDefault(x => x.Id.Equals(productGIId));
+
+            if (productGI is not null)
+            {
+                productGI.Status = !productGI.Status;
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
         public async Task<object> RemoveImageAsync(int productGiId)
         {
             var result = await _context.Images.FirstOrDefaultAsync(x=>x.Id.Equals(productGiId));
@@ -219,9 +231,11 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
             var result = await _context.ProductGIs.Include(x=>x.Category).Include(x=>x.Store)
                 .Select(x=> new
                 {
+                    x.Id,
                     x.Name,
                     CategoryName = x.Category.Name,
                     StoreName = x.Store.Name,
+                    x.Status,
                 })
                 .ToListAsync();
             return result;

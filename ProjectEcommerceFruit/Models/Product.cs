@@ -12,7 +12,7 @@ namespace ProjectEcommerceFruit.Models
         public int Sold { get; set; }
         public DateTime Expire { get; set; }
         public string Detail { get; set; }
-        public bool Status { get; set; } //สินค้าหมด
+        public bool Status { get; set; } = true; 
         public DateTime CreatedAt { get; set; }
 
         public int ProductGIId { get; set; }

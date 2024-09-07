@@ -9,6 +9,7 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
         Task<Object> CreateUpdateProductGIAsync(ProductGIRequest request);
         Task<Object> RemoveProductGIAsync(int productGIId);
         Task<Object> RemoveImageAsync(int productGiId);
+        Task<Object> HiddenProductGIAsync(int productGIId);
 
         //--------------------------------------category--------------------------------------------//
 
