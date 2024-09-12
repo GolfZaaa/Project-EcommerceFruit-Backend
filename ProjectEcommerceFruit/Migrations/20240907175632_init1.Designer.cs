@@ -12,8 +12,8 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240902165547_init")]
-    partial class init
+    [Migration("20240907175632_init1")]
+    partial class init1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -267,6 +267,9 @@ namespace ProjectEcommerceFruit.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
 
@@ -308,6 +311,27 @@ namespace ProjectEcommerceFruit.Migrations
                         });
                 });
 
+            modelBuilder.Entity("ProjectEcommerceFruit.Models.SlideShow", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("ImageName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SystemSettingId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SystemSettingId");
+
+                    b.ToTable("SlideShows");
+                });
+
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Store", b =>
                 {
                     b.Property<int>("Id")
@@ -340,6 +364,27 @@ namespace ProjectEcommerceFruit.Migrations
                     b.ToTable("Stores");
                 });
 
+            modelBuilder.Entity("ProjectEcommerceFruit.Models.SystemSetting", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("WebName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemSettings");
+                });
+
             modelBuilder.Entity("ProjectEcommerceFruit.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -351,6 +396,9 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<string>("FullName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Hidden")
+                        .HasColumnType("bit");
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -378,7 +426,8 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$5MmRpwc.YapBlV1ijz48rumDZo3AR/YxzjK.GbQS7hupi1lCkG3P2",
+                            Hidden = false,
+                            PasswordHash = "$2a$11$UMfNn/nFf.CVz7ua2/.HAeoxm0eRTHyVEDAO5sThhRXs1dmRWYAa2",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -387,7 +436,8 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$OxubkCWj27AjaaIPMJveXey2bn3fDKuvHy/Y0vrNfCI2nGZJk/BsG",
+                            Hidden = false,
+                            PasswordHash = "$2a$11$2I8ZxHjdt9eOeQsa1zY.eOiOG4Fcspn8.VcRhczwvRthUS5Qbt1kq",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"
@@ -495,6 +545,17 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Navigation("Store");
                 });
 
+            modelBuilder.Entity("ProjectEcommerceFruit.Models.SlideShow", b =>
+                {
+                    b.HasOne("ProjectEcommerceFruit.Models.SystemSetting", "SystemSetting")
+                        .WithMany("SlideShows")
+                        .HasForeignKey("SystemSettingId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("SystemSetting");
+                });
+
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Store", b =>
                 {
                     b.HasOne("ProjectEcommerceFruit.Models.User", "User")
@@ -537,6 +598,11 @@ namespace ProjectEcommerceFruit.Migrations
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Store", b =>
                 {
                     b.Navigation("ProductGIs");
+                });
+
+            modelBuilder.Entity("ProjectEcommerceFruit.Models.SystemSetting", b =>
+                {
+                    b.Navigation("SlideShows");
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.User", b =>

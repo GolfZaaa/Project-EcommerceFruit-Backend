@@ -264,6 +264,9 @@ namespace ProjectEcommerceFruit.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
                     b.Property<int>("StoreId")
                         .HasColumnType("int");
 
@@ -391,6 +394,9 @@ namespace ProjectEcommerceFruit.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("Hidden")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -417,7 +423,8 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 1,
                             FullName = "Admin1",
-                            PasswordHash = "$2a$11$3x0Bj7IBdSEVO/1psgVO.e4icEAKiIOEta/s26J/3lVEqpnoW1.ju",
+                            Hidden = false,
+                            PasswordHash = "$2a$11$UMfNn/nFf.CVz7ua2/.HAeoxm0eRTHyVEDAO5sThhRXs1dmRWYAa2",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -426,7 +433,8 @@ namespace ProjectEcommerceFruit.Migrations
                         {
                             Id = 2,
                             FullName = "User Haha",
-                            PasswordHash = "$2a$11$KfozDASNG2UpG24jsUBoYO44e9McJU/EIMZ4pqJpzoF5bgZRNNFyi",
+                            Hidden = false,
+                            PasswordHash = "$2a$11$2I8ZxHjdt9eOeQsa1zY.eOiOG4Fcspn8.VcRhczwvRthUS5Qbt1kq",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"

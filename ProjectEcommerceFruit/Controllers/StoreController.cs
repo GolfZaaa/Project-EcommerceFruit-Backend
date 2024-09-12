@@ -46,5 +46,14 @@ namespace ProjectEcommerceFruit.Controllers
             var result = await _storeService.DeleteStoreAsync(id);
             return Ok(result);
         }
+
+        [HttpGet("[action]")]
+
+        public async Task<IActionResult> GetStoreProductUser(int userid)
+        {
+            var result = await _storeService.GetStoreProductUserAsync(userid);
+            return Ok(result);
+        }
+
     }
 }

@@ -101,5 +101,50 @@ namespace ProjectEcommerceFruit.Service.StoreS
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task<object> GetStoreProductUserAsync(int userid)
+        {
+            var result = await _context.Products
+        .Include(x => x.ProductGI)
+        .ThenInclude(x => x.Store).Include(x=>x.ProductGI).ThenInclude(x=>x.Category)
+        .Where(x => x.ProductGI.Store.UserId == userid)
+        .Select(x=> new
+        {
+            x.Id,
+            x.Images,
+            x.Weight,
+            x.Quantity,
+            x.Price,
+            x.Sold,
+            x.Expire,
+            x.Detail,
+            x.Status,
+            x.CreatedAt,
+            ProductGI = new
+            {
+                x.ProductGI.Id,
+                x.ProductGI.Name,
+                x.ProductGI.Description,
+                x.ProductGI.Status,
+                Category = new
+                {
+                    x.ProductGI.Category.Id,
+                    x.ProductGI.Category.Name
+                },
+                Store = new
+                {
+                    x.ProductGI.Store.Id,
+                    x.ProductGI.Store.Name,
+                    x.ProductGI.Store.Description,
+                    x.ProductGI.Store.UserId,
+                }
+            }
+        })
+        .ToListAsync();
+
+            return result;
+        }
+
+
+
     }
 }

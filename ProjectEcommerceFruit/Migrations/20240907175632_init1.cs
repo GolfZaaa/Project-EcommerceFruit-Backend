@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectEcommerceFruit.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class init1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -40,6 +40,20 @@ namespace ProjectEcommerceFruit.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SystemSettings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    WebName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SystemSettings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
@@ -49,6 +63,7 @@ namespace ProjectEcommerceFruit.Migrations
                     Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false),
                     RoleId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -58,6 +73,26 @@ namespace ProjectEcommerceFruit.Migrations
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "SlideShows",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    SystemSettingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SlideShows", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_SlideShows_SystemSettings_SystemSettingId",
+                        column: x => x.SystemSettingId,
+                        principalTable: "SystemSettings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -146,6 +181,7 @@ namespace ProjectEcommerceFruit.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     StoreId = table.Column<int>(type: "int", nullable: false)
                 },
@@ -279,11 +315,11 @@ namespace ProjectEcommerceFruit.Migrations
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "FullName", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
+                columns: new[] { "Id", "FullName", "Hidden", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", "$2a$11$5MmRpwc.YapBlV1ijz48rumDZo3AR/YxzjK.GbQS7hupi1lCkG3P2", "0123456789", 1, "admin" },
-                    { 2, "User Haha", "$2a$11$OxubkCWj27AjaaIPMJveXey2bn3fDKuvHy/Y0vrNfCI2nGZJk/BsG", "0987654321", 2, "user1" }
+                    { 1, "Admin1", false, "$2a$11$UMfNn/nFf.CVz7ua2/.HAeoxm0eRTHyVEDAO5sThhRXs1dmRWYAa2", "0123456789", 1, "admin" },
+                    { 2, "User Haha", false, "$2a$11$2I8ZxHjdt9eOeQsa1zY.eOiOG4Fcspn8.VcRhczwvRthUS5Qbt1kq", "0987654321", 2, "user1" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -337,6 +373,11 @@ namespace ProjectEcommerceFruit.Migrations
                 column: "ProductGIId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_SlideShows_SystemSettingId",
+                table: "SlideShows",
+                column: "SystemSettingId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Stores_UserId",
                 table: "Stores",
                 column: "UserId");
@@ -360,10 +401,16 @@ namespace ProjectEcommerceFruit.Migrations
                 name: "OrderItems");
 
             migrationBuilder.DropTable(
+                name: "SlideShows");
+
+            migrationBuilder.DropTable(
                 name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "Products");
+
+            migrationBuilder.DropTable(
+                name: "SystemSettings");
 
             migrationBuilder.DropTable(
                 name: "Addresses");

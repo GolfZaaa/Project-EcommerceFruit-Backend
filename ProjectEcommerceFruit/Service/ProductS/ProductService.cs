@@ -9,6 +9,7 @@ using ProjectEcommerceFruit.Models;
 using ProjectEcommerceFruit.Service.UploadFileS;
 using ProjectEcommerceFruit.Service.UserS;
 using System.Collections.Generic;
+using System.Security.Cryptography.Xml;
 
 namespace ProjectEcommerceFruit.Service.ProductS
 {
@@ -50,17 +51,16 @@ namespace ProjectEcommerceFruit.Service.ProductS
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Images)
                 .Include(x => x.ProductGI)
-                    .ThenInclude(x => x.Category).ToListAsync();
+                    .ThenInclude(x => x.Category).Include(x=>x.ProductGI).ThenInclude(x=>x.Store).ThenInclude(x=>x.User).ToListAsync();
 
             return _mapper.Map<List<ProductRespone>>(categoryId > 0
-                ? products.Where(x => x.ProductGI.CategoryId == categoryId && x.Status == true).ToList() : products.ToList());
+                //? products.Where(x => x.ProductGI.CategoryId == categoryId && x.Status == true).ToList() : products.ToList());
+                ? products.Where(x => x.ProductGI.CategoryId == categoryId).ToList() : products.ToList());
 
-            //var products = await _context.Products
-            //    .Include(x => x.ProductGI)
-            //        .ThenInclude(x => x.Category).ToListAsync();
-
-            //return _mapper.Map<List<ProductRespone>>(products);
         }
+
+
+
 
         public async Task<object> GetProductByIdAsync(int productId)
         {
@@ -68,8 +68,56 @@ namespace ProjectEcommerceFruit.Service.ProductS
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Images)
                 .Include(x => x.ProductGI)
-                    .ThenInclude(x => x.Category).FirstOrDefaultAsync(x => x.Id == productId && x.Status == true);
-            
+                    .ThenInclude(x => x.Category).Include(x=>x.ProductGI).ThenInclude(x=>x.Store).ThenInclude(x=>x.User).Include(x=>x.ProductGI).ThenInclude(x=>x.Category).Include(x=>x.ProductGI).ThenInclude(x=>x.Store).ThenInclude(x=>x.User)
+                    .Select(x=> new
+                    {
+                        x.Id,
+                        x.Images,
+                        x.Weight,
+                        x.Quantity,
+                        x.Price,
+                        x.Sold,
+                        x.Expire,
+                        x.Detail,
+                        x.Status,
+                        x.CreatedAt,
+                        x.ProductGIId,
+                        ProductGI = new
+                        {
+                            x.ProductGI.Id,
+                            x.ProductGI.Name,
+                            x.ProductGI.Description,
+                            x.ProductGI.Status,
+                            x.ProductGI.Images,
+                            x.ProductGI.CategoryId,
+                            x.ProductGI.StoreId,
+                            Store = new
+                            {
+                                x.ProductGI.Store.Id,
+                                x.ProductGI.Store.Name,
+                                x.ProductGI.Store.Description,
+                                x.ProductGI.Store.CreatedAt,
+                                x.ProductGI.Store.UserId,
+                                x.ProductGI.Store.Hidden,
+                                User = new
+                                {
+                                    x.ProductGI.Store.User.Id,
+                                    x.ProductGI.Store.User.FullName,
+                                    x.ProductGI.Store.User.Username,
+                                    x.ProductGI.Store.User.PhoneNumber,
+                                    x.ProductGI.Store.User.Hidden,
+                                }
+                            },
+                            Category = new
+                            {
+                                x.ProductGI.Category.Id,
+                                x.ProductGI.Category.Name,
+                            }
+                        }
+                    })
+                    //.FirstOrDefaultAsync(x => x.Id == productId && x.Status == true);
+                    .FirstOrDefaultAsync(x => x.Id == productId);
+
             if (product == null)
             {
                 return null;
@@ -77,6 +125,10 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
             return product;
         }
+
+
+
+
 
         //public async Task<List<ProductRespone>> GetProductByCategoryAsync(int categoryId)
         //{
