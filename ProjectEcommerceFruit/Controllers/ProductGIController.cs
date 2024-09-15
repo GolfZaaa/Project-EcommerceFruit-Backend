@@ -16,8 +16,8 @@ namespace ProjectEcommerceFruit.Controllers
         }
 
         [HttpGet("[action]"), Authorize]
-        public async Task<IActionResult> GetProductGI()
-            => Ok(await _productGIService.GetProductGIAsync());
+        public async Task<IActionResult> GetProductGI(int id)
+            => Ok(await _productGIService.GetProductGIAsync(id));
 
         [HttpPost("[action]"), Authorize]
         public async Task<IActionResult> CreateUpdateProductGI([FromForm] ProductGIRequest request)

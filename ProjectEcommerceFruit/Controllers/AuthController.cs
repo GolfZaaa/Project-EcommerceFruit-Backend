@@ -22,7 +22,7 @@ namespace ProjectEcommerceFruit.Controllers
         }
 
         [HttpPost("[action]"), Authorize]
-        public async Task<IActionResult> EditUser(EditUser request)
+        public async Task<IActionResult> EditUser([FromForm] EditUser request)
         {
             var token = await _authService.EditUserAsync(request);
 

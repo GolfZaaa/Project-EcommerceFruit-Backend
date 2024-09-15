@@ -51,7 +51,20 @@ namespace ProjectEcommerceFruit.Service.UserS
 
         public async Task<object> EditUserAsync(EditUser request)
         {
-            var user = await GetUserByIdAsync();
+            User user = new User();
+
+            if(request.Id == 0)
+            {
+                user = await GetUserByIdAsync();
+            }else
+            {
+                user = await _dataContext.Users
+                    .Include(x => x.Stores)
+                        .ThenInclude(x => x.ProductGIs)
+                            .ThenInclude(x => x.Images)
+                    .Include(x => x.Addresses)
+                    .FirstOrDefaultAsync(x=>x.Id == request.Id);
+            }
 
             if (user == null) return "user is null";
 

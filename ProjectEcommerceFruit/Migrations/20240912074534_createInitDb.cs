@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectEcommerceFruit.Migrations
 {
     /// <inheritdoc />
-    public partial class init1 : Migration
+    public partial class createInitDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -305,6 +305,15 @@ namespace ProjectEcommerceFruit.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 1, "ผลไม้สด" },
+                    { 2, "ผลไม้แปรรูป" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "Name" },
                 values: new object[,]
@@ -318,8 +327,43 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "Hidden", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", false, "$2a$11$UMfNn/nFf.CVz7ua2/.HAeoxm0eRTHyVEDAO5sThhRXs1dmRWYAa2", "0123456789", 1, "admin" },
-                    { 2, "User Haha", false, "$2a$11$2I8ZxHjdt9eOeQsa1zY.eOiOG4Fcspn8.VcRhczwvRthUS5Qbt1kq", "0987654321", 2, "user1" }
+                    { 1, "Admin1", false, "$2a$11$FQnLDLduCkocqZzYPcO8S.7jyqXY/LvdugmEjLV1/yBZMhweCLyS2", "0123456789", 1, "admin" },
+                    { 2, "User Haha", false, "$2a$11$E3zx5hw/TBbAL9ScVs/.YOe2hn/IXdpBC2Judu/CNL.DyeaNBw2Ma", "0987654321", 2, "user1" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Stores",
+                columns: new[] { "Id", "CreatedAt", "Description", "Hidden", "Name", "UserId" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(1876), "แหล่งผลิตที่ทองผาภูมิ", false, "ทองผาภูมิ มีดี", 1 },
+                    { 2, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(1890), "แหล่งผลิตที่ทองผาภูมิ", false, "อาปาชาเฮ้", 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "ProductGIs",
+                columns: new[] { "Id", "CategoryId", "Description", "Name", "Status", "StoreId" },
+                values: new object[,]
+                {
+                    { 1, 1, "<p>วัสดุ TPU ที่ใช้ในเคสนี้มีคุณสมบัติป้องกันการกระแทกที่ช่วยปกป้องโทรศัพท์ของคุณจากความเสียหายจากอุบัติเหตุที่เกิดจากการตกหล่นและการกระแทก นอกจากนี้ยัง</p>", "ทุเรียน", true, 1 },
+                    { 2, 1, "<p><br></p>", "เงอะ", true, 1 },
+                    { 3, 2, "<p><br></p>", "ยางพารา", true, 1 },
+                    { 4, 1, "<p><br></p>", "มังคุด", true, 2 },
+                    { 5, 1, "<p></p>", "มังแคด", true, 2 },
+                    { 6, 1, "<p>111</p>", "มังแคด", true, 2 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CreatedAt", "Detail", "Expire", "Images", "Price", "ProductGIId", "Quantity", "Sold", "Status", "Weight" },
+                values: new object[,]
+                {
+                    { 1, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2016), "", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2017), null, 125.0, 1, 7, 11, true, 3.0 },
+                    { 2, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2025), "<p>1</p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2026), null, 155.0, 2, 3, 9, true, 10.0 },
+                    { 3, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2028), "<p>111</p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2028), null, 60.0, 3, 50, 0, true, 3.0 },
+                    { 4, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2030), "<p>111</p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2031), null, 60.0, 4, 50, 0, true, 3.0 },
+                    { 5, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2032), "<p></p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2033), null, 40.0, 5, 10, 0, true, 1.0 },
+                    { 6, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2041), "<p></p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2042), null, 50.0, 5, 18, 0, true, 1.0 }
                 });
 
             migrationBuilder.CreateIndex(

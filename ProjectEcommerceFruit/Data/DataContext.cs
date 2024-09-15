@@ -9,11 +9,13 @@ namespace ProjectEcommerceFruit.Data
     {
         public DataContext(DbContextOptions options) : base(options)
         {
+
         }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=DESKTOP-DTGB06O\\SQLEXPRESS; Database=ProjectSellFruit; Trusted_connection=true; TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-E89K85P; Database=ProjectSellFru1t; Trusted_connection=true; TrustServerCertificate=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -44,7 +46,173 @@ namespace ProjectEcommerceFruit.Data
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
                     RoleId = 2,
                 }
-                );
+            );
+
+            modelBuilder.Entity<Category>().HasData(
+                new Category { Id = 1, Name = "ผลไม้สด" },
+                new Category { Id = 2, Name = "ผลไม้แปรรูป" }
+            );
+
+            modelBuilder.Entity<Store>().HasData(
+                new Store
+                {
+                    Id = 1,
+                    Name = "ทองผาภูมิ มีดี",
+                    Description = "แหล่งผลิตที่ทองผาภูมิ",
+                    CreatedAt = DateTime.Now,
+                    UserId = 1,
+                    Hidden = false
+                },
+                new Store
+                {
+                    Id = 2,
+                    Name = "อาปาชาเฮ้",
+                    Description = "แหล่งผลิตที่ทองผาภูมิ",
+                    CreatedAt = DateTime.Now,
+                    UserId = 2,
+                    Hidden = false
+                }
+            );
+
+            modelBuilder.Entity<ProductGI>().HasData(
+                new ProductGI
+                {
+                    Id = 1,
+                    Name = "ทุเรียน",
+                    Description = "<p>วัสดุ TPU ที่ใช้ในเคสนี้มีคุณสมบัติป้องกันการกระแทกที่ช่วยปกป้องโทรศัพท์ของคุณจากความเสียหายจากอุบัติเหตุที่เกิดจากการตกหล่นและการกระแทก นอกจากนี้ยัง</p>",
+                    CategoryId = 1,
+                    StoreId = 1
+                },
+                new ProductGI
+                {
+                    Id = 2,
+                    Name = "เงอะ",
+                    Description = "<p><br></p>",
+                    CategoryId = 1,
+                    StoreId = 1
+                },
+                new ProductGI
+                {
+                    Id = 3,
+                    Name = "ยางพารา",
+                    Description = "<p><br></p>",
+                    CategoryId = 2,
+                    StoreId = 1
+                },
+                new ProductGI
+                {
+                    Id = 4,
+                    Name = "มังคุด",
+                    Description = "<p><br></p>",
+                    CategoryId = 1,
+                    StoreId = 2
+                },
+                new ProductGI
+                {
+                    Id = 5,
+                    Name = "มังแคด",
+                    Description = "<p></p>",
+                    CategoryId = 1,
+                    StoreId = 2
+                },
+                new ProductGI
+                {
+                    Id = 6,
+                    Name = "มังแคด",
+                    Description = "<p>111</p>",
+                    CategoryId = 1,
+                    StoreId = 2
+                }
+            );
+
+            modelBuilder.Entity<Product>().HasData(
+                new Product
+                {
+                    Id = 1,
+                    Images = null,
+                    Weight = 3,
+                    Quantity = 7,
+                    Price = 125,
+                    Sold = 11,
+                    Detail = "",
+                    Status = true,
+                    CreatedAt = DateTime.Now,
+                    ProductGIId = 1,
+                    Expire = DateTime.Now.AddMonths(1)
+                },
+                new Product
+                {
+                    Id = 2,
+                    Images = null,
+                    Weight = 10,
+                    Quantity = 3,
+                    Price = 155,
+                    Sold = 9,
+                    Detail = "<p>1</p>",
+                    Status = true,
+                    CreatedAt = DateTime.Now,
+                    ProductGIId = 2,
+                    Expire = DateTime.Now.AddMonths(1)
+                },
+                new Product
+                {
+                    Id = 3,
+                    Images = null,
+                    Weight = 3,
+                    Quantity = 50,
+                    Price = 60,
+                    Sold = 0,
+                    Detail = "<p>111</p>",
+                    Status = true,
+                    CreatedAt = DateTime.Now,
+                    ProductGIId = 3,
+                    Expire = DateTime.Now.AddMonths(1)
+                },
+                new Product
+                {
+                    Id = 4,
+                    Images = null,
+                    Weight = 3,
+                    Quantity = 50,
+                    Price = 60,
+                    Sold = 0,
+                    Detail = "<p>111</p>",
+                    Status = true,
+                    CreatedAt = DateTime.Now,
+                    ProductGIId = 4,
+                    Expire = DateTime.Now.AddMonths(1)
+                },
+                new Product
+                {
+                    Id = 5,
+                    Images = null,
+                    Weight = 1,
+                    Quantity = 10,
+                    Price = 40,
+                    Sold = 0,
+                    Detail = "<p></p>",
+                    Status = true,
+                    CreatedAt = DateTime.Now,
+                    ProductGIId = 5,
+                    Expire = DateTime.Now.AddMonths(1)
+                },
+                new Product
+                {
+                    Id = 6 ,
+                    Images = null,
+                    Weight = 1,
+                    Quantity = 18,
+                    Price = 50,
+                    Sold = 0,
+                    Detail = "<p></p>",
+                    Status = true,
+                    CreatedAt = DateTime.Now,
+                    ProductGIId = 5,
+                    Expire = DateTime.Now.AddMonths(1)
+                }
+            );
+
+
 
             modelBuilder.Entity<CartItem>()
                 .HasOne(ci => ci.User)
@@ -85,7 +253,7 @@ namespace ProjectEcommerceFruit.Data
         public DbSet<ProductGI> ProductGIs { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Images> Images { get; set; }
-        
+
         public DbSet<Product> Products { get; set; }
 
         public DbSet<CartItem> CartItems { get; set; }
@@ -96,6 +264,5 @@ namespace ProjectEcommerceFruit.Data
 
         public DbSet<SystemSetting> SystemSettings { get; set; }
         public DbSet<SlideShow> SlideShows { get; set; }
-    } 
+    }
 }
- 

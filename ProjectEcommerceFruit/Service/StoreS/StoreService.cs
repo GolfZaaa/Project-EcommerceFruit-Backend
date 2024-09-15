@@ -23,13 +23,13 @@ namespace ProjectEcommerceFruit.Service.StoreS
         //ของ admin
         public async Task<List<StoreRespone>> GetStoreAsync()
             => _mapper.Map<List<StoreRespone>>(await _context.Stores
-                .Include(x=>x.User)
-                .Where(x=>!x.Hidden).ToListAsync());
+                .Include(x => x.User)
+                .Where(x => !x.Hidden).ToListAsync());
 
         public async Task<StoreRespone> GetStoreByUserIdAsync()
             => _mapper.Map<StoreRespone>(
                 await _context.Stores
-                .Include(x=>x.User)
+                .Include(x => x.User)
                 .FirstOrDefaultAsync(x => !x.Hidden && x.UserId.Equals(
                     _authService.GetUserByIdAsync().Result.Id)));
 
@@ -40,7 +40,7 @@ namespace ProjectEcommerceFruit.Service.StoreS
 
             if (user is null) return "user is null";
 
-            var store = await _context.Stores.FirstOrDefaultAsync(x=>x.Id.Equals(request.ID));
+            var store = await _context.Stores.FirstOrDefaultAsync(x => x.Id.Equals(request.ID));
 
             if (store is null)
             {
@@ -48,7 +48,8 @@ namespace ProjectEcommerceFruit.Service.StoreS
                 newStore.CreatedAt = DateTime.Now;
 
                 user.Stores.Add(newStore);
-            }else
+            }
+            else
             {
                 _mapper.Map(request, store);
                 _context.Stores.Update(store);
@@ -59,7 +60,7 @@ namespace ProjectEcommerceFruit.Service.StoreS
 
         public async Task<Object> RemoveStoreByIdAsync(int storeId)
         {
-            var result = await _context.Stores.FirstOrDefaultAsync(x=>x.Id.Equals(storeId));
+            var result = await _context.Stores.FirstOrDefaultAsync(x => x.Id.Equals(storeId));
 
             if (result is null) return "store is null";
 
@@ -73,26 +74,33 @@ namespace ProjectEcommerceFruit.Service.StoreS
         public async Task<dynamic> StoreAllAsync()
         {
             var result = await _context.Stores
-                .Include(x => x.User) 
+                .Include(x => x.User)
+                .Include(x => x.User)
+                    .ThenInclude(x=>x.Addresses)
                 .Select(store => new
                 {
                     store.Id,
                     store.Name,
                     store.Description,
-                    store.Hidden,
                     store.CreatedAt,
+                    store.Hidden,
+                    store.UserId,
                     User = new
                     {
                         store.User.Id,
-                        store.User.FullName 
-                    }
+                        store.User.FullName,
+                    },
+                    SubDistrict = store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store == true).SubDistrict,
+                    District = store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store == true).District,
+                    Province = store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store == true).Province,
+                    PostCode = store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store == true).PostCode,
+                    Detail = store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store == true).Detail,
                 })
                 .ToListAsync();
 
             return result;
         }
-
-
+        
         public async Task<object> DeleteStoreAsync(int id)
         {
             var result = await _context.Stores.FirstOrDefaultAsync(x => x.Id == id);
@@ -104,47 +112,46 @@ namespace ProjectEcommerceFruit.Service.StoreS
         public async Task<object> GetStoreProductUserAsync(int userid)
         {
             var result = await _context.Products
-        .Include(x => x.ProductGI)
-        .ThenInclude(x => x.Store).Include(x=>x.ProductGI).ThenInclude(x=>x.Category)
-        .Where(x => x.ProductGI.Store.UserId == userid)
-        .Select(x=> new
-        {
-            x.Id,
-            x.Images,
-            x.Weight,
-            x.Quantity,
-            x.Price,
-            x.Sold,
-            x.Expire,
-            x.Detail,
-            x.Status,
-            x.CreatedAt,
-            ProductGI = new
-            {
-                x.ProductGI.Id,
-                x.ProductGI.Name,
-                x.ProductGI.Description,
-                x.ProductGI.Status,
-                Category = new
+                .Include(x => x.ProductGI)
+                    .ThenInclude(x => x.Store)
+                .Include(x => x.ProductGI)
+                    .ThenInclude(x => x.Category)
+                .Where(x => x.ProductGI.Store.UserId == userid)
+                .Select(x => new
                 {
-                    x.ProductGI.Category.Id,
-                    x.ProductGI.Category.Name
-                },
-                Store = new
-                {
-                    x.ProductGI.Store.Id,
-                    x.ProductGI.Store.Name,
-                    x.ProductGI.Store.Description,
-                    x.ProductGI.Store.UserId,
+                    x.Id,
+                    x.Images,
+                    x.Weight,
+                    x.Quantity,
+                    x.Price,
+                    x.Sold,
+                    x.Expire,
+                    x.Detail,
+                    x.Status,
+                    x.CreatedAt,
+                    ProductGI = new
+                    {
+                        x.ProductGI.Id,
+                        x.ProductGI.Name,
+                        x.ProductGI.Description,
+                        x.ProductGI.Status,
+                        Category = new
+                        {
+                            x.ProductGI.Category.Id,
+                            x.ProductGI.Category.Name
+                        },
+                        Store = new
+                        {
+                            x.ProductGI.Store.Id,
+                            x.ProductGI.Store.Name,
+                            x.ProductGI.Store.Description,
+                            x.ProductGI.Store.UserId,
+                        }
+                    }
+                })
+                .ToListAsync();
+
+                    return result;
                 }
-            }
-        })
-        .ToListAsync();
-
-            return result;
-        }
-
-
-
     }
 }

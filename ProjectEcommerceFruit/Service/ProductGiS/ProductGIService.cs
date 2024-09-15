@@ -33,11 +33,15 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
             _uploadFileService = uploadFileService;
         }
 
-        public async Task<List<ProductGIRespone>> GetProductGIAsync()
+        public async Task<List<ProductGIRespone>> GetProductGIAsync(int id)
         {
             var userId = _authService.GetUserByIdAsync().Result.Id;
 
             var store = await _context.Stores.FirstOrDefaultAsync(x => x.UserId.Equals(userId));
+
+            if (id == 0) return _mapper.Map<List<ProductGIRespone>>(await _context.ProductGIs
+                .Include(x => x.Category)
+                .Include(x => x.Images).ToListAsync());
 
             return _mapper.Map<List<ProductGIRespone>>(await _context.ProductGIs
                 .Include(x => x.Category)
@@ -180,7 +184,6 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
             return await _context.SaveChangesAsync() > 0;
         }
 
-
         //-------------------------------------another-------------------------------------//
 
         private async Task<string> ProcessFileUpload(IFormFile file)
@@ -228,14 +231,21 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
 
         public async Task<dynamic> ProductGIAllAsync()
         {
-            var result = await _context.ProductGIs.Include(x=>x.Category).Include(x=>x.Store)
+            var result = await _context.ProductGIs
+                .Include(x=>x.Category)
+                .Include(x=>x.Store)
+                .Include(x=>x.Images)
                 .Select(x=> new
                 {
                     x.Id,
                     x.Name,
-                    CategoryName = x.Category.Name,
-                    StoreName = x.Store.Name,
+                    x.Description,
                     x.Status,
+                    x.CategoryId,
+                    CategoryName = x.Category.Name,
+                    x.StoreId,
+                    StoreName = x.Store.Name,
+                    x.Images,
                 })
                 .ToListAsync();
             return result;

@@ -5,7 +5,7 @@ namespace ProjectEcommerceFruit.Service.ProductGiS
 {
     public interface IProductGIService
     {
-        Task<List<ProductGIRespone>> GetProductGIAsync();
+        Task<List<ProductGIRespone>> GetProductGIAsync(int id);
         Task<Object> CreateUpdateProductGIAsync(ProductGIRequest request);
         Task<Object> RemoveProductGIAsync(int productGIId);
         Task<Object> RemoveImageAsync(int productGiId);

@@ -12,8 +12,8 @@ using ProjectEcommerceFruit.Data;
 namespace ProjectEcommerceFruit.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20240907175632_init1")]
-    partial class init1
+    [Migration("20240912074534_createInitDb")]
+    partial class createInitDb
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -116,6 +116,18 @@ namespace ProjectEcommerceFruit.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "ผลไม้สด"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "ผลไม้แปรรูป"
+                        });
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Images", b =>
@@ -246,6 +258,86 @@ namespace ProjectEcommerceFruit.Migrations
                     b.HasIndex("ProductGIId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2016),
+                            Detail = "",
+                            Expire = new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2017),
+                            Price = 125.0,
+                            ProductGIId = 1,
+                            Quantity = 7,
+                            Sold = 11,
+                            Status = true,
+                            Weight = 3.0
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2025),
+                            Detail = "<p>1</p>",
+                            Expire = new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2026),
+                            Price = 155.0,
+                            ProductGIId = 2,
+                            Quantity = 3,
+                            Sold = 9,
+                            Status = true,
+                            Weight = 10.0
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CreatedAt = new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2028),
+                            Detail = "<p>111</p>",
+                            Expire = new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2028),
+                            Price = 60.0,
+                            ProductGIId = 3,
+                            Quantity = 50,
+                            Sold = 0,
+                            Status = true,
+                            Weight = 3.0
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CreatedAt = new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2030),
+                            Detail = "<p>111</p>",
+                            Expire = new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2031),
+                            Price = 60.0,
+                            ProductGIId = 4,
+                            Quantity = 50,
+                            Sold = 0,
+                            Status = true,
+                            Weight = 3.0
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CreatedAt = new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2032),
+                            Detail = "<p></p>",
+                            Expire = new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2033),
+                            Price = 40.0,
+                            ProductGIId = 5,
+                            Quantity = 10,
+                            Sold = 0,
+                            Status = true,
+                            Weight = 1.0
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CreatedAt = new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2041),
+                            Detail = "<p></p>",
+                            Expire = new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2042),
+                            Price = 50.0,
+                            ProductGIId = 5,
+                            Quantity = 18,
+                            Sold = 0,
+                            Status = true,
+                            Weight = 1.0
+                        });
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.ProductGI", b =>
@@ -280,6 +372,62 @@ namespace ProjectEcommerceFruit.Migrations
                     b.HasIndex("StoreId");
 
                     b.ToTable("ProductGIs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Description = "<p>วัสดุ TPU ที่ใช้ในเคสนี้มีคุณสมบัติป้องกันการกระแทกที่ช่วยปกป้องโทรศัพท์ของคุณจากความเสียหายจากอุบัติเหตุที่เกิดจากการตกหล่นและการกระแทก นอกจากนี้ยัง</p>",
+                            Name = "ทุเรียน",
+                            Status = true,
+                            StoreId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            Description = "<p><br></p>",
+                            Name = "เงอะ",
+                            Status = true,
+                            StoreId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 2,
+                            Description = "<p><br></p>",
+                            Name = "ยางพารา",
+                            Status = true,
+                            StoreId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 1,
+                            Description = "<p><br></p>",
+                            Name = "มังคุด",
+                            Status = true,
+                            StoreId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 1,
+                            Description = "<p></p>",
+                            Name = "มังแคด",
+                            Status = true,
+                            StoreId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 1,
+                            Description = "<p>111</p>",
+                            Name = "มังแคด",
+                            Status = true,
+                            StoreId = 2
+                        });
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.Role", b =>
@@ -362,6 +510,26 @@ namespace ProjectEcommerceFruit.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Stores");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(1876),
+                            Description = "แหล่งผลิตที่ทองผาภูมิ",
+                            Hidden = false,
+                            Name = "ทองผาภูมิ มีดี",
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(1890),
+                            Description = "แหล่งผลิตที่ทองผาภูมิ",
+                            Hidden = false,
+                            Name = "อาปาชาเฮ้",
+                            UserId = 2
+                        });
                 });
 
             modelBuilder.Entity("ProjectEcommerceFruit.Models.SystemSetting", b =>
@@ -427,7 +595,7 @@ namespace ProjectEcommerceFruit.Migrations
                             Id = 1,
                             FullName = "Admin1",
                             Hidden = false,
-                            PasswordHash = "$2a$11$UMfNn/nFf.CVz7ua2/.HAeoxm0eRTHyVEDAO5sThhRXs1dmRWYAa2",
+                            PasswordHash = "$2a$11$FQnLDLduCkocqZzYPcO8S.7jyqXY/LvdugmEjLV1/yBZMhweCLyS2",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -437,7 +605,7 @@ namespace ProjectEcommerceFruit.Migrations
                             Id = 2,
                             FullName = "User Haha",
                             Hidden = false,
-                            PasswordHash = "$2a$11$2I8ZxHjdt9eOeQsa1zY.eOiOG4Fcspn8.VcRhczwvRthUS5Qbt1kq",
+                            PasswordHash = "$2a$11$E3zx5hw/TBbAL9ScVs/.YOe2hn/IXdpBC2Judu/CNL.DyeaNBw2Ma",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"
