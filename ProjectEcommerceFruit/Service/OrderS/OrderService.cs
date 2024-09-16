@@ -42,7 +42,8 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     .ThenInclude(x => x.User)
                         .ThenInclude(x=>x.Role)
                 .Include(x => x.OrderItems)
-                    .ThenInclude(x => x.Product).ToListAsync());
+                    .ThenInclude(x => x.Product)
+                .OrderByDescending(x=>x.CreatedAt).ToListAsync());
 
         public async Task<List<OrderRespone>> GetOrdersByUserAsync()
         {
@@ -54,7 +55,8 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     .ThenInclude(x => x.Product)
                         .ThenInclude(x=>x.ProductGI)
                             .ThenInclude(x=>x.Category)
-                .Where(x => x.Address.UserId.Equals(user.Id)).ToListAsync();
+                .Where(x => x.Address.UserId.Equals(user.Id))
+                .OrderByDescending(x => x.CreatedAt).ToListAsync();
 
             return _mapper.Map<List<OrderRespone>>(orders);
         }
@@ -72,6 +74,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                          .ThenInclude(x => x.ProductGI)
                             .ThenInclude(x => x.Category)
                  .Where(x => x.OrderItems.Any(oi => oi.Product.ProductGI.StoreId == storeId))
+                 .OrderByDescending(x => x.CreatedAt)
                 .ToListAsync();
 
             return _mapper.Map<List<OrderRespone>>(orders);
