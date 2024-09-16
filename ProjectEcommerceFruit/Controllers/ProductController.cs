@@ -48,5 +48,10 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> AddStockProduct(AddStockProductDto dto)
             => Ok(await _productService.AddStockProductAsync(dto));
 
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddStockProduct(AddStockProductDto dto)
+            => Ok(await _productService.AddStockProductAsync(dto));
+
     }
 }
