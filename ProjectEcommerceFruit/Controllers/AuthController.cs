@@ -79,7 +79,7 @@ namespace ProjectEcommerceFruit.Controllers
             return Ok(result);
         }
 
-        [HttpDelete("[action]"), Authorize]
+        [HttpDelete("[action]")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var result = await _authService.DeleteUserAsync(id);
