@@ -40,5 +40,10 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> RemoveProductById(int productId)
             => Ok(await _productService.RemoveProductByIdAsync(productId));
 
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> AddStockProduct(AddStockProductDto dto)
+            => Ok(await _productService.AddStockProductAsync(dto));
+
     }
 }

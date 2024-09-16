@@ -9,6 +9,7 @@ using ProjectEcommerceFruit.Models;
 using ProjectEcommerceFruit.Service.UploadFileS;
 using ProjectEcommerceFruit.Service.UserS;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Security.Cryptography.Xml;
 
 namespace ProjectEcommerceFruit.Service.ProductS
@@ -56,7 +57,6 @@ namespace ProjectEcommerceFruit.Service.ProductS
             return _mapper.Map<List<ProductRespone>>(categoryId > 0
                 //? products.Where(x => x.ProductGI.CategoryId == categoryId && x.Status == true).ToList() : products.ToList());
                 ? products.Where(x => x.ProductGI.CategoryId == categoryId).ToList() : products.ToList());
-
         }
 
 
@@ -255,6 +255,15 @@ namespace ProjectEcommerceFruit.Service.ProductS
         {
             var result = await _context.Products.Include(x=>x.Images).ToListAsync();
             return result;
+        }
+
+
+        public async Task<Object> AddStockProductAsync(AddStockProductDto dto)
+        {
+            var result = await _context.Products.FirstOrDefaultAsync(x => x.Id == dto.ProductId);
+            if (result is null) return "Not Found Product";
+            result.Quantity = dto.Quantity;
+            return await _context.SaveChangesAsync() > 0;
         }
 
 

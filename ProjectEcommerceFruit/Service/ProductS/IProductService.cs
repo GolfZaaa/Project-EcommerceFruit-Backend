@@ -12,6 +12,6 @@ namespace ProjectEcommerceFruit.Service.ProductS
         Task<Object> CreateUpdateProductAsync(ProductRequest request);
         Task<Object> RemoveProductByIdAsync(int productId);
         Task<dynamic> ProductAllAsync();
-
+        Task<Object> AddStockProductAsync(AddStockProductDto dto);
     }
 }
