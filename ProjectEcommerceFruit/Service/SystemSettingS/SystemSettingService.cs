@@ -127,6 +127,6 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
 
             return (errorMessge, imageName);
         }
-         
+        
     }
 }

@@ -59,9 +59,6 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
         }
 
-
-
-
         public async Task<object> GetProductByIdAsync(int productId)
         {
             var product = await _context.Products
@@ -125,10 +122,6 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
             return product;
         }
-
-
-
-
 
         //public async Task<List<ProductRespone>> GetProductByCategoryAsync(int categoryId)
         //{
