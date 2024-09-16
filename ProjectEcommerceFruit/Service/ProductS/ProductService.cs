@@ -40,7 +40,8 @@ namespace ProjectEcommerceFruit.Service.ProductS
         {
             var products = await _context.Products
                 .Include(x => x.ProductGI)
-                .Where(x => x.ProductGI.Name.Contains(productName)).ToListAsync();
+                    .ThenInclude(x=>x.Store)
+                .Where(x => x.ProductGI.Name.Contains(productName) && x.ProductGI.Store.Hidden == false).ToListAsync();
 
             return _mapper.Map<List<ProductRespone>>(products);
         }
@@ -51,11 +52,14 @@ namespace ProjectEcommerceFruit.Service.ProductS
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Images)
                 .Include(x => x.ProductGI)
-                    .ThenInclude(x => x.Category).Include(x=>x.ProductGI).ThenInclude(x=>x.Store).ThenInclude(x=>x.User).ToListAsync();
+                    .ThenInclude(x => x.Category)
+                .Include(x=>x.ProductGI)
+                    .ThenInclude(x=>x.Store)
+                        .ThenInclude(x=>x.User).ToListAsync();
 
             return _mapper.Map<List<ProductRespone>>(categoryId > 0
                 //? products.Where(x => x.ProductGI.CategoryId == categoryId && x.Status == true).ToList() : products.ToList());
-                ? products.Where(x => x.ProductGI.CategoryId == categoryId).ToList() : products.ToList());
+                ? products.Where(x => x.ProductGI.CategoryId == categoryId && x.ProductGI.Store.Hidden == false).ToList() : products.Where(x=>x.ProductGI.Store.Hidden == false).ToList());
 
         }
 
@@ -65,7 +69,15 @@ namespace ProjectEcommerceFruit.Service.ProductS
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Images)
                 .Include(x => x.ProductGI)
-                    .ThenInclude(x => x.Category).Include(x=>x.ProductGI).ThenInclude(x=>x.Store).ThenInclude(x=>x.User).Include(x=>x.ProductGI).ThenInclude(x=>x.Category).Include(x=>x.ProductGI).ThenInclude(x=>x.Store).ThenInclude(x=>x.User)
+                    .ThenInclude(x => x.Category)
+                .Include(x=>x.ProductGI)
+                    .ThenInclude(x=>x.Store)
+                        .ThenInclude(x=>x.User)
+                .Include(x=>x.ProductGI)
+                    .ThenInclude(x=>x.Category)
+                .Include(x=>x.ProductGI)
+                    .ThenInclude(x=>x.Store)
+                        .ThenInclude(x=>x.User)
                     .Select(x=> new
                     {
                         x.Id,
@@ -113,7 +125,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
                         }
                     })
                     //.FirstOrDefaultAsync(x => x.Id == productId && x.Status == true);
-                    .FirstOrDefaultAsync(x => x.Id == productId);
+                    .FirstOrDefaultAsync(x => x.Id == productId && x.ProductGI.Store.Hidden == false);
 
             if (product == null)
             {
@@ -138,7 +150,9 @@ namespace ProjectEcommerceFruit.Service.ProductS
             var products = await _context.Products
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Category)
-                .Where(x => x.ProductGI.StoreId.Equals(storeId)).ToListAsync();
+                .Include(x => x.ProductGI)
+                    .ThenInclude(x => x.Store)
+                .Where(x => x.ProductGI.StoreId.Equals(storeId) && x.ProductGI.Store.Hidden == false).ToListAsync();
 
             return _mapper.Map<List<ProductRespone>>(products);
         }
@@ -246,7 +260,12 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
         public async Task<dynamic> ProductAllAsync()
         {
-            var result = await _context.Products.Include(x=>x.Images).ToListAsync();
+            var result = await _context.Products
+                .Include(x => x.Images)
+                .Include(x => x.ProductGI)
+                    .ThenInclude(x => x.Store)
+                .Where(x=>x.ProductGI.Store.Hidden == false).ToListAsync();
+
             return result;
         }
 
