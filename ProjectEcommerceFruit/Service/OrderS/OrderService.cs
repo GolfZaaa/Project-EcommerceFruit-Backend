@@ -152,7 +152,10 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 _context.Orders.Update(order);
             }
 
-            return await _context.SaveChangesAsync() > 0 ? _mapper.Map<UserRespone>(user) : false;
+            //return await _context.SaveChangesAsync() > 0 ? _mapper.Map<UserRespone>(user) : false;
+
+            await _context.SaveChangesAsync();
+            return newOrder.Id;
         }
 
         public async Task<object> ConfirmOrderAsync(int orderId,string trackingId)
@@ -228,6 +231,13 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
             var storeProducts = cartItemsByStore.FirstOrDefault(x => x.StoreId == storeId).Products;
             return storeProducts ?? new List<ProductInfo>();
+        }
+
+        public async Task<dynamic> GetOrderItemByOrderIdAsync(int orderId)
+        {
+            var result = await _context.OrderItems.Where(x => x.OrderId == orderId).Include(x => x.Product).ThenInclude(x=>x.ProductGI).ThenInclude(x=>x.Category).ToListAsync();
+
+            return result;
         }
 
         //-------------------------------------another-------------------------------------//

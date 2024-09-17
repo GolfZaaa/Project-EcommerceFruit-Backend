@@ -97,17 +97,19 @@ namespace ProjectEcommerceFruit.Service.CartS
                 StoreName = ci.Product.ProductGI.Store.Name, // สมมติว่ามี Store.Name
                 CartItemId = ci.Id,
                 ProductName = ci.Product.ProductGI.Name, // สมมติว่ามี Name ใน ProductGI 
+                CategoryName = ci.Product.ProductGI.Category.Name,
                 Quantity = ci.Quantity,
                 Product = ci.Product,
                 Price = ci.Product.Price
             })
-            .GroupBy(item => new { item.StoreId, item.StoreName, item.ProductName, item.CartItemId })
+            .GroupBy(item => new { item.StoreId, item.StoreName, item.ProductName, item.CartItemId, item.CategoryName })
             .Select(group => new
             {
                 StoreId = group.Key.StoreId,
                 StoreName = group.Key.StoreName,
                 ProductName = group.Key.ProductName,
                 CartItemId = group.Key.CartItemId,
+                CategoryName = group.Key.CategoryName,
                 Products = group.Select(item => new
                 {
                     item.Product.Id,

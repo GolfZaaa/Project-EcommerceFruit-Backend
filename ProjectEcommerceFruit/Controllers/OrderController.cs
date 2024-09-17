@@ -39,5 +39,9 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> CancelOrder([FromForm] int orderId)
             => Ok(await _orderService.CancelOrderAsync(orderId));
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetOrderItemByOrderId(int orderId)
+    => Ok(await _orderService.GetOrderItemByOrderIdAsync(orderId));
     }
 }

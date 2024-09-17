@@ -11,5 +11,8 @@ namespace ProjectEcommerceFruit.Service.OrderS
         Task<Object> CreateUpdateOrderByIdAsync(OrderRequest request);
         Task<Object> ConfirmOrderAsync(int orderId, string trackingId);
         Task<Object> CancelOrderAsync(int orderId);
+
+        Task<dynamic> GetOrderItemByOrderIdAsync(int orderId);
+
     }
 }
