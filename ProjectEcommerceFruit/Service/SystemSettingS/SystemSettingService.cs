@@ -10,6 +10,7 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
     public class SystemSettingService : ISystemSettingService
     {
         private string _pathImage = "slide-show";
+        private string _pathImageSS = "image-web";
 
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -27,15 +28,38 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
 
         public async Task<object> CreateUpdateSystemSettingAsync(SystemSettingRequest request)
         {
+            (string errorMessge, string imageName) =
+              await UploadImageAsync(request.Image, _pathImageSS);
+
+            if (!string.IsNullOrEmpty(errorMessge)) return errorMessge;
+
             var result = await _context.SystemSettings.FirstOrDefaultAsync(x=>x.Id == request.Id);
 
             if (result is null)
             {
-                await _context.AddAsync(_mapper.Map<SystemSetting>(request));
+                var mewSS = _mapper.Map<SystemSetting>(request);
+
+                if (request.Image is not null)
+                {
+                    mewSS.Image = imageName;
+                }
+
+                await _context.AddAsync(mewSS);
             }
             else
             {
                 _mapper.Map(request, result);
+
+                if (request.Image is not null)
+                {
+                    if (!string.IsNullOrEmpty(result.Image))
+                    {
+                        await _uploadFileService.DeleteFileImage(result.Image, _pathImageSS);
+                    }
+
+                    result.Image = imageName;
+                }
+
                 _context.SystemSettings.Update(result);
             }
 
@@ -56,7 +80,10 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
         //-----------------------------------------------SlideShow---------------------------------------------//
 
         public async Task<List<SlideShow>> GetSlideShowAsync()
-            => await _context.SlideShows.ToListAsync();
+            => await _context.SlideShows.Where(x=> !x.Hidden).OrderByDescending(x=>x.Id).ToListAsync();
+
+        public async Task<List<SlideShow>> GetSlideShowAdminAsync()
+            => await _context.SlideShows.Where(x=> !x.Hidden).OrderByDescending(x=>x.Id).ToListAsync();
 
         public async Task<object> CreateUpdateSlideShowAsync(SlideShowRequest request)
         {
@@ -72,6 +99,8 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
                 var slide = _mapper.Map<SlideShow>(request);
 
                 slide.ImageName = imageName;
+                slide.IsUsed = true;
+                slide.Hidden = false;
 
                 await _context.SlideShows.AddAsync(slide);
             }
@@ -95,18 +124,38 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<object> RemoveSlideShowAsync(int slideShowId)
+        public async Task<object> IsUsedSlideShowAsync(int slideShowId)
         {
             var result = await _context.SlideShows.FirstOrDefaultAsync(x => x.Id.Equals(slideShowId));
 
             if (result is null) return "slideShow is null";
+
+            result.IsUsed = !result.IsUsed;
 
             //if (result.ImageName != null)
             //{
             //    await _uploadFileService.DeleteFileImage(result.ImageName, "slideShow");
             //}
 
-            _context.SlideShows.Remove(result);
+            //_context.SlideShows.Remove(result);
+
+            return await _context.SaveChangesAsync() > 0 ? null! : 0;
+        }
+
+        public async Task<object> RemoveSlideShowAsync(int slideShowId)
+        {
+            var result = await _context.SlideShows.FirstOrDefaultAsync(x => x.Id.Equals(slideShowId));
+
+            if (result is null) return "slideShow is null";
+
+            result.Hidden = !result.Hidden;
+
+            //if (result.ImageName != null)
+            //{
+            //    await _uploadFileService.DeleteFileImage(result.ImageName, "slideShow");
+            //}
+
+            //_context.SlideShows.Remove(result);
 
             return await _context.SaveChangesAsync() > 0 ? null! : 0;
         }

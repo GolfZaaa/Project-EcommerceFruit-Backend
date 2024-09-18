@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string WebName { get; set; }
+        public string? Image { get; set; }
         public string Description { get; set; }
 
         public ICollection<SlideShowRespone> SlideShows { get; set; } = new List<SlideShowRespone>();

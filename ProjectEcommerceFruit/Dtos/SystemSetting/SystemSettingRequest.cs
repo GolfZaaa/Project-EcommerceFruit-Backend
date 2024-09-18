@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public string WebName { get; set; }
+        public IFormFile? Image { get; set; }
         public string Description { get; set; }
     }
 

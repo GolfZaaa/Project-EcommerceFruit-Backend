@@ -15,7 +15,7 @@ namespace ProjectEcommerceFruit.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=DESKTOP-DTGB06O\\SQLEXPRESS; Database=ProjectSellFruit; Trusted_connection=true; TrustServerCertificate=true");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-E89K85P; Database=ProjectSellFru1t; Trusted_connection=true; TrustServerCertificate=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -211,8 +211,6 @@ namespace ProjectEcommerceFruit.Data
                     Expire = DateTime.Now.AddMonths(1)
                 }
             );
-
-
 
             modelBuilder.Entity<CartItem>()
                 .HasOne(ci => ci.User)

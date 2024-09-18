@@ -19,7 +19,7 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _service.GetSystemSettingAsync());
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> CreateUpdateSystemSetting(SystemSettingRequest request)
+        public async Task<IActionResult> CreateUpdateSystemSetting([FromForm] SystemSettingRequest request)
             => Ok(await _service.CreateUpdateSystemSettingAsync(request));
 
         [HttpDelete("[action]")]
@@ -35,6 +35,10 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateUpdateSlideShow([FromForm] SlideShowRequest request)
             => Ok(await _service.CreateUpdateSlideShowAsync(request));
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> IsUsedSlideShow(int slideShowId)
+            => Ok(await _service.IsUsedSlideShowAsync(slideShowId));
 
         [HttpDelete("[action]")] 
         public async Task<IActionResult> RemoveSlideShow(int slideShowId)
