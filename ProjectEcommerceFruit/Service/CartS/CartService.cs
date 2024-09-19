@@ -113,6 +113,7 @@ namespace ProjectEcommerceFruit.Service.CartS
                     item.Product.Id,
                     item.Product.Images,
                     QuantityInCartItem = item.Quantity,
+                    item.Product.Quantity,
                     item.Product.Weight,
                     item.Product.Price,
                     item.Product.Sold,

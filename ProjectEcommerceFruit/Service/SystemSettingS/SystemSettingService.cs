@@ -11,6 +11,7 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
     {
         private string _pathImage = "slide-show";
         private string _pathImageSS = "image-web";
+        private string _pathImageNEWS = "image-news";
 
         private readonly DataContext _context;
         private readonly IMapper _mapper;
@@ -24,7 +25,8 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
         }
         
         public async Task<List<SystemSettingRespone>> GetSystemSettingAsync()
-            => _mapper.Map<List<SystemSettingRespone>>(await _context.SystemSettings.Include(x=>x.SlideShows).ToListAsync());
+            => _mapper.Map<List<SystemSettingRespone>>(await _context.SystemSettings
+                .Include(x=>x.SlideShows.Where(x=>x.IsUsed && !x.Hidden)).ToListAsync());
 
         public async Task<object> CreateUpdateSystemSettingAsync(SystemSettingRequest request)
         {
@@ -80,17 +82,24 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
         //-----------------------------------------------SlideShow---------------------------------------------//
 
         public async Task<List<SlideShow>> GetSlideShowAsync()
-            => await _context.SlideShows.Where(x=> !x.Hidden).OrderByDescending(x=>x.Id).ToListAsync();
+            => await _context.SlideShows.Where(x=> x.IsUsed && !x.Hidden).OrderByDescending(x=>x.Id).ToListAsync();
 
         public async Task<List<SlideShow>> GetSlideShowAdminAsync()
             => await _context.SlideShows.Where(x=> !x.Hidden).OrderByDescending(x=>x.Id).ToListAsync();
-
+         
         public async Task<object> CreateUpdateSlideShowAsync(SlideShowRequest request)
         {
-            (string errorMessge, string imageName) =
-              await UploadImageAsync(request.ImageName, _pathImage);
+            string imageName = null;
+            if (request.ImageName != null)
+            {
+                // อัปโหลดไฟล์แทนการส่งชื่อไฟล์ตรงๆ
+                (string errorMessge, string uploadedImageName) =
+                    await UploadImageAsync(request.ImageName, _pathImage);
 
-            if (!string.IsNullOrEmpty(errorMessge)) return errorMessge;
+                if (!string.IsNullOrEmpty(errorMessge)) return errorMessge;
+
+                imageName = uploadedImageName;
+            }
 
             var result = await _context.SlideShows.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
              
@@ -106,6 +115,11 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
             }
             else
             {
+                if (request.ImageName is null)
+                {
+                    imageName = result.ImageName;
+                }
+
                 _mapper.Map(request, result);
 
                 if (request.ImageName is not null)
@@ -113,10 +127,10 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
                     if (!string.IsNullOrEmpty(result.ImageName))
                     {
                         await _uploadFileService.DeleteFileImage(result.ImageName, _pathImage);
-                    }
-
-                    result.ImageName = imageName;
+                    } 
                 }
+
+                result.ImageName = imageName;
 
                 _context.SlideShows.Update(result);
             }
@@ -157,6 +171,88 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
 
             //_context.SlideShows.Remove(result);
 
+            return await _context.SaveChangesAsync() > 0 ? null! : 0;
+        }
+
+        //----------------------------------------------NEWS---------------------------------------------//
+
+        public async Task<List<NEWS>> GetNEWSsAsync()
+            => await _context.NEWSs.Where(x => x.IsUsed && !x.Hidden).OrderByDescending(x => x.Id).ToListAsync();
+
+        public async Task<List<NEWS>> GetNEWSsAdminAsync()
+            => await _context.NEWSs.Where(x => !x.Hidden).OrderByDescending(x => x.Id).ToListAsync();
+        
+        public async Task<object> CreateUpdateNEWSAsync(NEWSRequest request)
+        {
+            string imageName = null;
+            if (request.ImageName != null)
+            {
+                // อัปโหลดไฟล์แทนการส่งชื่อไฟล์ตรงๆ
+                (string errorMessge, string uploadedImageName) =
+                    await UploadImageAsync(request.ImageName, _pathImageNEWS);
+
+                if (!string.IsNullOrEmpty(errorMessge)) return errorMessge;
+
+                imageName = uploadedImageName;
+            }
+
+            var result = await _context.NEWSs.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
+            
+            if (result is null)
+            {
+                var news = _mapper.Map<NEWS>(request);
+
+                news.ImageName = imageName;
+                news.CreatedAt = DateTime.Now;
+                news.IsUsed = true;
+                news.Hidden = false;
+
+                await _context.NEWSs.AddAsync(news);
+            }
+            else
+            {
+                if (request.ImageName is null)
+                {
+                    imageName = result.ImageName;
+                }
+
+                _mapper.Map(request, result);
+
+                if (request.ImageName is not null)
+                {
+                    if (!string.IsNullOrEmpty(result.ImageName))
+                    {
+                        await _uploadFileService.DeleteFileImage(result.ImageName, _pathImageNEWS);
+                    }
+                }
+
+                result.ImageName = imageName;
+
+                _context.NEWSs.Update(result);
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<object> IsUsedNEWSAsync(int newsId)
+        {
+            var result = await _context.NEWSs.FirstOrDefaultAsync(x => x.Id.Equals(newsId));
+
+            if (result is null) return "NEWS is null";
+
+            result.IsUsed = !result.IsUsed;
+            
+            return await _context.SaveChangesAsync() > 0 ? null! : 0;
+        }
+
+        public async Task<object> RemoveNEWSAsync(int newsId)
+        {
+            var result = await _context.NEWSs.FirstOrDefaultAsync(x => x.Id.Equals(newsId));
+
+            if (result is null) return "NEWS is null";
+
+            result.Hidden = !result.Hidden;
+             
             return await _context.SaveChangesAsync() > 0 ? null! : 0;
         }
 

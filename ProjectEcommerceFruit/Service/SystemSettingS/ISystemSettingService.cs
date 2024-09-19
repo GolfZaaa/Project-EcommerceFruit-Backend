@@ -12,9 +12,18 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
         //-----------------------------------------------SlideShow---------------------------------------------//
 
         Task<List<SlideShow>> GetSlideShowAsync();
-        Task<List<SlideShow>> GetSlideShowAsync();
+        Task<List<SlideShow>> GetSlideShowAdminAsync(); 
         Task<Object> CreateUpdateSlideShowAsync(SlideShowRequest request);
         Task<Object> IsUsedSlideShowAsync(int slideShowId);
         Task<Object> RemoveSlideShowAsync(int slideShowId);
+
+        //-----------------------------------------------SlideShow---------------------------------------------//
+
+        Task<List<NEWS>> GetNEWSsAsync();
+        Task<List<NEWS>> GetNEWSsAdminAsync();
+        Task<Object> CreateUpdateNEWSAsync(NEWSRequest request);
+        Task<Object> IsUsedNEWSAsync(int newsId); 
+        Task<Object> RemoveNEWSAsync(int newsId);
+
     }
 }  

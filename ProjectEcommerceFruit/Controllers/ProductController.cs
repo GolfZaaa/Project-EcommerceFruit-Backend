@@ -37,10 +37,13 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _productService.CreateUpdateProductAsync(request));
 
         [HttpDelete("[action]")]
+        public async Task<IActionResult> IsUsedProductById(int productId) 
+            => Ok(await _productService.IsUsedProductByIdAsync(productId));
+             
+        [HttpDelete("[action]")]
         public async Task<IActionResult> RemoveProductById(int productId)
             => Ok(await _productService.RemoveProductByIdAsync(productId));
-
-
+         
         [HttpPost("[action]")]
         public async Task<IActionResult> AddStockProduct(AddStockProductDto dto)
             => Ok(await _productService.AddStockProductAsync(dto));

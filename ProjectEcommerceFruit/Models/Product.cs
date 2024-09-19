@@ -15,6 +15,8 @@ namespace ProjectEcommerceFruit.Models
         public bool Status { get; set; } = true; 
         public DateTime CreatedAt { get; set; }
 
+        public bool Hidden { get; set; } 
+
         public int ProductGIId { get; set; }
         public ProductGI ProductGI { get; set; }
 

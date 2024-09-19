@@ -31,6 +31,10 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpGet("[action]")]
         public async Task<ActionResult<List<SlideShow>>> GetSlideShow()
             => Ok(await _service.GetSlideShowAsync());
+        
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<SlideShow>>> GetSlideShowAdmin()
+            => Ok(await _service.GetSlideShowAdminAsync()); 
 
         [HttpPost("[action]")]
         public async Task<IActionResult> CreateUpdateSlideShow([FromForm] SlideShowRequest request)
@@ -44,5 +48,26 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> RemoveSlideShow(int slideShowId)
             => Ok(await _service.RemoveSlideShowAsync(slideShowId));
 
+        //-----------------------------------------------SlideShow---------------------------------------------//
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<NEWS>>> GetNEWSs()
+            => Ok(await _service.GetNEWSsAsync());
+        
+        [HttpGet("[action]")]
+        public async Task<ActionResult<List<NEWS>>> GetNEWSsAdminAsync()
+            => Ok(await _service.GetNEWSsAdminAsync());
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> CreateUpdateNEWS([FromForm] NEWSRequest request)
+            => Ok(await _service.CreateUpdateNEWSAsync(request));
+        
+        [HttpPost("[action]")]
+        public async Task<IActionResult> IsUsedNEWS(int newsId)
+            => Ok(await _service.IsUsedNEWSAsync(newsId));
+
+        [HttpDelete("[action]")]
+        public async Task<IActionResult> RemoveNEWS(int newsId)
+            => Ok(await _service.RemoveNEWSAsync(newsId));
     }
 }

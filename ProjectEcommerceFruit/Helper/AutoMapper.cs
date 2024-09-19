@@ -61,6 +61,8 @@ namespace ProjectEcommerceFruit.Helper
                 .ForMember(dest => dest.SlideShows, opt => opt.MapFrom(src => src.SlideShows));
 
             CreateMap<SlideShow, SlideShowRespone>();
+
+            CreateMap<NEWSRequest, NEWS>();
         }
     }
 }

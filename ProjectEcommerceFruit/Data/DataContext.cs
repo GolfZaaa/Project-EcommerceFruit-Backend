@@ -262,5 +262,8 @@ namespace ProjectEcommerceFruit.Data
 
         public DbSet<SystemSetting> SystemSettings { get; set; }
         public DbSet<SlideShow> SlideShows { get; set; }
+
+        public DbSet<NEWS> NEWSs { get; set; }
     }
 }
+ 

@@ -42,7 +42,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
             var products = await _context.Products
                 .Include(x => x.ProductGI)
                     .ThenInclude(x=>x.Store)
-                .Where(x => x.ProductGI.Name.Contains(productName) && x.ProductGI.Store.Hidden == false).ToListAsync();
+                .Where(x => x.ProductGI.Name.Contains(productName) && x.ProductGI.Store.Hidden == false && !x.Hidden).ToListAsync();
 
             return _mapper.Map<List<ProductRespone>>(products);
         }
@@ -60,7 +60,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
             return _mapper.Map<List<ProductRespone>>(categoryId > 0
                 //? products.Where(x => x.ProductGI.CategoryId == categoryId && x.Status == true).ToList() : products.ToList());
-                ? products.Where(x => x.ProductGI.CategoryId == categoryId && x.ProductGI.Store.Hidden == false).ToList() : products.Where(x=>x.ProductGI.Store.Hidden == false).ToList());
+                ? products.Where(x => x.ProductGI.CategoryId == categoryId && x.ProductGI.Store.Hidden == false && !x.Hidden).ToList() : products.Where(x=>x.ProductGI.Store.Hidden == false && !x.Hidden).ToList());
 
         }
 
@@ -92,6 +92,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
                         x.Status,
                         x.CreatedAt,
                         x.ProductGIId,
+                        x.Hidden,
                         ProductGI = new
                         {
                             x.ProductGI.Id,
@@ -126,7 +127,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
                         }
                     })
                     //.FirstOrDefaultAsync(x => x.Id == productId && x.Status == true);
-                    .FirstOrDefaultAsync(x => x.Id == productId && x.ProductGI.Store.Hidden == false);
+                    .FirstOrDefaultAsync(x => x.Id == productId && x.ProductGI.Store.Hidden == false && !x.Hidden);
 
             if (product == null)
             {
@@ -153,7 +154,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
                     .ThenInclude(x => x.Category)
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Store)
-                .Where(x => x.ProductGI.StoreId.Equals(storeId) && x.ProductGI.Store.Hidden == false).ToListAsync();
+                .Where(x => x.ProductGI.StoreId.Equals(storeId) && x.ProductGI.Store.Hidden == false && !x.Hidden).ToListAsync();
 
             return _mapper.Map<List<ProductRespone>>(products);
         }
@@ -202,7 +203,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<Object> RemoveProductByIdAsync(int productId)
+        public async Task<Object> IsUsedProductByIdAsync(int productId)
         {
             var result = await _context.Products
                 .FirstOrDefaultAsync(x => x.Id.Equals(productId));
@@ -210,6 +211,18 @@ namespace ProjectEcommerceFruit.Service.ProductS
             if (result is null) return "product is null";
 
             result.Status = !result.Status;
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+         
+        public async Task<Object> RemoveProductByIdAsync(int productId)
+        {
+            var result = await _context.Products
+                .FirstOrDefaultAsync(x => x.Id.Equals(productId));
+
+            if (result is null) return "product is null";
+
+            result.Hidden = !result.Hidden;
 
             return await _context.SaveChangesAsync() > 0;
         }
