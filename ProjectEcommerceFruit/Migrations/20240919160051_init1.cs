@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectEcommerceFruit.Migrations
 {
     /// <inheritdoc />
-    public partial class createInitDb : Migration
+    public partial class init1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,6 +24,24 @@ namespace ProjectEcommerceFruit.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "NEWSs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NEWSs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -46,6 +64,7 @@ namespace ProjectEcommerceFruit.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WebName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -84,6 +103,8 @@ namespace ProjectEcommerceFruit.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false),
                     SystemSettingId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -237,6 +258,7 @@ namespace ProjectEcommerceFruit.Migrations
                     Detail = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Status = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false),
                     ProductGIId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -327,8 +349,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "Hidden", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", false, "$2a$11$FQnLDLduCkocqZzYPcO8S.7jyqXY/LvdugmEjLV1/yBZMhweCLyS2", "0123456789", 1, "admin" },
-                    { 2, "User Haha", false, "$2a$11$E3zx5hw/TBbAL9ScVs/.YOe2hn/IXdpBC2Judu/CNL.DyeaNBw2Ma", "0987654321", 2, "user1" }
+                    { 1, "Admin1", false, "$2a$11$hdnaC0x9/lYThTWvOk8ihuJkbfwMLGvVADxUxXbxe75lHwW5uZdW2", "0123456789", 1, "admin" },
+                    { 2, "User Haha", false, "$2a$11$C23AvUHbhkwiMwbWIJ9Pwe7DAwpgm66ABay8NBybOhUzDmLvF9MYq", "0987654321", 2, "user1" }
                 });
 
             migrationBuilder.InsertData(
@@ -336,8 +358,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "Hidden", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(1876), "แหล่งผลิตที่ทองผาภูมิ", false, "ทองผาภูมิ มีดี", 1 },
-                    { 2, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(1890), "แหล่งผลิตที่ทองผาภูมิ", false, "อาปาชาเฮ้", 2 }
+                    { 1, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(1801), "แหล่งผลิตที่ทองผาภูมิ", false, "ทองผาภูมิ มีดี", 1 },
+                    { 2, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(1825), "แหล่งผลิตที่ทองผาภูมิ", false, "อาปาชาเฮ้", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -355,15 +377,15 @@ namespace ProjectEcommerceFruit.Migrations
 
             migrationBuilder.InsertData(
                 table: "Products",
-                columns: new[] { "Id", "CreatedAt", "Detail", "Expire", "Images", "Price", "ProductGIId", "Quantity", "Sold", "Status", "Weight" },
+                columns: new[] { "Id", "CreatedAt", "Detail", "Expire", "Hidden", "Images", "Price", "ProductGIId", "Quantity", "Sold", "Status", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2016), "", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2017), null, 125.0, 1, 7, 11, true, 3.0 },
-                    { 2, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2025), "<p>1</p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2026), null, 155.0, 2, 3, 9, true, 10.0 },
-                    { 3, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2028), "<p>111</p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2028), null, 60.0, 3, 50, 0, true, 3.0 },
-                    { 4, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2030), "<p>111</p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2031), null, 60.0, 4, 50, 0, true, 3.0 },
-                    { 5, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2032), "<p></p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2033), null, 40.0, 5, 10, 0, true, 1.0 },
-                    { 6, new DateTime(2024, 9, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2041), "<p></p>", new DateTime(2024, 10, 12, 14, 45, 33, 847, DateTimeKind.Local).AddTicks(2042), null, 50.0, 5, 18, 0, true, 1.0 }
+                    { 1, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2052), "", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2056), false, null, 125.0, 1, 7, 11, true, 3.0 },
+                    { 2, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2070), "<p>1</p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2072), false, null, 155.0, 2, 3, 9, true, 10.0 },
+                    { 3, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2078), "<p>111</p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2081), false, null, 60.0, 3, 50, 0, true, 3.0 },
+                    { 4, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2086), "<p>111</p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2088), false, null, 60.0, 4, 50, 0, true, 3.0 },
+                    { 5, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2094), "<p></p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2096), false, null, 40.0, 5, 10, 0, true, 1.0 },
+                    { 6, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2109), "<p></p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2112), false, null, 50.0, 5, 18, 0, true, 1.0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -440,6 +462,9 @@ namespace ProjectEcommerceFruit.Migrations
 
             migrationBuilder.DropTable(
                 name: "Images");
+
+            migrationBuilder.DropTable(
+                name: "NEWSs");
 
             migrationBuilder.DropTable(
                 name: "OrderItems");
