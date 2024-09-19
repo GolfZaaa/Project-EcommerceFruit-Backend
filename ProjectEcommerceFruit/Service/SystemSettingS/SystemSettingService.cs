@@ -25,8 +25,7 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
         }
         
         public async Task<List<SystemSettingRespone>> GetSystemSettingAsync()
-            => _mapper.Map<List<SystemSettingRespone>>(await _context.SystemSettings
-                .Include(x=>x.SlideShows.Where(x=>x.IsUsed && !x.Hidden)).ToListAsync());
+            => _mapper.Map<List<SystemSettingRespone>>(await _context.SystemSettings.ToListAsync());
 
         public async Task<object> CreateUpdateSystemSettingAsync(SystemSettingRequest request)
         {

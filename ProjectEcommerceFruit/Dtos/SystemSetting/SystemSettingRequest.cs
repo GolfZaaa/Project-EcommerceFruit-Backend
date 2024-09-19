@@ -11,8 +11,6 @@
     public class SlideShowRequest
     {
         public int Id { get; set; }
-        public IFormFile? ImageName { get; set; }
-
-        public int SystemSettingId { get; set; } = 1;
+        public IFormFile? ImageName { get; set; } 
     }
 }

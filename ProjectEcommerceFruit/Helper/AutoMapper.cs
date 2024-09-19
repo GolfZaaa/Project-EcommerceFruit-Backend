@@ -57,8 +57,7 @@ namespace ProjectEcommerceFruit.Helper
             CreateMap<SystemSettingRequest, SystemSetting>();
             CreateMap<SlideShowRequest, SlideShow>();
 
-            CreateMap<SystemSetting, SystemSettingRespone>()
-                .ForMember(dest => dest.SlideShows, opt => opt.MapFrom(src => src.SlideShows));
+            CreateMap<SystemSetting, SystemSettingRespone>();
 
             CreateMap<SlideShow, SlideShowRespone>();
 
