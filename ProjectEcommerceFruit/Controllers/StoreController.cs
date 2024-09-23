@@ -48,10 +48,16 @@ namespace ProjectEcommerceFruit.Controllers
         }
 
         [HttpGet("[action]")]
-
         public async Task<IActionResult> GetStoreProductUser(int userid)
         {
             var result = await _storeService.GetStoreProductUserAsync(userid);
+            return Ok(result);
+        }
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetStoreDetailByUserId(int userid)
+        {
+            var result = await _storeService.GetStoreDetailByUserIdAsync(userid);
             return Ok(result);
         }
 
