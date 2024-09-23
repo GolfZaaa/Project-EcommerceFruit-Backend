@@ -59,5 +59,10 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpPost("[action]"), Authorize]
         public async Task<IActionResult> CreateOrderToReceipt([FromForm] List<int> orderId)
             => Ok(await _orderService.CreateOrderToReceiptAsync(orderId));
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetOrderItemByOrderId(int orderId)
+        => Ok(await _orderService.GetOrderItemByOrderIdAsync(orderId));
+
     }
 }

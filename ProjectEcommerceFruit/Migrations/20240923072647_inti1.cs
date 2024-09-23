@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace ProjectEcommerceFruit.Migrations
 {
     /// <inheritdoc />
-    public partial class init1 : Migration
+    public partial class inti1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -58,6 +58,21 @@ namespace ProjectEcommerceFruit.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "SlideShows",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
+                    Hidden = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_SlideShows", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "SystemSettings",
                 columns: table => new
                 {
@@ -65,7 +80,8 @@ namespace ProjectEcommerceFruit.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     WebName = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Image = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShippingCost = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -92,28 +108,6 @@ namespace ProjectEcommerceFruit.Migrations
                         name: "FK_Users_Roles_RoleId",
                         column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "SlideShows",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsUsed = table.Column<bool>(type: "bit", nullable: false),
-                    Hidden = table.Column<bool>(type: "bit", nullable: false),
-                    SystemSettingId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_SlideShows", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_SlideShows_SystemSettings_SystemSettingId",
-                        column: x => x.SystemSettingId,
-                        principalTable: "SystemSettings",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -179,8 +173,9 @@ namespace ProjectEcommerceFruit.Migrations
                     PaymentImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Status = table.Column<int>(type: "int", nullable: false),
-                    ShippingType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ShippingType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Tag = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ConfirmReceipt = table.Column<int>(type: "int", nullable: false),
                     AddressId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -219,6 +214,28 @@ namespace ProjectEcommerceFruit.Migrations
                         name: "FK_ProductGIs_Stores_StoreId",
                         column: x => x.StoreId,
                         principalTable: "Stores",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Shippings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShippingFee = table.Column<int>(type: "int", nullable: false),
+                    ShippingStatus = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Shippings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Shippings_Orders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Orders",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -268,6 +285,34 @@ namespace ProjectEcommerceFruit.Migrations
                         name: "FK_Products_ProductGIs_ProductGIId",
                         column: x => x.ProductGIId,
                         principalTable: "ProductGIs",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "DriverHistories",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShippingFee = table.Column<int>(type: "int", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
+                    ShippingId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_DriverHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_DriverHistories_Shippings_ShippingId",
+                        column: x => x.ShippingId,
+                        principalTable: "Shippings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_DriverHistories_Users_UserId",
+                        column: x => x.UserId,
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -349,8 +394,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "Hidden", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "Admin1", false, "$2a$11$hdnaC0x9/lYThTWvOk8ihuJkbfwMLGvVADxUxXbxe75lHwW5uZdW2", "0123456789", 1, "admin" },
-                    { 2, "User Haha", false, "$2a$11$C23AvUHbhkwiMwbWIJ9Pwe7DAwpgm66ABay8NBybOhUzDmLvF9MYq", "0987654321", 2, "user1" }
+                    { 1, "Admin1", false, "$2a$11$JGtV33VUNm7.mrSVqfyCze9p3LYL62dm1s1ZKX7wgCfIUN0PAhIJy", "0123456789", 1, "admin" },
+                    { 2, "User Haha", false, "$2a$11$.pXgfajIxAwQ8z20bOMBw.Su8RYdJJLl94./iGTl3HjsWN/gWQWQy", "0987654321", 2, "user1" }
                 });
 
             migrationBuilder.InsertData(
@@ -358,8 +403,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "Hidden", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(1801), "แหล่งผลิตที่ทองผาภูมิ", false, "ทองผาภูมิ มีดี", 1 },
-                    { 2, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(1825), "แหล่งผลิตที่ทองผาภูมิ", false, "อาปาชาเฮ้", 2 }
+                    { 1, new DateTime(2024, 9, 23, 14, 26, 44, 446, DateTimeKind.Local).AddTicks(9894), "แหล่งผลิตที่ทองผาภูมิ", false, "ทองผาภูมิ มีดี", 1 },
+                    { 2, new DateTime(2024, 9, 23, 14, 26, 44, 446, DateTimeKind.Local).AddTicks(9908), "แหล่งผลิตที่ทองผาภูมิ", false, "อาปาชาเฮ้", 2 }
                 });
 
             migrationBuilder.InsertData(
@@ -380,12 +425,12 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "CreatedAt", "Detail", "Expire", "Hidden", "Images", "Price", "ProductGIId", "Quantity", "Sold", "Status", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2052), "", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2056), false, null, 125.0, 1, 7, 11, true, 3.0 },
-                    { 2, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2070), "<p>1</p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2072), false, null, 155.0, 2, 3, 9, true, 10.0 },
-                    { 3, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2078), "<p>111</p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2081), false, null, 60.0, 3, 50, 0, true, 3.0 },
-                    { 4, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2086), "<p>111</p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2088), false, null, 60.0, 4, 50, 0, true, 3.0 },
-                    { 5, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2094), "<p></p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2096), false, null, 40.0, 5, 10, 0, true, 1.0 },
-                    { 6, new DateTime(2024, 9, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2109), "<p></p>", new DateTime(2024, 10, 19, 23, 0, 47, 205, DateTimeKind.Local).AddTicks(2112), false, null, 50.0, 5, 18, 0, true, 1.0 }
+                    { 1, new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(27), "", new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(28), false, null, 125.0, 1, 7, 11, true, 3.0 },
+                    { 2, new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(36), "<p>1</p>", new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(37), false, null, 155.0, 2, 3, 9, true, 10.0 },
+                    { 3, new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(39), "<p>111</p>", new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(40), false, null, 60.0, 3, 50, 0, true, 3.0 },
+                    { 4, new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(42), "<p>111</p>", new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(42), false, null, 60.0, 4, 50, 0, true, 3.0 },
+                    { 5, new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(44), "<p></p>", new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(45), false, null, 40.0, 5, 10, 0, true, 1.0 },
+                    { 6, new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(52), "<p></p>", new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(53), false, null, 50.0, 5, 18, 0, true, 1.0 }
                 });
 
             migrationBuilder.CreateIndex(
@@ -401,6 +446,16 @@ namespace ProjectEcommerceFruit.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_CartItems_UserId",
                 table: "CartItems",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverHistories_ShippingId",
+                table: "DriverHistories",
+                column: "ShippingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_DriverHistories_UserId",
+                table: "DriverHistories",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -439,9 +494,9 @@ namespace ProjectEcommerceFruit.Migrations
                 column: "ProductGIId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SlideShows_SystemSettingId",
-                table: "SlideShows",
-                column: "SystemSettingId");
+                name: "IX_Shippings_OrderId",
+                table: "Shippings",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Stores_UserId",
@@ -461,6 +516,9 @@ namespace ProjectEcommerceFruit.Migrations
                 name: "CartItems");
 
             migrationBuilder.DropTable(
+                name: "DriverHistories");
+
+            migrationBuilder.DropTable(
                 name: "Images");
 
             migrationBuilder.DropTable(
@@ -473,19 +531,22 @@ namespace ProjectEcommerceFruit.Migrations
                 name: "SlideShows");
 
             migrationBuilder.DropTable(
-                name: "Orders");
+                name: "SystemSettings");
+
+            migrationBuilder.DropTable(
+                name: "Shippings");
 
             migrationBuilder.DropTable(
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "SystemSettings");
-
-            migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "Orders");
 
             migrationBuilder.DropTable(
                 name: "ProductGIs");
+
+            migrationBuilder.DropTable(
+                name: "Addresses");
 
             migrationBuilder.DropTable(
                 name: "Categories");

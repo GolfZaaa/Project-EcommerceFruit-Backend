@@ -127,7 +127,8 @@ namespace ProjectEcommerceFruit.Service.ProductS
                         }
                     })
                     //.FirstOrDefaultAsync(x => x.Id == productId && x.Status == true);
-                    .FirstOrDefaultAsync(x => x.Id == productId && x.ProductGI.Store.Hidden == false && !x.Hidden);
+                    //.FirstOrDefaultAsync(x => x.Id == productId && x.ProductGI.Store.Hidden == false && !x.Hidden);
+                    .FirstOrDefaultAsync(x => x.Id == productId);
 
             if (product == null)
             {

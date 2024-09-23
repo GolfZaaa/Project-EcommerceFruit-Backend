@@ -168,6 +168,7 @@ namespace ProjectEcommerceFruit.Service.StoreS
                     x.Detail,
                     x.Status,
                     x.CreatedAt,
+                    x.Hidden,
                     ProductGI = new
                     {
                         x.ProductGI.Id,

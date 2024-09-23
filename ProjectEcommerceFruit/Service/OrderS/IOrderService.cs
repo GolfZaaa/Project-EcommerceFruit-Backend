@@ -17,5 +17,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
         Task<Object> ChangeConfirmSendOrderAsync(List<int> orderId);
 
         Task<Object> CreateOrderToReceiptAsync(List<int> orderId);
+
+        Task<dynamic> GetOrderItemByOrderIdAsync(int orderId);
     }
 }
