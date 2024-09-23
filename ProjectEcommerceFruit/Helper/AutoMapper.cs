@@ -62,6 +62,12 @@ namespace ProjectEcommerceFruit.Helper
             CreateMap<SlideShow, SlideShowRespone>();
 
             CreateMap<NEWSRequest, NEWS>();
+
+            CreateMap<Order, OrderRespone>();
+            CreateMap<Address, AddressRespone>();
+
+            CreateMap<DriverHistory, MyOrderToDriverHistoryRespone>();
+            CreateMap<Shipping, ShippingRespone>();
         }
     }
 }

@@ -3,6 +3,7 @@ using Azure.Core;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ProjectEcommerceFruit.Data;
+using ProjectEcommerceFruit.Dtos.Address;
 using ProjectEcommerceFruit.Dtos.Order;
 using ProjectEcommerceFruit.Dtos.Product;
 using ProjectEcommerceFruit.Dtos.User;
@@ -40,10 +41,73 @@ namespace ProjectEcommerceFruit.Service.OrderS
             => _mapper.Map<List<OrderRespone>>(await _context.Orders
                 .Include(x => x.Address)
                     .ThenInclude(x => x.User)
-                        .ThenInclude(x=>x.Role)
+                        .ThenInclude(x => x.Role)
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
-                .OrderByDescending(x=>x.CreatedAt).ToListAsync());
+                .Include(x => x.Shippings)
+                            .ThenInclude(x => x.DriverHistories)
+                .OrderByDescending(x => x.CreatedAt).ToListAsync());
+
+        public async Task<List<TestOrderToReceipt>> GetOrdersWantToReceiptAsync()
+            => await _context.Orders
+                .Include(x => x.Address)
+                    .ThenInclude(x => x.User)
+                        .ThenInclude(x => x.Role)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Store)
+                                .ThenInclude(x => x.User)
+                                    .ThenInclude(x => x.Addresses)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Category)
+                .Where(x => x.Status == 1 && x.Tag == "จัดส่งผ่านผู้รับหิ้ว" && x.ConfirmReceipt == 0 && x.Shippings.Count == 0)
+                .Select(x => new TestOrderToReceipt
+                {
+                    Order = _mapper.Map<OrderRespone>(x),  // Map Order to OrderRespone
+                    Address = _mapper.Map<AddressRespone>(
+                        x.OrderItems.FirstOrDefault() != null &&
+                        x.OrderItems.FirstOrDefault().Product != null &&
+                        x.OrderItems.FirstOrDefault().Product.ProductGI != null &&
+                        x.OrderItems.FirstOrDefault().Product.ProductGI.Store != null &&
+                        x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User != null &&
+                        x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User.Addresses != null
+                        ? x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store)
+                        : null
+                    )
+                }).ToListAsync();
+
+        //public async Task<List<MyOrderToDriverHistoryRespone>> GetMyOrderToSendAsync()
+        //{ 
+        //    var user = await _authService.GetUserByIdAsync();
+
+        //    var order = await _context.DriverHistories
+        //        .Include(x=>x.Shipping)
+        //            .ThenInclude(x=>x.Order)
+        //                .ThenInclude(x=>x.OrderItems).Where(x => x.UserId == user.Id).ToListAsync();
+
+        //    return _mapper.Map<List<MyOrderToDriverHistoryRespone>>(order);
+        //}
+
+        public async Task<List<OrderRespone>> GetMyOrderToSendAsync()
+        {
+            var user = await _authService.GetUserByIdAsync();
+
+            var order = await _context.Orders
+                        .Include(x => x.OrderItems)
+                            .ThenInclude(x=>x.Product)
+                        .Include(x => x.OrderItems)
+                            .ThenInclude(x => x.Product)
+                                .ThenInclude(x => x.ProductGI)
+                                    .ThenInclude(x => x.Category)
+                        .Include(x=>x.Shippings)
+                        .Where(x => x.Shippings.Any(s => s.DriverHistories.Any(dh => dh.UserId == user.Id)))
+                        .ToListAsync();
+
+            return _mapper.Map<List<OrderRespone>>(order);
+        }
 
         public async Task<List<OrderRespone>> GetOrdersByUserAsync()
         {
@@ -53,8 +117,9 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 .Include(x => x.Address)
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
-                        .ThenInclude(x=>x.ProductGI)
-                            .ThenInclude(x=>x.Category)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Category)
+                .Include(x => x.Shippings)
                 .Where(x => x.Address.UserId.Equals(user.Id))
                 .OrderByDescending(x => x.CreatedAt).ToListAsync();
 
@@ -68,7 +133,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
                         .ThenInclude(x => x.ProductGI)
-                            .ThenInclude(x=>x.Store)
+                            .ThenInclude(x => x.Store)
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
                          .ThenInclude(x => x.ProductGI)
@@ -103,6 +168,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
                 newOrder.CreatedAt = DateTime.Now;
                 newOrder.Address = address;
+                newOrder.ShippingType = null;
 
                 if (request.PaymentImage is not null)
                 {
@@ -118,7 +184,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 newOrder.OrderId =
                    "KRU" + "-"
                    + user.Id + "-"
-                   + request.StoreId + "-" 
+                   + request.StoreId + "-"
                    + newOrder.Id;
 
                 foreach (var item in cartItems)
@@ -129,6 +195,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                         Quantity = item.QuantityInCartItem,
                         Order = newOrder,
                     };
+
                     newOrder.OrderItems.Add(orderItem);
 
                     _context.CartItems
@@ -155,7 +222,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
             return await _context.SaveChangesAsync() > 0 ? _mapper.Map<UserRespone>(user) : false;
         }
 
-        public async Task<object> ConfirmOrderAsync(int orderId,string trackingId)
+        public async Task<object> ConfirmOrderAsync(int orderId, string? trackingId, string? shippingType)
         {
             var order = await _context.Orders
                 .Include(x => x.OrderItems)
@@ -165,6 +232,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
             order.Status = 1;
             order.Tag = trackingId;
+            order.ShippingType = shippingType;
 
             foreach (var item in order.OrderItems)
             {
@@ -188,6 +256,76 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
             order.Status = 2;
 
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<object> ChangeConfirmReceiptOrderAsync(int orderId, int status)
+        {
+            var order = await _context.Orders
+                .Include(x => x.OrderItems)
+                .FirstOrDefaultAsync(x => x.Id == orderId);
+
+            if (order == null) return "order is null";
+
+            order.ConfirmReceipt = status;
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+         
+        public async Task<object> ChangeConfirmSendOrderAsync(List<int> orderId)
+        {
+            foreach (var item in orderId)
+            {
+                var order = await _context.Orders
+                        .Include(x => x.OrderItems)
+                            .ThenInclude(x => x.Product)
+                        .Include(x => x.OrderItems)
+                            .ThenInclude(x => x.Product)
+                                .ThenInclude(x => x.ProductGI)
+                                    .ThenInclude(x => x.Category)
+                        .Include(x => x.Shippings)
+                        .FirstOrDefaultAsync(x => x.Id == item);
+
+                if (order == null) return "order is null";
+
+                order.Shippings.FirstOrDefault()!.ShippingStatus = 1;
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<object> CreateOrderToReceiptAsync(List<int> orderId)
+        {
+            var user = await _authService.GetUserByIdAsync();
+
+            var ss = await _context.SystemSettings.FirstOrDefaultAsync();
+
+            foreach (var item in orderId)
+            {
+                var order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == item);
+               
+
+                if (order == null) return "order is null";
+
+                var newShipping = new Shipping()
+                {
+                    ShippingFee = ss.ShippingCost,
+                    ShippingStatus = 0,
+                    Order = order,
+                    CreatedAt = DateTime.Now,
+                };
+
+                var newDriver = new DriverHistory()
+                {
+                    ShippingFee = ss.ShippingCost,
+                    CreatedAt = DateTime.Now,
+                    User = user,
+                    Shipping = newShipping,
+                };
+
+                user.DriverHistories.Add(newDriver);
+            }
+            
             return await _context.SaveChangesAsync() > 0;
         }
 

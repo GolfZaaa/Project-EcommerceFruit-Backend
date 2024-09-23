@@ -17,5 +17,6 @@ namespace ProjectEcommerceFruit.Models
         public ICollection<Store> Stores { get; set; } = new List<Store>();
         public ICollection<Address> Addresses { get; set; } = new List<Address>();
         public ICollection<CartItem> CartItems { get; set; } = new List<CartItem>();
+        public ICollection<DriverHistory> DriverHistories { get; set; } = new List<DriverHistory>();
     }
 }

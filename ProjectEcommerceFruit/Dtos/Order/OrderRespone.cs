@@ -14,11 +14,13 @@ namespace ProjectEcommerceFruit.Dtos.Order
         public int Status { get; set; }
         public string ShippingType { get; set; }
         public string? Tag { get; set; }
+        public int ConfirmReceipt { get; set; }
 
         public int AddressId { get; set; }
         public AddressRespone Address { get; set; }
 
         public ICollection<OrderItemRespone> OrderItems { get; set; } = new List<OrderItemRespone>();
+        public ICollection<ShippingRespone> Shippings { get; set; } = new List<ShippingRespone>();
     }
 
     public class OrderItemRespone

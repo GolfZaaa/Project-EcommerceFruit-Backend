@@ -6,6 +6,7 @@
         public string WebName { get; set; }
         public IFormFile? Image { get; set; }
         public string Description { get; set; }
+        public int ShippingCost { get; set; } = 40;
     }
 
     public class SlideShowRequest

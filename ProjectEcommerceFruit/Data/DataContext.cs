@@ -236,6 +236,12 @@ namespace ProjectEcommerceFruit.Data
                 .HasForeignKey(ci => ci.ProductId)
                 .OnDelete(DeleteBehavior.Restrict);
 
+            modelBuilder.Entity<DriverHistory>()
+                .HasOne(ci => ci.Shipping)
+                .WithMany(u => u.DriverHistories)
+                .HasForeignKey(ci => ci.ShippingId)
+                .OnDelete(DeleteBehavior.Restrict);
+
             //modelBuilder.Entity<User>().HasMany(x => x.CartItems).GetInfrastructure()!.OnDelete(DeleteBehavior.Cascade);
             //modelBuilder.Entity<Product>().HasMany(x => x.CartItems).GetInfrastructure()!.OnDelete(DeleteBehavior.Cascade);
         }
@@ -264,6 +270,9 @@ namespace ProjectEcommerceFruit.Data
         public DbSet<SlideShow> SlideShows { get; set; }
 
         public DbSet<NEWS> NEWSs { get; set; }
+
+        public DbSet<DriverHistory> DriverHistories { get; set; }   
+        public DbSet<Shipping> Shippings { get; set; }
     }
 }
  

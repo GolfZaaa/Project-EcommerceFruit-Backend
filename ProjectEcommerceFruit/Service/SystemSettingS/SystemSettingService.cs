@@ -29,10 +29,17 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
 
         public async Task<object> CreateUpdateSystemSettingAsync(SystemSettingRequest request)
         {
-            (string errorMessge, string imageName) =
-              await UploadImageAsync(request.Image, _pathImageSS);
+            string imageName = null;
+            if (request.Image != null)
+            {
+                // อัปโหลดไฟล์แทนการส่งชื่อไฟล์ตรงๆ
+                (string errorMessge, string uploadedImageName) =
+                    await UploadImageAsync(request.Image, _pathImageSS);
 
-            if (!string.IsNullOrEmpty(errorMessge)) return errorMessge;
+                if (!string.IsNullOrEmpty(errorMessge)) return errorMessge;
+
+                imageName = uploadedImageName;
+            }
 
             var result = await _context.SystemSettings.FirstOrDefaultAsync(x=>x.Id == request.Id);
 
@@ -49,6 +56,11 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
             }
             else
             {
+                if (request.Image is null)
+                {
+                    imageName = result.Image;
+                }
+
                 _mapper.Map(request, result);
 
                 if (request.Image is not null)
@@ -57,9 +69,9 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
                     {
                         await _uploadFileService.DeleteFileImage(result.Image, _pathImageSS);
                     }
-
-                    result.Image = imageName;
                 }
+
+                result.Image = imageName;
 
                 _context.SystemSettings.Update(result);
             }
