@@ -109,6 +109,45 @@ namespace ProjectEcommerceFruit.Service.StoreS
             return await _context.SaveChangesAsync() > 0;
         }
 
+
+
+        public async Task<object> GetStoreDetailByUserIdAsync(int userId)
+        {
+            var result = await _context.Stores.Include(x => x.User).Where(x => x.UserId == userId)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Name,
+                    x.Description,
+                    x.CreatedAt,
+                    x.UserId,
+                    x.Hidden,
+                    User = new
+                    {
+                        x.User.Id,
+                        x.User.FullName,
+                        x.User.PhoneNumber,
+                        x.User.Hidden,
+                        Address = x.User.Addresses.Select(a => new
+                        {
+                            a.Id,
+                            a.Province,
+                            a.District,
+                            a.SubDistrict,
+                            a.PostCode,
+                            a.Detail,
+                            a.IsUsed_Store,
+                            a.IsUsed,
+                            a.GPS,
+                            a.CreatedAt,
+                            a.UserId
+                        })
+                    }
+                }).ToListAsync();
+            if (result == null) { return "Don't Have Store"; }
+            return result;
+        }
+
         public async Task<object> GetStoreProductUserAsync(int userid)
         {
             var result = await _context.Products
@@ -153,6 +192,7 @@ namespace ProjectEcommerceFruit.Service.StoreS
 
                     return result;
                 }
+
 
 
     }
