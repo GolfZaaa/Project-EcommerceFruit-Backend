@@ -7,6 +7,8 @@ namespace ProjectEcommerceFruit.Service.OrderS
     {
         Task<List<OrderRespone>> GetOrdersAsync();
         Task<List<TestOrderToReceipt>> GetOrdersWantToReceiptAsync();
+        Task<List<TestOrderToReceipt>> SearchOrdersWantToReceiptAsync(string? district, string? subDistrict);
+        Task<List<TestOrderToReceipt>> SearchOrderToSendByOrderIdAsync(string orderId);
         Task<List<OrderRespone>> GetMyOrderToSendAsync(); 
         Task<List<OrderRespone>> GetOrdersByUserAsync();
         Task<List<OrderRespone>> GetOrdersByStoreAsync(int storeId);

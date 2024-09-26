@@ -24,6 +24,14 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> GetOrdersWantToReceipt() 
             => Ok(await _orderService.GetOrdersWantToReceiptAsync());
 
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SearchOrdersWantToReceipt([FromQuery] string? district, [FromQuery] string? subDistrict)
+            => Ok(await _orderService.SearchOrdersWantToReceiptAsync(district, subDistrict));
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> SearchOrderToSendByOrderId([FromForm] string orderId)
+            => Ok(await _orderService.SearchOrderToSendByOrderIdAsync(orderId));
+        
         [HttpGet("[action]"), Authorize]
         public async Task<IActionResult> GetOrdersByUser()
             => Ok(await _orderService.GetOrdersByUserAsync());

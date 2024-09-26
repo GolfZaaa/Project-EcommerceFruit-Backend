@@ -79,6 +79,39 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     )
                 }).ToListAsync();
 
+        public async Task<List<TestOrderToReceipt>> SearchOrdersWantToReceiptAsync(string? district, string? subDistrict)
+        {
+            var result = await GetOrdersWantToReceiptAsync();
+
+            var newOrder = new List<TestOrderToReceipt>();
+
+            if (district != null && subDistrict != null)
+            {
+                newOrder = result.Where(x => x.Address.District.Contains(district)
+                && x.Address.SubDistrict.Contains(subDistrict)).ToList();
+            }
+            else if (district != null)
+            {
+                newOrder = result.Where(x => x.Address.District.Contains(district)).ToList();
+            }
+            else if (subDistrict != null)
+            {
+                newOrder = result.Where(x => x.Address.SubDistrict.Contains(subDistrict)).ToList();
+            }else
+            {
+                newOrder = result;
+            }
+
+            return newOrder;
+        }
+
+        public async Task<List<TestOrderToReceipt>> SearchOrderToSendByOrderIdAsync(string orderId)
+        {
+            var result = await GetOrdersWantToReceiptAsync();
+
+            return result.Where(x=>x.Order.OrderId.Contains(orderId)).ToList(); 
+        }
+
         //public async Task<List<MyOrderToDriverHistoryRespone>> GetMyOrderToSendAsync()
         //{ 
         //    var user = await _authService.GetUserByIdAsync();
@@ -103,6 +136,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                                 .ThenInclude(x => x.ProductGI)
                                     .ThenInclude(x => x.Category)
                         .Include(x=>x.Shippings)
+                        .Include(x=>x.Address)
                         .Where(x => x.Shippings.Any(s => s.DriverHistories.Any(dh => dh.UserId == user.Id)))
                         .ToListAsync();
 
