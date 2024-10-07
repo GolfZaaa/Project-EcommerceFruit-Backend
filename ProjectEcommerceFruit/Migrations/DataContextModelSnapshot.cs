@@ -144,6 +144,9 @@ namespace ProjectEcommerceFruit.Migrations
                     b.Property<int>("ShippingId")
                         .HasColumnType("int");
 
+                    b.Property<int>("StatusDriver")
+                        .HasColumnType("int");
+
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
@@ -327,9 +330,9 @@ namespace ProjectEcommerceFruit.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(27),
+                            CreatedAt = new DateTime(2024, 10, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4591),
                             Detail = "",
-                            Expire = new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(28),
+                            Expire = new DateTime(2024, 11, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4593),
                             Hidden = false,
                             Price = 125.0,
                             ProductGIId = 1,
@@ -341,9 +344,9 @@ namespace ProjectEcommerceFruit.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(36),
+                            CreatedAt = new DateTime(2024, 10, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4601),
                             Detail = "<p>1</p>",
-                            Expire = new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(37),
+                            Expire = new DateTime(2024, 11, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4602),
                             Hidden = false,
                             Price = 155.0,
                             ProductGIId = 2,
@@ -355,9 +358,9 @@ namespace ProjectEcommerceFruit.Migrations
                         new
                         {
                             Id = 3,
-                            CreatedAt = new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(39),
+                            CreatedAt = new DateTime(2024, 10, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4604),
                             Detail = "<p>111</p>",
-                            Expire = new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(40),
+                            Expire = new DateTime(2024, 11, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4605),
                             Hidden = false,
                             Price = 60.0,
                             ProductGIId = 3,
@@ -369,9 +372,9 @@ namespace ProjectEcommerceFruit.Migrations
                         new
                         {
                             Id = 4,
-                            CreatedAt = new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(42),
+                            CreatedAt = new DateTime(2024, 10, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4607),
                             Detail = "<p>111</p>",
-                            Expire = new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(42),
+                            Expire = new DateTime(2024, 11, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4608),
                             Hidden = false,
                             Price = 60.0,
                             ProductGIId = 4,
@@ -383,9 +386,9 @@ namespace ProjectEcommerceFruit.Migrations
                         new
                         {
                             Id = 5,
-                            CreatedAt = new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(44),
+                            CreatedAt = new DateTime(2024, 10, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4610),
                             Detail = "<p></p>",
-                            Expire = new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(45),
+                            Expire = new DateTime(2024, 11, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4610),
                             Hidden = false,
                             Price = 40.0,
                             ProductGIId = 5,
@@ -397,9 +400,9 @@ namespace ProjectEcommerceFruit.Migrations
                         new
                         {
                             Id = 6,
-                            CreatedAt = new DateTime(2024, 9, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(52),
+                            CreatedAt = new DateTime(2024, 10, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4693),
                             Detail = "<p></p>",
-                            Expire = new DateTime(2024, 10, 23, 14, 26, 44, 447, DateTimeKind.Local).AddTicks(53),
+                            Expire = new DateTime(2024, 11, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4694),
                             Hidden = false,
                             Price = 50.0,
                             ProductGIId = 5,
@@ -613,7 +616,7 @@ namespace ProjectEcommerceFruit.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 9, 23, 14, 26, 44, 446, DateTimeKind.Local).AddTicks(9894),
+                            CreatedAt = new DateTime(2024, 10, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4427),
                             Description = "แหล่งผลิตที่ทองผาภูมิ",
                             Hidden = false,
                             Name = "ทองผาภูมิ มีดี",
@@ -622,7 +625,7 @@ namespace ProjectEcommerceFruit.Migrations
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 9, 23, 14, 26, 44, 446, DateTimeKind.Local).AddTicks(9908),
+                            CreatedAt = new DateTime(2024, 10, 1, 12, 18, 52, 845, DateTimeKind.Local).AddTicks(4444),
                             Description = "แหล่งผลิตที่ทองผาภูมิ",
                             Hidden = false,
                             Name = "อาปาชาเฮ้",
@@ -699,7 +702,7 @@ namespace ProjectEcommerceFruit.Migrations
                             Id = 1,
                             FullName = "Admin1",
                             Hidden = false,
-                            PasswordHash = "$2a$11$JGtV33VUNm7.mrSVqfyCze9p3LYL62dm1s1ZKX7wgCfIUN0PAhIJy",
+                            PasswordHash = "$2a$11$dAYoTHJi7AdhLiS13yLIre5PHRMKMlQbpnYeawoKw9lnFXEREmtZ6",
                             PhoneNumber = "0123456789",
                             RoleId = 1,
                             Username = "admin"
@@ -709,7 +712,7 @@ namespace ProjectEcommerceFruit.Migrations
                             Id = 2,
                             FullName = "User Haha",
                             Hidden = false,
-                            PasswordHash = "$2a$11$.pXgfajIxAwQ8z20bOMBw.Su8RYdJJLl94./iGTl3HjsWN/gWQWQy",
+                            PasswordHash = "$2a$11$JD6MOk37ZSssFzzVdilKM.JhdmKdwe3l16JoZzgHq4kgKlSpqqfEy",
                             PhoneNumber = "0987654321",
                             RoleId = 2,
                             Username = "user1"

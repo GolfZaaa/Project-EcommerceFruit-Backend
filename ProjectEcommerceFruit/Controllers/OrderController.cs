@@ -24,12 +24,24 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> GetOrdersWantToReceipt() 
             => Ok(await _orderService.GetOrdersWantToReceiptAsync());
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> IWantToTakeOrdertoSend([FromForm] List<int> orderId)
+            => Ok(await _orderService.IWantToTakeOrdertoSendAsync(orderId));
+
+        [HttpGet("[action]"), Authorize]
+        public async Task<IActionResult> GetMyOrderUserWantToTaketoSend()
+            => Ok(await _orderService.GetMyOrderUserWantToTaketoSendAsync());
+
+        [HttpPost("[action]"), Authorize]
+        public async Task<IActionResult> ConfirmOrderToForward([FromForm] int driverId, [FromForm] int shippingId, [FromForm] int shippingFee)
+            => Ok(await _orderService.ConfirmOrderToForwardAsync(driverId, shippingId, shippingFee));
+
         [HttpGet("[action]")]
         public async Task<IActionResult> SearchOrdersWantToReceipt([FromQuery] string? district, [FromQuery] string? subDistrict)
             => Ok(await _orderService.SearchOrdersWantToReceiptAsync(district, subDistrict));
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> SearchOrderToSendByOrderId([FromForm] string orderId)
+        public async Task<IActionResult> SearchOrderToSendByOrderId(string? orderId)
             => Ok(await _orderService.SearchOrderToSendByOrderIdAsync(orderId));
         
         [HttpGet("[action]"), Authorize]

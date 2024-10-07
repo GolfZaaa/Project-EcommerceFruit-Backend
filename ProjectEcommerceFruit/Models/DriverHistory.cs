@@ -7,6 +7,7 @@ namespace ProjectEcommerceFruit.Models
         public int Id { get; set; }
         public int ShippingFee { get; set; }
         public DateTime CreatedAt { get; set; }
+        public int StatusDriver { get; set; }
 
         public int UserId { get; set; }
         public User User { get; set; }
@@ -26,7 +27,6 @@ namespace ProjectEcommerceFruit.Models
         public int OrderId { get; set; }
         public Order Order { get; set; }
 
-        [JsonIgnore]
         public ICollection<DriverHistory> DriverHistories { get; set; } = new List<DriverHistory>();
     }
 }

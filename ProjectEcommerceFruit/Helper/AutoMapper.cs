@@ -68,6 +68,7 @@ namespace ProjectEcommerceFruit.Helper
 
             CreateMap<DriverHistory, MyOrderToDriverHistoryRespone>();
             CreateMap<Shipping, ShippingRespone>();
+            CreateMap<ShippingRespone, Shipping>();
         }
     }
 }

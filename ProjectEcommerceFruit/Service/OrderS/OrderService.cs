@@ -1,16 +1,13 @@
 ﻿using AutoMapper;
-using Azure.Core;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using ProjectEcommerceFruit.Data;
 using ProjectEcommerceFruit.Dtos.Address;
 using ProjectEcommerceFruit.Dtos.Order;
 using ProjectEcommerceFruit.Dtos.Product;
-using ProjectEcommerceFruit.Dtos.User;
 using ProjectEcommerceFruit.Models;
-using ProjectEcommerceFruit.Service.CartS;
 using ProjectEcommerceFruit.Service.UploadFileS;
 using ProjectEcommerceFruit.Service.UserS;
+using System.Net.WebSockets;
 
 namespace ProjectEcommerceFruit.Service.OrderS
 {
@@ -44,9 +41,150 @@ namespace ProjectEcommerceFruit.Service.OrderS
                         .ThenInclude(x => x.Role)
                 .Include(x => x.OrderItems)
                     .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Store)
+                                .ThenInclude(x => x.User)
+                                    .ThenInclude(x => x.Addresses)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Category)
                 .Include(x => x.Shippings)
                             .ThenInclude(x => x.DriverHistories)
                 .OrderByDescending(x => x.CreatedAt).ToListAsync());
+
+        public async Task<OrderRespone> GetOrderByIdAsync(int orderId)
+            => _mapper.Map<OrderRespone>(await _context.Orders
+                .Include(x => x.Address)
+                    .ThenInclude(x => x.User)
+                        .ThenInclude(x => x.Role)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Store)
+                                .ThenInclude(x => x.User)
+                                    .ThenInclude(x => x.Addresses)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Category)
+                .Include(x => x.Shippings)
+                            .ThenInclude(x => x.DriverHistories).FirstOrDefaultAsync(x=>x.Id == orderId));
+
+        public async Task<Order> GetOrderByIdLocalAsync(int orderId)
+            => await _context.Orders
+                .Include(x => x.Address)
+                    .ThenInclude(x => x.User)
+                        .ThenInclude(x => x.Role)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Store)
+                                .ThenInclude(x => x.User)
+                                    .ThenInclude(x => x.Addresses)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Category)
+                .Include(x => x.Shippings)
+                            .ThenInclude(x => x.DriverHistories).FirstOrDefaultAsync(x => x.Id == orderId);
+
+        public async Task<object> IWantToTakeOrdertoSendAsync(List<int> orderId)
+        {
+            foreach (var item in orderId)
+            {
+                var order = await GetOrderByIdLocalAsync(item);
+                if (order is null) return "order is null";
+
+                var user = await _authService.GetUserByIdAsync();
+                if (user is null) return "user is null";
+
+                var shipping = order.Shippings.FirstOrDefault();
+
+                var driver = await _context.DriverHistories.FirstOrDefaultAsync(x => x.ShippingId == shipping.Id && x.UserId == user.Id);
+
+                if(driver is null)
+                {
+                    var newDriver = new DriverHistory()
+                    {
+                        ShippingFee = 0,
+                        CreatedAt = DateTime.Now,
+                        User = user,
+                        Shipping = shipping,
+                        StatusDriver = 4,
+                    };
+
+                    await _context.DriverHistories.AddAsync(newDriver);
+                } 
+            }
+            
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<List<OrderRespone>> GetMyOrderUserWantToTaketoSendAsync()
+        {
+            var user = await _authService.GetUserByIdAsync();
+
+            var orders = _mapper.Map<List<OrderRespone>>(await _context.Orders
+                .Include(x => x.Address)
+                    .ThenInclude(x => x.User)
+                        .ThenInclude(x => x.Role)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Store)
+                                .ThenInclude(x => x.User)
+                                    .ThenInclude(x => x.Addresses)
+                .Include(x => x.OrderItems)
+                    .ThenInclude(x => x.Product)
+                        .ThenInclude(x => x.ProductGI)
+                            .ThenInclude(x => x.Category)
+                .Include(x => x.Shippings)
+                            .ThenInclude(x => x.DriverHistories)
+                                .ThenInclude(x=>x.User)
+                .Where(x => x.ConfirmReceipt == 0 &&
+                    x.Shippings.Any(s =>
+                        s.DriverHistories.Any(dh =>
+                            dh.UserId == user.Id &&
+                            dh.StatusDriver == 0)) &&
+                    x.Shippings.Any(s =>
+                        s.DriverHistories.Count(dh =>
+                            dh.StatusDriver == 4) > 1)).ToListAsync());
+            
+            return orders;
+        }
+         
+        public async Task<object> ConfirmOrderToForwardAsync(int driverId, int shippingId, int shippingFee)
+        {
+            var user = await _authService.GetUserByIdAsync();
+
+            var driver = await _context.DriverHistories.AsNoTracking().FirstOrDefaultAsync(x => x.Id == driverId);
+            
+            var Mydriver = await _context.DriverHistories.AsNoTracking().FirstOrDefaultAsync(x => x.UserId == user.Id && x.ShippingId == shippingId);
+
+            if (driver is null || Mydriver is null) return driver is null ? "driver" : Mydriver is null ? "Mydriver" : "" + " is null";
+
+            Mydriver.StatusDriver = 3;
+            Mydriver.ShippingFee = Mydriver.ShippingFee - shippingFee;
+            _context.DriverHistories.Update(Mydriver);
+
+            driver.ShippingFee = shippingFee;
+            driver.StatusDriver = 0;
+            _context.DriverHistories.Update(driver);
+
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        //public async Task<object> ConfirmForwardingOrdertoSendAsync(int orderId, int driverId)
+        //{
+        //    var order = _mapper.Map<Order>(await GetOrderByIdAsync(orderId));
+
+        //    foreach (var item in order.Shippings.drivr)
+        //    {
+
+        //    }
+         
+        //}
 
         public async Task<List<TestOrderToReceipt>> GetOrdersWantToReceiptAsync()
             => await _context.Orders
@@ -105,12 +243,23 @@ namespace ProjectEcommerceFruit.Service.OrderS
             return newOrder;
         }
 
-        public async Task<List<TestOrderToReceipt>> SearchOrderToSendByOrderIdAsync(string orderId)
+        public async Task<List<OrderRespone>> SearchOrderToSendByOrderIdAsync(string? orderId)
         {
-            var result = await GetOrdersWantToReceiptAsync();
+            var result = await GetOrdersAsync();
 
-            return result.Where(x=>x.Order.OrderId.Contains(orderId)).ToList(); 
+            if(orderId != null)
+            {
+                return result.Where(x => x.Shippings.Count() > 0
+                    && x.OrderId == orderId
+                    && x.ConfirmReceipt == 0).ToList();
+            }
+            else
+            {
+                return new List<OrderRespone>();
+            }
         }
+
+
 
         //public async Task<List<MyOrderToDriverHistoryRespone>> GetMyOrderToSendAsync()
         //{ 
@@ -136,8 +285,11 @@ namespace ProjectEcommerceFruit.Service.OrderS
                                 .ThenInclude(x => x.ProductGI)
                                     .ThenInclude(x => x.Category)
                         .Include(x=>x.Shippings)
+                            .ThenInclude(x=>x.DriverHistories)
                         .Include(x=>x.Address)
-                        .Where(x => x.Shippings.Any(s => s.DriverHistories.Any(dh => dh.UserId == user.Id)))
+                        .OrderByDescending(x=>x.CreatedAt)
+                        .Where(x => x.Shippings.Any(s => 
+                        s.DriverHistories.Any(dh => dh.UserId == user.Id && dh.StatusDriver != 4)))
                         .ToListAsync();
 
             return _mapper.Map<List<OrderRespone>>(order);
@@ -321,11 +473,16 @@ namespace ProjectEcommerceFruit.Service.OrderS
                                 .ThenInclude(x => x.ProductGI)
                                     .ThenInclude(x => x.Category)
                         .Include(x => x.Shippings)
+                            .ThenInclude(x=>x.DriverHistories)
                         .FirstOrDefaultAsync(x => x.Id == item);
 
                 if (order == null) return "order is null";
 
                 order.Shippings.FirstOrDefault()!.ShippingStatus = 1;
+
+                var myDriver = order.Shippings.FirstOrDefault()!.DriverHistories.FirstOrDefault(x => x.StatusDriver == 0);
+
+                myDriver.StatusDriver = 1;
             }
 
             return await _context.SaveChangesAsync() > 0;
@@ -341,7 +498,6 @@ namespace ProjectEcommerceFruit.Service.OrderS
             {
                 var order = await _context.Orders.FirstOrDefaultAsync(x => x.Id == item);
                
-
                 if (order == null) return "order is null";
 
                 var newShipping = new Shipping()
