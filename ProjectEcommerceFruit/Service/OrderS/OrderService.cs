@@ -101,21 +101,21 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
                 var shipping = order.Shippings.FirstOrDefault();
 
-                var driver = await _context.DriverHistories.FirstOrDefaultAsync(x => x.ShippingId == shipping.Id && x.UserId == user.Id);
+                var driver = await _context.DriverHistories.FirstOrDefaultAsync(x => x.ShippingId == shipping.Id && x.UserId == user.Id && x.StatusDriver == 4);
 
-                if(driver is null)
+                if (driver is null)
                 {
                     var newDriver = new DriverHistory()
                     {
                         ShippingFee = 0,
                         CreatedAt = DateTime.Now,
-                        User = user,
-                        Shipping = shipping,
+                        UserId = user.Id,
+                        ShippingId = shipping.Id,
                         StatusDriver = 4,
                     };
 
                     await _context.DriverHistories.AddAsync(newDriver);
-                } 
+                }
             }
             
             return await _context.SaveChangesAsync() > 0;
@@ -146,10 +146,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     x.Shippings.Any(s =>
                         s.DriverHistories.Any(dh =>
                             dh.UserId == user.Id &&
-                            dh.StatusDriver == 0)) &&
-                    x.Shippings.Any(s =>
-                        s.DriverHistories.Count(dh =>
-                            dh.StatusDriver == 4) > 1)).ToListAsync());
+                            dh.StatusDriver == 0) && s.DriverHistories.Count(x=>x.StatusDriver == 4) != 0)).ToListAsync());
             
             return orders;
         }
@@ -251,7 +248,9 @@ namespace ProjectEcommerceFruit.Service.OrderS
             {
                 return result.Where(x => x.Shippings.Count() > 0
                     && x.OrderId == orderId
-                    && x.ConfirmReceipt == 0).ToList();
+                    && x.ConfirmReceipt == 0
+                    && x.Status == 1
+                    && x.Shippings.Last().ShippingStatus != 1 && x.Shippings.Last().ShippingStatus != 2).ToList();
             }
             else
             {
