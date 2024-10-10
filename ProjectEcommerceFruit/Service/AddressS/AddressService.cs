@@ -52,7 +52,12 @@ namespace ProjectEcommerceFruit.Service.AddressS
             if (address is null)
             {
                 var newAddress = _mapper.Map<Address>(request);
-                newAddress.CreatedAt = DateTime.Now; 
+                newAddress.CreatedAt = DateTime.Now;
+
+                foreach (var item in user.Addresses)
+                {
+                    item.IsUsed = false;
+                }
 
                 user.Addresses.Add(newAddress);
             }
