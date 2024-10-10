@@ -15,7 +15,7 @@ namespace ProjectEcommerceFruit.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=DESKTOP-E89K85P; Database=ProjectSellFru1t1; Trusted_connection=true; TrustServerCertificate=true; Encrypt=False");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-DTGB06O\\SQLEXPRESS; Database=ProjectSellFruit; Trusted_connection=true; TrustServerCertificate=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
