@@ -278,6 +278,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                         .Include(x=>x.Shippings)
                             .ThenInclude(x=>x.DriverHistories)
                         .Include(x=>x.Address)
+                            .ThenInclude(x=>x.User)
                         .OrderByDescending(x=>x.CreatedAt)
                         .Where(x => x.Shippings.Any(s => 
                         s.DriverHistories.Any(dh => dh.UserId == user.Id && dh.StatusDriver != 4)))
