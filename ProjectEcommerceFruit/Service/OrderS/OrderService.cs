@@ -21,18 +21,21 @@ namespace ProjectEcommerceFruit.Service.OrderS
         private readonly IMapper _mapper;
         private readonly IWebHostEnvironment _webHostEnvironment;
         private readonly IUploadFileService _uploadFileService;
+        private readonly IConfiguration _configuration;
 
         public OrderService(DataContext context,
             IAuthService authService,
             IMapper mapper,
             IWebHostEnvironment webHostEnvironment,
-            IUploadFileService uploadFileService)
+            IUploadFileService uploadFileService,
+            IConfiguration configuration)
         {
             _context = context;
             _authService = authService;
             _mapper = mapper;
             _webHostEnvironment = webHostEnvironment;
             _uploadFileService = uploadFileService;
+            _configuration = configuration;
         }
 
         public async Task<List<OrderRespone>> GetOrdersAsync()
@@ -354,12 +357,13 @@ namespace ProjectEcommerceFruit.Service.OrderS
         public async Task<object> CreateUpdateOrderByIdAsync(OrderRequest request)
         {
             (string errorMessge, string imageName) =
-               await UploadImageAsync(request.PaymentImage, _pathImage);
+                await UploadImageAsync(request.PaymentImage, _pathImage);
 
             if (!string.IsNullOrEmpty(errorMessge)) return errorMessge;
 
             var order = await _context.Orders
                 .Include(x => x.OrderItems)
+                .ThenInclude(x => x.Product)
                 .FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
             var user = await _authService.GetUserByIdAsync();
@@ -390,18 +394,19 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 if (cartItems.Count > 0) await _context.SaveChangesAsync();
 
                 newOrder.OrderId =
-                   "KRU" + "-"
-                   + user.Id + "-"
-                   + request.StoreId + "-"
-                   + newOrder.Id;
+                    "KRU" + "-"
+                    + user.Id + "-"
+                    + request.StoreId + "-"
+                    + newOrder.Id;
 
                 foreach (var item in cartItems)
                 {
+                    var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == item.Id);
                     var orderItem = new OrderItem
                     {
                         ProductId = item.Id,
                         Quantity = item.QuantityInCartItem,
-                        Order = newOrder,
+                        Product = product
                     };
 
                     newOrder.OrderItems.Add(orderItem);
@@ -411,7 +416,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                         .FirstOrDefaultAsync(x => x.Id == item.CartItemId));
                 }
 
-                newOrder.Shippings.Add(new Shipping()
+                newOrder.Shippings.Add(new Models.Shipping()
                 {
                     CreatedAt = DateTime.Now,
                     Order = newOrder,
@@ -434,12 +439,54 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 _mapper.Map(request, order);
                 _context.Orders.Update(order);
             }
+            await _context.SaveChangesAsync();
 
-            //return await _context.SaveChangesAsync() > 0 ? _mapper.Map<UserRespone>(user) : false;
+            if (request.PaymentMethod == Dtos.Order.PaymentMethod.CreditCard)
+            {
+                var intent = await CreatePaymentIntent(newOrder);
+                if (!string.IsNullOrEmpty(intent.Id))
+                {
+                    newOrder.PaymentIntentId = intent.Id;
+                    newOrder.ClientSecret = intent.ClientSecret;
+                }
+                newOrder.Status = 3;
+            }
+            //else
+            //{
+            //    (string errorMessgeMain, string imageNames) =
+            //    await UploadImageAsync(request.PaymentImage, _pathImage);
+            //    newOrder.PaymentImage = imageNames;
+            //    newOrder.OrderStatus = Dtos.Order.OrderStatus.PendingApproval;
+            //}
 
             await _context.SaveChangesAsync();
             return newOrder.Id;
         }
+
+        private async Task<PaymentIntent> CreatePaymentIntent(Order order)
+        {
+            StripeConfiguration.ApiKey = _configuration["StripeSettings:SecretKey"];
+            var service = new PaymentIntentService();
+            var intent = new PaymentIntent();
+
+            var totalAmount = (long)order.OrderItems
+               .Where(x => x.Product != null && x.Quantity > 0 && x.Product.Price > 0)
+               .Sum(x => x.Product.Price * x.Quantity * 100);
+
+            if (string.IsNullOrEmpty(order.PaymentIntentId))
+            {
+                var options = new PaymentIntentCreateOptions
+                {
+                    Amount = (long)(totalAmount), 
+                    Currency = "THB",
+                    PaymentMethodTypes = new List<string> { "card" }
+                };
+                intent = await service.CreateAsync(options);
+            }
+
+            return intent;
+        }
+
 
         public async Task<object> ConfirmOrderAsync(int orderId, string? trackingId, string? shippingType)
         {
