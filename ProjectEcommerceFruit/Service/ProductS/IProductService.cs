@@ -6,6 +6,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
     public interface IProductService
     {
         Task<List<ProductRespone>> SearchProductAsync(string productName);
+        Task<List<ProductRespone>> GetFilterProductAsync(FilterProducts request);
         Task<List<ProductRespone>> GetProductAsync(int categoryId);
         Task<Object> GetProductByIdAsync(int productId);
         Task<List<ProductRespone>> GetProductByStoreAsync(int storeId);

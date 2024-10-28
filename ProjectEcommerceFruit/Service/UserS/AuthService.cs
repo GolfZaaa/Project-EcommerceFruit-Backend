@@ -118,7 +118,7 @@ namespace ProjectEcommerceFruit.Service.UserS
 
         public async Task<UserRespone> GetTokenDetail()
         {
-            var user = await _dataContext.Users.Include(x => x.Stores).FirstOrDefaultAsync(x => x.Id.Equals(Convert.ToInt32(GetUserId())));
+            var user = await _dataContext.Users.Include(x=>x.Role).Include(x => x.Stores).FirstOrDefaultAsync(x => x.Id.Equals(Convert.ToInt32(GetUserId())));
 
             return _mapper.Map<UserRespone>(user);
         }

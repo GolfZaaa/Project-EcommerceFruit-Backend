@@ -46,7 +46,44 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
             return _mapper.Map<List<ProductRespone>>(products);
         }
-        
+
+        //sortPrice 1 === เรียงจากน้อยไปมาก, 2 === เรียงจากมากไปน้อย
+        public async Task<List<ProductRespone>> GetFilterProductAsync(FilterProducts request)
+        {
+            var query = _context.Products
+                .Include(x => x.ProductGI)
+                    .ThenInclude(x => x.Store)
+                        .ThenInclude(x=>x.User)
+                .Include(x => x.ProductGI)
+                    .ThenInclude(x => x.Category)
+                .Where(x => !x.Hidden && !x.ProductGI.Store.Hidden); // Filter out hidden products and stores
+             
+            // Apply filters based on the provided parameters
+            if (!string.IsNullOrEmpty(request.ProductName))
+            {
+                query = query.Where(x => x.ProductGI.Name.Contains(request.ProductName));
+            }
+
+            if (request.CategoryId > 0)
+            {
+                query = query.Where(x => x.ProductGI.CategoryId == request.CategoryId);
+            }
+
+            // Sort based on the sortPrice parameter
+            if (request.SortPrice == 1)
+            {
+                query = query.OrderBy(x => x.Price); // Ascending
+            }
+            else if (request.SortPrice == 2)
+            {
+                query = query.OrderByDescending(x => x.Price); // Descending
+            }
+
+            // Execute query and map the result to ProductRespone
+            var products = await query.ToListAsync();
+            return _mapper.Map<List<ProductRespone>>(products);
+        }
+
         public async Task<List<ProductRespone>> GetProductAsync(int categoryId)
         {
             var products = await _context.Products
