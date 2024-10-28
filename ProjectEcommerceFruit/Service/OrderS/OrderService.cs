@@ -449,18 +449,36 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     newOrder.PaymentIntentId = intent.Id;
                     newOrder.ClientSecret = intent.ClientSecret;
                 }
-                newOrder.Status = 3;
+                newOrder.Status = 0;
             }
-            //else
-            //{
-            //    (string errorMessgeMain, string imageNames) =
-            //    await UploadImageAsync(request.PaymentImage, _pathImage);
-            //    newOrder.PaymentImage = imageNames;
-            //    newOrder.OrderStatus = Dtos.Order.OrderStatus.PendingApproval;
-            //}
-
             await _context.SaveChangesAsync();
-            return newOrder.Id;
+
+            var result = _context.Orders
+       .Where(o => o.Id == newOrder.Id)
+       .Select(o => new
+       {
+           o.Id,
+           o.OrderId,
+           o.CreatedAt,
+           o.PaymentImage,
+           o.Status,
+           o.ClientSecret,
+           Items = o.OrderItems.Select(i => new
+           {
+               i.ProductId,
+               i.Quantity,
+           }),
+           Shipping = o.Shippings.Select(s => new
+           {
+               s.ShippingFee,
+               s.ShippingStatus,
+               s.CreatedAt
+           })
+       })
+       .FirstOrDefault();
+
+            //return newOrder.Id;
+            return result;
         }
 
         private async Task<PaymentIntent> CreatePaymentIntent(Order order)
