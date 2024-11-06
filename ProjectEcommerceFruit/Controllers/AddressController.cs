@@ -31,8 +31,8 @@ namespace ProjectEcommerceFruit.Controllers
          => Ok(await _addressService.CreateUpdateAddressAsync(request));
 
         [HttpDelete("[action]")]
-        public async Task<IActionResult> RemoveAddressById(int storeId)
-         => Ok(await _addressService.RemoveAddressByIdAsync(storeId));
+        public async Task<IActionResult> RemoveAddressById(int addressId)
+         => Ok(await _addressService.RemoveAddressByIdAsync(addressId));
 
         [HttpPost("[action]"), Authorize]
         public async Task<IActionResult> IsUsedAddress([FromForm] int addressId,[FromForm] bool storeormine)

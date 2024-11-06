@@ -70,9 +70,9 @@ namespace ProjectEcommerceFruit.Service.AddressS
             return await _context.SaveChangesAsync() > 0;
         }
         
-        public async Task<Object> RemoveAddressByIdAsync(int storeId)
+        public async Task<Object> RemoveAddressByIdAsync(int addressId)
         {
-            var result = await _context.Addresses.FirstOrDefaultAsync(x => x.Id.Equals(storeId));
+            var result = await _context.Addresses.FirstOrDefaultAsync(x => x.Id.Equals(addressId));
 
             if (result is null) return "address is null";
 

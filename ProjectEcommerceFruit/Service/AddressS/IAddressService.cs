@@ -9,7 +9,7 @@ namespace ProjectEcommerceFruit.Service.AddressS
         Task<AddressRespone> GetAddressgotoOrderByUserIdAsync();
         Task<AddressRespone> GetAddressByStoreAsync();
         Task<Object> CreateUpdateAddressAsync(AddressRequest request);
-        Task<Object> RemoveAddressByIdAsync(int storeId);
+        Task<Object> RemoveAddressByIdAsync(int addressId);
         Task<Boolean> IsUsedAddressAsync(int addressId, bool storeormine);
     }
 }
