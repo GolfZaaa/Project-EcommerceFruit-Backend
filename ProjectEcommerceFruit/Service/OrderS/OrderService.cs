@@ -7,6 +7,7 @@ using ProjectEcommerceFruit.Dtos.Product;
 using ProjectEcommerceFruit.Models;
 using ProjectEcommerceFruit.Service.UploadFileS;
 using ProjectEcommerceFruit.Service.UserS;
+using Stripe;
 using System.Linq;
 using System.Net.WebSockets;
 
@@ -492,9 +493,13 @@ namespace ProjectEcommerceFruit.Service.OrderS
             var service = new PaymentIntentService();
             var intent = new PaymentIntent();
 
+            var shippingfee = await _context.SystemSettings.FirstOrDefaultAsync();
+
             var totalAmount = (long)order.OrderItems
                .Where(x => x.Product != null && x.Quantity > 0 && x.Product.Price > 0)
                .Sum(x => x.Product.Price * x.Quantity * 100);
+
+            totalAmount += (long)(shippingfee.ShippingCost * 100);
 
             if (string.IsNullOrEmpty(order.PaymentIntentId))
             {
