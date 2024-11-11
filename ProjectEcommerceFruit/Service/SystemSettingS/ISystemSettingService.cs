@@ -24,6 +24,8 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
         Task<Object> CreateUpdateNEWSAsync(NEWSRequest request);
         Task<Object> IsUsedNEWSAsync(int newsId); 
         Task<Object> RemoveNEWSAsync(int newsId);
+        Task<Object> GetNewsByIdAsync(int newsId);
+
 
     }
 }  

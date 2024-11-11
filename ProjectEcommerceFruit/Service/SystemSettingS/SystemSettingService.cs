@@ -267,6 +267,16 @@ namespace ProjectEcommerceFruit.Service.SystemSettingS
             return await _context.SaveChangesAsync() > 0 ? null! : 0;
         }
 
+        public async Task<object> GetNewsByIdAsync(int newsId)
+        {
+            var result = await _context.NEWSs.FirstOrDefaultAsync(x => x.Id.Equals(newsId));
+
+            if (result is null) return "NEWS is null";
+
+
+            return result;
+        }
+
         public async Task<(string errorMessge, string imageNames)> UploadImageAsync(IFormFile formfile, string pathName)
         {
             var errorMessge = string.Empty;
