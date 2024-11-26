@@ -40,7 +40,7 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> SearchOrdersWantToReceipt([FromQuery] string? district, [FromQuery] string? subDistrict)
             => Ok(await _orderService.SearchOrdersWantToReceiptAsync(district, subDistrict));
 
-        [HttpGet("[action]")]
+        [HttpGet("[action]"), Authorize]
         public async Task<IActionResult> SearchOrderToSendByOrderId(string? orderId)
             => Ok(await _orderService.SearchOrderToSendByOrderIdAsync(orderId));
         

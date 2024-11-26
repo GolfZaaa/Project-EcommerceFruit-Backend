@@ -175,17 +175,18 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
         public async Task<List<TestOrderToReceipt>> GetOrdersWantToReceiptAsync()
             => await _context.Orders
-                .Where(x => x.Status == 1 && x.Tag == "จัดส่งผ่านผู้รับหิ้ว"
-                    && x.ConfirmReceipt == 0
-                    && x.Shippings.Any(s => s.ShippingStatus == 0)
-                    && x.Shippings.All(s => s.DriverHistories.Count == 0))  // Optimize filtering here
                 .Include(x => x.Address)
+                .ThenInclude(x=>x.User)
                 .Include(x => x.OrderItems)
                     .ThenInclude(i => i.Product.ProductGI.Store.User.Addresses)
                 .Include(x => x.OrderItems)
                     .ThenInclude(i => i.Product.ProductGI.Category)
                 .Include(x => x.Shippings)
                     .ThenInclude(s => s.DriverHistories)
+                .Where(x => x.Status == 1 && x.Tag == "จัดส่งผ่านผู้รับหิ้ว"
+                    && x.ConfirmReceipt == 0
+                    && x.Shippings.Any(s => s.ShippingStatus == 0)
+                    && x.Shippings.All(s => s.DriverHistories.Count == 0))  // Optimize filtering here
                 .Select(x => new TestOrderToReceipt
                 {
                     Order = _mapper.Map<OrderRespone>(x),
@@ -198,41 +199,41 @@ namespace ProjectEcommerceFruit.Service.OrderS
                          //x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User.Addresses != null
                          x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store))
                 }).ToListAsync();
-        //await _context.Orders
-        //    .AsNoTracking()
-        //    .Include(x => x.Address)
-        //        .ThenInclude(x => x.User)
-        //            .ThenInclude(x => x.Role)
-        //    .Include(x => x.OrderItems)
-        //        .ThenInclude(x => x.Product)
-        //            .ThenInclude(x => x.ProductGI)
-        //                .ThenInclude(x => x.Store)
-        //                    .ThenInclude(x => x.User)
-        //                        .ThenInclude(x => x.Addresses)
-        //    .Include(x => x.OrderItems)
-        //        .ThenInclude(x => x.Product)
-        //            .ThenInclude(x => x.ProductGI)
-        //                .ThenInclude(x => x.Category)
-        //    .Include(x => x.Shippings)
-        //        .ThenInclude(x => x.DriverHistories)
-        //    .Where(x => x.Status == 1 && x.Tag == "จัดส่งผ่านผู้รับหิ้ว"
-        //    && x.ConfirmReceipt == 0
-        //    && x.Shippings.Any(x => x.ShippingStatus == 0)
-        //    && x.Shippings.Any(x => x.DriverHistories.Count() == 0))
-        //    .Select(x => new TestOrderToReceipt
-        //    {
-        //        Order = _mapper.Map<OrderRespone>(x),  // Map Order to OrderRespone
-        //        Address = _mapper.Map<AddressRespone>(
-        //            x.OrderItems.FirstOrDefault() != null &&
-        //            x.OrderItems.FirstOrDefault().Product != null &&
-        //            x.OrderItems.FirstOrDefault().Product.ProductGI != null &&
-        //            x.OrderItems.FirstOrDefault().Product.ProductGI.Store != null &&
-        //            x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User != null &&
-        //            x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User.Addresses != null
-        //            ? x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store)
-        //            : null
-        //        )
-        //    }).ToListAsync();
+                //await _context.Orders
+                //    .AsNoTracking()
+                //    .Include(x => x.Address)
+                //        .ThenInclude(x => x.User)
+                //            .ThenInclude(x => x.Role)
+                //    .Include(x => x.OrderItems)
+                //        .ThenInclude(x => x.Product)
+                //            .ThenInclude(x => x.ProductGI)
+                //                .ThenInclude(x => x.Store)
+                //                    .ThenInclude(x => x.User)
+                //                        .ThenInclude(x => x.Addresses)
+                //    .Include(x => x.OrderItems)
+                //        .ThenInclude(x => x.Product)
+                //            .ThenInclude(x => x.ProductGI)
+                //                .ThenInclude(x => x.Category)
+                //    .Include(x => x.Shippings)
+                //        .ThenInclude(x => x.DriverHistories)
+                //    .Where(x => x.Status == 1 && x.Tag == "จัดส่งผ่านผู้รับหิ้ว"
+                //    && x.ConfirmReceipt == 0
+                //    && x.Shippings.Any(x => x.ShippingStatus == 0)
+                //    && x.Shippings.Any(x => x.DriverHistories.Count() == 0))
+                //    .Select(x => new TestOrderToReceipt
+                //    {
+                //        Order = _mapper.Map<OrderRespone>(x),  // Map Order to OrderRespone
+                //        Address = _mapper.Map<AddressRespone>(
+                //            x.OrderItems.FirstOrDefault() != null &&
+                //            x.OrderItems.FirstOrDefault().Product != null &&
+                //            x.OrderItems.FirstOrDefault().Product.ProductGI != null &&
+                //            x.OrderItems.FirstOrDefault().Product.ProductGI.Store != null &&
+                //            x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User != null &&
+                //            x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User.Addresses != null
+                //            ? x.OrderItems.FirstOrDefault().Product.ProductGI.Store.User.Addresses.FirstOrDefault(x => x.IsUsed_Store)
+                //            : null
+                //        )
+                //    }).ToListAsync();
 
         public async Task<List<TestOrderToReceipt>> SearchOrdersWantToReceiptAsync(string? district, string? subDistrict)
         {
@@ -265,13 +266,16 @@ namespace ProjectEcommerceFruit.Service.OrderS
         {
             var result = await GetOrdersAsync();
 
+            var user = await _authService.GetUserByIdAsync();
+
             if (orderId != null)
             {
                 return result.Where(x => x.Shippings.Count() > 0
                     && x.OrderId == orderId
                     && x.ConfirmReceipt == 0
                     && x.Status == 1
-                    && x.Shippings.Last().ShippingStatus != 1 && x.Shippings.Last().ShippingStatus != 2).ToList();
+                    && x.Shippings.Last().ShippingStatus != 1 && x.Shippings.Last().ShippingStatus != 2
+                    && x.Shippings.Last().DriverHistories.All(x=>x.UserId != user.Id)).ToList();
             }
             else
             {

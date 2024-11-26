@@ -139,7 +139,7 @@ namespace ProjectEcommerceFruit.Service.UserS
                 issuer: _configuration["JWT:Issuer"],
                 audience: _configuration["JWT:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddDays(1),
+                expires: DateTime.Now.AddDays(14),
                 signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
