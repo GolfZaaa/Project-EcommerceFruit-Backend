@@ -534,7 +534,10 @@ namespace ProjectEcommerceFruit.Service.OrderS
                     .FirstOrDefaultAsync(x => x.Id == item.ProductId);
 
                 product.Sold += item.Quantity;
-                product.Quantity -= item.Quantity;
+
+
+                //product.Quantity -= item.Quantity;
+                product.Quantity = product.Quantity - item.Quantity < 0 ? 0 : product.Quantity - item.Quantity;
             }
 
             return await _context.SaveChangesAsync() > 0;
