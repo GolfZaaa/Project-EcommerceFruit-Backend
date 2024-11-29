@@ -73,8 +73,8 @@ namespace ProjectEcommerceFruit.Controllers
             => Ok(await _orderService.ChangeConfirmReceiptOrderAsync(orderId, status));
 
         [HttpPost("[action]")] 
-        public async Task<IActionResult> ChangeConfirmSendOrder([FromForm] List<int> orderId)
-            => Ok(await _orderService.ChangeConfirmSendOrderAsync(orderId));
+        public async Task<IActionResult> ChangeConfirmSendOrder([FromForm] ConfirmSendOrder request)
+            => Ok(await _orderService.ChangeConfirmSendOrderAsync(request));
 
         [HttpPost("[action]"), Authorize]
         public async Task<IActionResult> CreateOrderToReceipt([FromForm] List<int> orderId)

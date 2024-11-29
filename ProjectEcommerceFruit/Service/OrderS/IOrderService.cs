@@ -19,7 +19,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
         Task<Object> ConfirmOrderAsync(int orderId, string? trackingId, string? shippingType);
         Task<Object> CancelOrderAsync(int orderId);
         Task<Object> ChangeConfirmReceiptOrderAsync(int orderId, int status);
-        Task<Object> ChangeConfirmSendOrderAsync(List<int> orderId);
+        Task<Object> ChangeConfirmSendOrderAsync(ConfirmSendOrder request);
 
         Task<Object> CreateOrderToReceiptAsync(List<int> orderId);
 
