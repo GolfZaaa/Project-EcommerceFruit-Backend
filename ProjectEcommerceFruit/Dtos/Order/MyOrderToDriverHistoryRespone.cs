@@ -23,7 +23,7 @@ namespace ProjectEcommerceFruit.Dtos.Order
         public int ShippingFee { get; set; }
         public int ShippingStatus { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string SendedOrderImage { get; set; }
+        public string? SendedOrderImage { get; set; }
 
         public ICollection<MyOrderToDriverHistoryRespone> DriverHistories { get; set; } = new List<MyOrderToDriverHistoryRespone>();
 
