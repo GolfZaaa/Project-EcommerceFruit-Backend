@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using ProjectEcommerceFruit.Dtos.Product;
 using ProjectEcommerceFruit.Dtos.Store;
 using ProjectEcommerceFruit.Service.StoreS;
 
@@ -48,9 +49,9 @@ namespace ProjectEcommerceFruit.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<IActionResult> GetStoreProductUser(int userid)
+        public async Task<IActionResult> GetStoreProductUserAsync([FromQuery] FilterProductsStore request)
         {
-            var result = await _storeService.GetStoreProductUserAsync(userid);
+            var result = await _storeService.GetStoreProductUserAsync(request);
             return Ok(result);
         }
 

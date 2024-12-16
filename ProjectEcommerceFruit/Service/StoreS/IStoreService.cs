@@ -1,4 +1,5 @@
-﻿using ProjectEcommerceFruit.Dtos.Store;
+﻿using ProjectEcommerceFruit.Dtos.Product;
+using ProjectEcommerceFruit.Dtos.Store;
 using ProjectEcommerceFruit.Models;
 
 namespace ProjectEcommerceFruit.Service.StoreS
@@ -11,7 +12,7 @@ namespace ProjectEcommerceFruit.Service.StoreS
         Task<Object> RemoveStoreByIdAsync(int storeId);
         Task<dynamic> StoreAllAsync();
         Task<Object> DeleteStoreAsync(int id);
-        Task<Object> GetStoreProductUserAsync(int userid);
+        Task<List<ProductRespone>> GetStoreProductUserAsync(FilterProductsStore request);
         Task<Object> GetStoreDetailByUserIdAsync(int userId);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using ProjectEcommerceFruit.Data;
+using ProjectEcommerceFruit.Dtos.Product;
+using ProjectEcommerceFruit.Dtos.ProductGI;
 using ProjectEcommerceFruit.Dtos.Store;
 using ProjectEcommerceFruit.Models;
 using ProjectEcommerceFruit.Service.UserS;
@@ -148,51 +150,120 @@ namespace ProjectEcommerceFruit.Service.StoreS
             return result;
         }
 
-        public async Task<object> GetStoreProductUserAsync(int userid)
+        public async Task<List<ProductRespone>> GetStoreProductUserAsync(FilterProductsStore request)
         {
-            var result = await _context.Products
+            // Query the products with related entities and initial filters
+            var query = _context.Products
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Store)
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Category)
-                .Where(x => x.ProductGI.Store.UserId == userid)
-                .Select(x => new
-                {
-                    x.Id,
-                    x.Images,
-                    x.Weight,
-                    x.Quantity,
-                    x.Price,
-                    x.Sold,
-                    x.Expire,
-                    x.Detail,
-                    x.Status,
-                    x.CreatedAt,
-                    x.Hidden,
-                    ProductGI = new
-                    {
-                        x.ProductGI.Id,
-                        x.ProductGI.Name,
-                        x.ProductGI.Description,
-                        x.ProductGI.Status,
-                        Category = new
-                        {
-                            x.ProductGI.Category.Id,
-                            x.ProductGI.Category.Name
-                        },
-                        Store = new
-                        {
-                            x.ProductGI.Store.Id,
-                            x.ProductGI.Store.Name,
-                            x.ProductGI.Store.Description,
-                            x.ProductGI.Store.UserId,
-                        }
-                    }
-                })
-                .ToListAsync();
+                .Where(x => x.ProductGI.Store.UserId == request.UserId);
 
-                    return result;
+            // Apply filtering and sorting
+            if (!string.IsNullOrEmpty(request.ProductName))
+            {
+                query = query.Where(x => x.ProductGI.Name.Contains(request.ProductName));
+            }
+
+            if (request.CategoryId > 0)
+            {
+                query = query.Where(x => x.ProductGI.Category.Id == request.CategoryId);
+            }
+
+            if (request.SortPrice == 1)
+            {
+                query = query.OrderBy(x => x.Price); // Ascending
+            }
+            else if (request.SortPrice == 2)
+            {
+                query = query.OrderByDescending(x => x.Price); // Descending
+            }
+
+            // Execute query and project results
+            var products = await query.Select(x => new ProductRespone
+            {
+                Id = x.Id,
+                Images = x.Images,
+                Weight = x.Weight,
+                Quantity = x.Quantity,
+                Price = x.Price,
+                Sold = x.Sold,
+                Expire = x.Expire,
+                Detail = x.Detail,
+                Status = x.Status,
+                CreatedAt = x.CreatedAt,
+                ProductGI = new ProductGIRespone
+                {
+                    Id = x.ProductGI.Id,
+                    Name = x.ProductGI.Name,
+                    Description = x.ProductGI.Description,
+                    Status = x.ProductGI.Status,
+                    Category = new Category
+                    {
+                        Id = x.ProductGI.Category.Id,
+                        Name = x.ProductGI.Category.Name
+                    },
+                    Store = new StoreRespone
+                    {
+                        Id = x.ProductGI.Store.Id,
+                        Name = x.ProductGI.Store.Name,
+                        Description = x.ProductGI.Store.Description,
+                        UserId = x.ProductGI.Store.UserId
+                    }
                 }
+            }).ToListAsync();
+
+            // Return filtered and mapped products
+            return products;
+        }
+         
+
+        //public async Task<object> GetStoreProductUserAsync(int userid)
+        //{
+        //    var result = await _context.Products
+        //        .Include(x => x.ProductGI)
+        //            .ThenInclude(x => x.Store)
+        //        .Include(x => x.ProductGI)
+        //            .ThenInclude(x => x.Category)
+        //        .Where(x => x.ProductGI.Store.UserId == userid)
+        //        .Select(x => new
+        //        {
+        //            x.Id,
+        //            x.Images,
+        //            x.Weight,
+        //            x.Quantity,
+        //            x.Price,
+        //            x.Sold,
+        //            x.Expire,
+        //            x.Detail,
+        //            x.Status,
+        //            x.CreatedAt,
+        //            x.Hidden,
+        //            ProductGI = new
+        //            {
+        //                x.ProductGI.Id,
+        //                x.ProductGI.Name,
+        //                x.ProductGI.Description,
+        //                x.ProductGI.Status,
+        //                Category = new
+        //                {
+        //                    x.ProductGI.Category.Id,
+        //                    x.ProductGI.Category.Name
+        //                },
+        //                Store = new
+        //                {
+        //                    x.ProductGI.Store.Id,
+        //                    x.ProductGI.Store.Name,
+        //                    x.ProductGI.Store.Description,
+        //                    x.ProductGI.Store.UserId,
+        //                }
+        //            }
+        //        })
+        //        .ToListAsync();
+
+        //            return result;
+        //        }
 
 
 

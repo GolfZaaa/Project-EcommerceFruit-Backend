@@ -23,7 +23,7 @@ namespace ProjectEcommerceFruit.Models
         public int ShippingFee { get; set; }
         public int ShippingStatus { get; set; }
         public DateTime CreatedAt { get; set; }
-        public string SendedOrderImage { get; set; }
+        public string? SendedOrderImage { get; set; }
             
         public int OrderId { get; set; }
         public Order Order { get; set; }

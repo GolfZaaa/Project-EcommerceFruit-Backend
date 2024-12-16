@@ -69,5 +69,9 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpDelete("[action]")]
         public async Task<IActionResult> RemoveNEWS(int newsId)
             => Ok(await _service.RemoveNEWSAsync(newsId));
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetNewsById(int newsId)
+    => Ok(await _service.GetNewsByIdAsync(newsId));
     }
 }

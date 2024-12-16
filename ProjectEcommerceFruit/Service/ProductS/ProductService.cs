@@ -56,7 +56,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
                         .ThenInclude(x=>x.User)
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Category)
-                .Where(x => !x.Hidden && !x.ProductGI.Store.Hidden); // Filter out hidden products and stores
+                .Where(x => !x.Hidden && !x.ProductGI.Store.Hidden && x.Status); // Filter out hidden products and stores
              
             // Apply filters based on the provided parameters
             if (!string.IsNullOrEmpty(request.ProductName))
@@ -72,11 +72,11 @@ namespace ProjectEcommerceFruit.Service.ProductS
             // Sort based on the sortPrice parameter
             if (request.SortPrice == 1)
             {
-                query = query.OrderBy(x => x.Price); // Ascending
+                query = query.OrderBy(x => x.Price); // Ascending น้อยไปมาก
             }
             else if (request.SortPrice == 2)
             {
-                query = query.OrderByDescending(x => x.Price); // Descending
+                query = query.OrderByDescending(x => x.Price); // Descending มากไปน้อย
             }
 
             // Execute query and map the result to ProductRespone

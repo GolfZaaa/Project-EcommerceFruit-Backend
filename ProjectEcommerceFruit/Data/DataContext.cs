@@ -15,12 +15,16 @@ namespace ProjectEcommerceFruit.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=DESKTOP-E89K85P; Database=ProjectSellFru1t1; Trusted_connection=true; TrustServerCertificate=true; Encrypt=False");
+            optionsBuilder.UseSqlServer("Server=DESKTOP-E89K85P; Database=SellFruit; Trusted_connection=true; TrustServerCertificate=true");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<SystemSetting>().HasData(
+                new SystemSetting { Id = 1, WebName = "อานาตาปัตชัยเย", Description = "Hahaha", Image = null, ShippingCost = 40 }
+                );
 
             modelBuilder.Entity<Role>().HasData(
                 new Role { Id = 1, Name = "Admin" },
@@ -31,8 +35,8 @@ namespace ProjectEcommerceFruit.Data
                 new User
                 {
                     Id = 1,
-                    FullName = "Admin1",
-                    PhoneNumber = "0123456789",
+                    FullName = "admin",
+                    PhoneNumber = "1111111111",
                     Username = "admin",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
                     RoleId = 1,
@@ -40,8 +44,35 @@ namespace ProjectEcommerceFruit.Data
                 new User
                 {
                     Id = 2,
-                    FullName = "User Haha",
-                    PhoneNumber = "0987654321",
+                    FullName = "ร้านค้า 1",
+                    PhoneNumber = "1111111112",
+                    Username = "shop1",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
+                    RoleId = 2,
+                },
+                new User
+                {
+                    Id = 3,
+                    FullName = "ร้านค้า 2",
+                    PhoneNumber = "1111111113",
+                    Username = "shop1",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
+                    RoleId = 2,
+                },
+                new User
+                {
+                    Id = 4,
+                    FullName = "ลูกค้า 1",
+                    PhoneNumber = "1111111114",
+                    Username = "user1",
+                    PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
+                    RoleId = 2,
+                },
+                new User
+                {
+                    Id = 5,
+                    FullName = "พลส่ง 1",
+                    PhoneNumber = "1111111115",
                     Username = "user1",
                     PasswordHash = BCrypt.Net.BCrypt.HashPassword("1234"),
                     RoleId = 2,
@@ -60,7 +91,7 @@ namespace ProjectEcommerceFruit.Data
                     Name = "ทองผาภูมิ มีดี",
                     Description = "แหล่งผลิตที่ทองผาภูมิ",
                     CreatedAt = DateTime.Now,
-                    UserId = 1,
+                    UserId = 2,
                     Hidden = false
                 },
                 new Store
@@ -69,8 +100,39 @@ namespace ProjectEcommerceFruit.Data
                     Name = "อาปาชาเฮ้",
                     Description = "แหล่งผลิตที่ทองผาภูมิ",
                     CreatedAt = DateTime.Now,
-                    UserId = 2,
+                    UserId = 3,
                     Hidden = false
+                }
+            );
+
+            modelBuilder.Entity<Address>().HasData(
+                new Address
+                {
+                    Id = 1,
+                    Detail = "1/23 หมู่ 1",
+                    CreatedAt = DateTime.Now,
+                    Province = "กาญจนบุรี",
+                    District = "เมืองกาญจนบุรี",
+                    SubDistrict = "วังด้ง",
+                    PostCode = "71190",
+                    IsUsed = false,
+                    IsUsed_Store = true,
+                    GPS = "",
+                    UserId = 2,
+                },
+                new Address
+                {
+                    Id = 2,
+                    Detail = "33/45 หมู่ 6",
+                    CreatedAt = DateTime.Now,
+                    Province = "กาญจนบุรี",
+                    District = "ทองผาภูมิ",
+                    SubDistrict = "ชะแล",
+                    PostCode = "71180",
+                    IsUsed = false,
+                    IsUsed_Store = true,
+                    GPS = "",
+                    UserId = 3,
                 }
             );
 

@@ -1,4 +1,6 @@
-﻿namespace ProjectEcommerceFruit.Models
+﻿using ProjectEcommerceFruit.Dtos.Order;
+
+namespace ProjectEcommerceFruit.Models
 {
     public class Order
     {
@@ -14,7 +16,17 @@
         public int AddressId { get; set; }
         public Address Address { get; set; }
 
+        public string? PaymentIntentId { get; set; }
+        public string? ClientSecret { get; set; }
+        //public OrderStatus OrderStatus { get; set; }
+
+
         public ICollection<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
         public ICollection<Shipping> Shippings { get; set; } = new List<Shipping>();
+
+        public long GetTotalAmount()
+        {
+            return (long)OrderItems.Sum(x => x.Product.Price);
+        }
     }
 }
