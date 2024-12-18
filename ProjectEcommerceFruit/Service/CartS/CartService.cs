@@ -142,6 +142,10 @@ namespace ProjectEcommerceFruit.Service.CartS
 
             if(cartItem is null)
             {
+                if(product.Quantity == 0)
+                {
+                    return "Product is Out of stock";
+                }
                 var newcartItem = new CartItem()
                 {
                     UserId = user.Id,

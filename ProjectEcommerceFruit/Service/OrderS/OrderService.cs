@@ -10,6 +10,7 @@ using ProjectEcommerceFruit.Service.UserS;
 using Stripe;
 using System.Linq;
 using System.Net.WebSockets;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ProjectEcommerceFruit.Service.OrderS
 {
@@ -334,6 +335,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
                         .ThenInclude(x => x.ProductGI)
                             .ThenInclude(x => x.Category)
                 .Include(x => x.Shippings)
+                 .ThenInclude(x => x.DriverHistories)
                 .Where(x => x.Address.UserId.Equals(user.Id))
                 .OrderByDescending(x => x.CreatedAt).ToListAsync();
 
@@ -395,6 +397,22 @@ namespace ProjectEcommerceFruit.Service.OrderS
                 }
 
                 var cartItems = await GetCartItemByUserOrderByStore(user.Id, request.StoreId);
+
+                foreach (var item in cartItems)
+                {
+                    var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == item.Id);
+                    if (product == null || product.Quantity < item.QuantityInCartItem)
+                    {
+                        _context.CartItems
+                       .Remove(await _context.CartItems
+                       .FirstOrDefaultAsync(x => x.ProductId == product.Id));
+                        await _context.SaveChangesAsync();
+                        return "Product Out of Stock";
+                    }
+                }
+                //if (!cartItems.Any()){
+                //    return "Product Out of Stock";
+                //}
 
                 await _context.Orders.AddAsync(newOrder);
 

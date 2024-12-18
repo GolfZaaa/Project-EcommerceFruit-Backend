@@ -56,7 +56,7 @@ namespace ProjectEcommerceFruit.Service.ProductS
                         .ThenInclude(x=>x.User)
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Category)
-                .Where(x => !x.Hidden && !x.ProductGI.Store.Hidden && x.Status); // Filter out hidden products and stores
+                .Where(x => !x.Hidden && !x.ProductGI.Store.Hidden && x.Status && x.Quantity > 0); // Filter out hidden products and stores
              
             // Apply filters based on the provided parameters
             if (!string.IsNullOrEmpty(request.ProductName))
