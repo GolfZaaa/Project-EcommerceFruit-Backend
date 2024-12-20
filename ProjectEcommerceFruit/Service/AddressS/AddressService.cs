@@ -63,6 +63,14 @@ namespace ProjectEcommerceFruit.Service.AddressS
             }
             else
             {
+                if (address.IsUsed_Store)
+                {
+                    foreach (var item in user.Addresses)
+                    {
+                        item.IsUsed_Store = false;
+                    }
+                }
+
                 _mapper.Map(request, address);
                 _context.Addresses.Update(address);
             }
@@ -72,9 +80,24 @@ namespace ProjectEcommerceFruit.Service.AddressS
         
         public async Task<Object> RemoveAddressByIdAsync(int addressId)
         {
-            var result = await _context.Addresses.FirstOrDefaultAsync(x => x.Id.Equals(addressId));
+            var result = await _context.Addresses.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(addressId));
 
             if (result is null) return "address is null";
+
+            var adr = await _context.Addresses.FirstOrDefaultAsync(x => x.UserId.Equals(result.UserId) && x.Id != result.Id);
+
+            if (adr is not null)
+            {
+                if (result.IsUsed)
+                {
+                    adr.IsUsed = true;
+                }
+
+                if (result.IsUsed_Store)
+                {
+                    adr.IsUsed_Store = true;
+                }
+            }
 
             _context.Addresses.Remove(result);
 
