@@ -45,6 +45,9 @@ namespace ProjectEcommerceFruit.Helper
             CreateMap<ProductRequest, Product>()
                 .ForMember(dest => dest.Images, opt => opt.Ignore());
 
+            CreateMap<ProductRequest, Product>()
+                .ForAllMembers(opt => opt.Condition((src, dest, srcMember) => srcMember != null));
+
             CreateMap<OrderRequest, Order>();
             CreateMap<Order, OrderRespone>();
 

@@ -206,14 +206,15 @@ namespace ProjectEcommerceFruit.Service.ProductS
 
             var product = await _context.Products.FirstOrDefaultAsync(x => x.Id.Equals(request.Id));
 
-            var newProduct = _mapper.Map<Product>(request);
-
             if (product is null)
             {
+                var newProduct = _mapper.Map<Product>(request);
+
                 newProduct.CreatedAt = DateTime.Now;
                 newProduct.Sold = 0;
                 newProduct.Status = true;
-
+                newProduct.Expire = DateTime.Now.AddDays(request.Expire);
+                
                 if (request.Images is not null)
                 {
                     newProduct.Images = imageName;
@@ -223,7 +224,10 @@ namespace ProjectEcommerceFruit.Service.ProductS
             }
             else
             {
+                var expire = product.Expire;
+
                 _mapper.Map(request, product);
+                product.Expire = expire;
 
                 if (request.Images is not null)
                 {

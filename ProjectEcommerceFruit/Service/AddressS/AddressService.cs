@@ -83,10 +83,10 @@ namespace ProjectEcommerceFruit.Service.AddressS
             var result = await _context.Addresses.AsNoTracking().FirstOrDefaultAsync(x => x.Id.Equals(addressId));
 
             if (result is null) return "address is null";
-
-            var adr = await _context.Addresses.FirstOrDefaultAsync(x => x.UserId.Equals(result.UserId) && x.Id != result.Id);
-
-            if (adr is not null)
+            
+            var adr = await _context.Addresses.FirstOrDefaultAsync(x=>x.UserId.Equals(result.UserId) && x.Id != result.Id);
+            
+            if(adr is not null)
             {
                 if (result.IsUsed)
                 {
@@ -98,7 +98,7 @@ namespace ProjectEcommerceFruit.Service.AddressS
                     adr.IsUsed_Store = true;
                 }
             }
-
+            
             _context.Addresses.Remove(result);
 
             return await _context.SaveChangesAsync() > 0;
