@@ -296,6 +296,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
             if (orderId != null)
             {
                 return result.Where(x => x.Shippings.Count() > 0
+                    && x.Shippings.Any(x => x.DriverHistories.Count() > 0)
                     && x.OrderId == orderId
                     && x.ConfirmReceipt == 0
                     && x.Status == 1
