@@ -6,6 +6,7 @@ namespace ProjectEcommerceFruit.Service.OrderS
     public interface IOrderService
     {
         Task<List<OrderRespone>> GetOrdersAsync();
+        Task<Object> CancelOrderMyReceiptAsync(int driverHisId);
         Task<List<TestOrderToReceipt>> GetOrdersWantToReceiptAsync();
         Task<Object> IWantToTakeOrdertoSendAsync(List<int> orderId);
         Task<List<OrderRespone>> GetMyOrderUserWantToTaketoSendAsync();

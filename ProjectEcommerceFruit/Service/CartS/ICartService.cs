@@ -10,5 +10,6 @@ namespace ProjectEcommerceFruit.Service.CartS
         Task<Object> GetCartItemByUserOrderByStoreAsync();
         Task<Object> AddToCartAsync(AddToCartDto request);
         Task<Object> RemoveToCartAsync(RemoveToCartDto request);
+        Task<Boolean> CheckExpireProductInCartAsync(int cartItemId);
     }
 }

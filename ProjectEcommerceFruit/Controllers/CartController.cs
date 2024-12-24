@@ -33,5 +33,10 @@ namespace ProjectEcommerceFruit.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> RemoveToCart(RemoveToCartDto request)
             => Ok(await _cartService.RemoveToCartAsync(request));
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult<Boolean>> CheckExpireProductInCart(int cartItemId)
+            => Ok(await _cartService.CheckExpireProductInCartAsync(cartItemId));
     }
 }
+ 

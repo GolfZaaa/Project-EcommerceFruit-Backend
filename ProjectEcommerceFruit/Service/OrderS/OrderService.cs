@@ -179,6 +179,25 @@ namespace ProjectEcommerceFruit.Service.OrderS
             return await _context.SaveChangesAsync() > 0;
         }
 
+        public async Task<object> CancelOrderMyReceiptAsync(int driverHisId)
+        {
+            var user = await _authService.GetUserByIdAsync();
+             
+            var driver = await _context.DriverHistories.FirstOrDefaultAsync(x => x.UserId == user.Id && x.Id == driverHisId && x.StatusDriver == 0);
+            
+            if (driver is not null)
+            {
+                var Shippings = await _context.Shippings
+                    .Include(x=>x.DriverHistories).FirstOrDefaultAsync(x => x.Id == driver.ShippingId);
+
+                _context.DriverHistories.RemoveRange(Shippings.DriverHistories.ToList());
+
+                return await _context.SaveChangesAsync() > 0;
+            }
+
+            return "driver history is null";
+        }
+
         public async Task<List<TestOrderToReceipt>> GetOrdersWantToReceiptAsync()
             => await _context.Orders
                 .Include(x => x.Address)

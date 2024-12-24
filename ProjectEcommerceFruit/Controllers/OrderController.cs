@@ -20,6 +20,10 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> GetOrders()
             => Ok(await _orderService.GetOrdersAsync());
 
+        [HttpPost("[action]"), Authorize]
+        public async Task<IActionResult> CancelOrderMyReceipt(int driverHisId)
+           => Ok(await _orderService.CancelOrderMyReceiptAsync(driverHisId));
+        
         [HttpGet("[action]")]
         public async Task<IActionResult> GetOrdersWantToReceipt() 
             => Ok(await _orderService.GetOrdersWantToReceiptAsync());

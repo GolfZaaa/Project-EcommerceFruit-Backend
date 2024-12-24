@@ -181,5 +181,20 @@ namespace ProjectEcommerceFruit.Service.CartS
 
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<bool> CheckExpireProductInCartAsync(int cartItemId)
+        {
+            var cartItem = _context.CartItems
+                .Include(x=>x.Product).FirstOrDefault(x => x.Id == cartItemId);
+
+            var CheckExpire = cartItem.Product.Expire < DateTime.Now;
+
+            if(!!CheckExpire)
+            {
+                _context.Remove(cartItem);
+            }
+
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }

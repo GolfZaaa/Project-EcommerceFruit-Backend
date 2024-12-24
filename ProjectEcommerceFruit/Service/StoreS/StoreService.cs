@@ -158,7 +158,7 @@ namespace ProjectEcommerceFruit.Service.StoreS
                     .ThenInclude(x => x.Store)
                 .Include(x => x.ProductGI)
                     .ThenInclude(x => x.Category)
-                .Where(x => x.ProductGI.Store.UserId == request.UserId);
+                .Where(x => x.ProductGI.Store.UserId == request.UserId && x.Expire > DateTime.Now);
 
             // Apply filtering and sorting
             if (!string.IsNullOrEmpty(request.ProductName))
