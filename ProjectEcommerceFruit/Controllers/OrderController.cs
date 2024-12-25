@@ -88,5 +88,8 @@ namespace ProjectEcommerceFruit.Controllers
         public async Task<IActionResult> GetOrderItemByOrderId(int orderId)
         => Ok(await _orderService.GetOrderItemByOrderIdAsync(orderId));
 
+        [HttpPost("[action]")]
+        public async Task<IActionResult> RefundOrder(int orderId)
+        => Ok(await _orderService.RefundOrderAsync(orderId));
     }
 }

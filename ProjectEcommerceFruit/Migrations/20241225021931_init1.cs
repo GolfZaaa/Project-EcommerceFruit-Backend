@@ -403,11 +403,11 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "FullName", "Hidden", "PasswordHash", "PhoneNumber", "RoleId", "Username" },
                 values: new object[,]
                 {
-                    { 1, "admin", false, "$2a$11$vVKdXo1yfpUEwV2IARoXRea.x2z2arSLJ71YkXN9VU8dzjeb37IUu", "1111111111", 1, "admin" },
-                    { 2, "ร้านค้า 1", false, "$2a$11$P6BJivyUwKwXfSGDwxTewOrVIyTQTpXo0S/U8O9BdwrTPIm6rtTG2", "1111111112", 2, "shop1" },
-                    { 3, "ร้านค้า 2", false, "$2a$11$wbC30YvPqpTA0TyPXabEd.oL57mPl.lP7tpvNjx7MFM0j9fBrbGgC", "1111111113", 2, "shop1" },
-                    { 4, "ลูกค้า 1", false, "$2a$11$TJC/5gLsyp9H/qA5rfBMs.Krs9zJ/EKybAsJXri/U99M.S4aafq0m", "1111111114", 2, "user1" },
-                    { 5, "พลส่ง 1", false, "$2a$11$yn/bfJl0oGHvF8GhQ0hCj.6Hht3/hhhWNAYdEAw9w6EGU5qHe18x.", "1111111115", 2, "user1" }
+                    { 1, "admin", false, "$2a$11$6aEWA8MNxJMPRq4XOXmmiOFSWOYPmTYyPGkLueff5JFQr7WAllarW", "1111111111", 1, "admin" },
+                    { 2, "ร้านค้า 1", false, "$2a$11$uh2210Tc.jGUOZ0/bZjwDuWkQG8mj4ykPjDnwZ/f9fWvkeKb0QJHS", "1111111112", 2, "shop1" },
+                    { 3, "ร้านค้า 2", false, "$2a$11$vqCzpo.X6K5CL1QmVOiP1uoVydFu5I51wSPe9pACBL8sdQuXKsGy2", "1111111113", 2, "shop1" },
+                    { 4, "ลูกค้า 1", false, "$2a$11$11pyTJ03BlUEJ670EFKHnOu/GIuw4tUsf7toBZZQNgdGgz4XwYrVC", "1111111114", 2, "user1" },
+                    { 5, "พลส่ง 1", false, "$2a$11$8evn60TD0ia/AnWlRWTNxe7Ne1a.rzRydxg1TxA.5.gePURk3iOH.", "1111111115", 2, "user1" }
                 });
 
             migrationBuilder.InsertData(
@@ -415,8 +415,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "CreatedAt", "Detail", "District", "GPS", "IsUsed", "IsUsed_Store", "PostCode", "Province", "SubDistrict", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(4536), "1/23 หมู่ 1", "เมืองกาญจนบุรี", "", false, true, "71190", "กาญจนบุรี", "วังด้ง", 2 },
-                    { 2, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(4543), "33/45 หมู่ 6", "ทองผาภูมิ", "", false, true, "71180", "กาญจนบุรี", "ชะแล", 3 }
+                    { 1, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5218), "1/23 หมู่ 1", "เมืองกาญจนบุรี", "", false, true, "71190", "กาญจนบุรี", "วังด้ง", 2 },
+                    { 2, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5222), "33/45 หมู่ 6", "ทองผาภูมิ", "", false, true, "71180", "กาญจนบุรี", "ชะแล", 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -424,8 +424,8 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "CreatedAt", "Description", "Hidden", "Name", "UserId" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(4410), "แหล่งผลิตที่ทองผาภูมิ", false, "ทองผาภูมิ มีดี", 2 },
-                    { 2, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(4425), "แหล่งผลิตที่ทองผาภูมิ", false, "อาปาชาเฮ้", 3 }
+                    { 1, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5101), "แหล่งผลิตที่ทองผาภูมิ", false, "ทองผาภูมิ มีดี", 2 },
+                    { 2, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5117), "แหล่งผลิตที่ทองผาภูมิ", false, "อาปาชาเฮ้", 3 }
                 });
 
             migrationBuilder.InsertData(
@@ -446,12 +446,12 @@ namespace ProjectEcommerceFruit.Migrations
                 columns: new[] { "Id", "CreatedAt", "Detail", "Expire", "Hidden", "Images", "Price", "ProductGIId", "Quantity", "Sold", "Status", "Weight" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(4998), "", new DateTime(2025, 1, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5000), false, null, 125.0, 1, 7, 11, true, 3.0 },
-                    { 2, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5010), "<p>1</p>", new DateTime(2025, 1, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5016), false, null, 155.0, 2, 3, 9, true, 10.0 },
-                    { 3, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5019), "<p>111</p>", new DateTime(2025, 1, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5020), false, null, 60.0, 3, 50, 0, true, 3.0 },
-                    { 4, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5022), "<p>111</p>", new DateTime(2025, 1, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5023), false, null, 60.0, 4, 50, 0, true, 3.0 },
-                    { 5, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5026), "<p></p>", new DateTime(2025, 1, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5027), false, null, 40.0, 5, 10, 0, true, 1.0 },
-                    { 6, new DateTime(2024, 12, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5030), "<p></p>", new DateTime(2025, 1, 24, 20, 32, 4, 939, DateTimeKind.Local).AddTicks(5031), false, null, 50.0, 5, 18, 0, true, 1.0 }
+                    { 1, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5633), "", new DateTime(2025, 1, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5634), false, null, 125.0, 1, 7, 11, true, 3.0 },
+                    { 2, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5644), "<p>1</p>", new DateTime(2025, 1, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5645), false, null, 155.0, 2, 3, 9, true, 10.0 },
+                    { 3, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5648), "<p>111</p>", new DateTime(2025, 1, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5648), false, null, 60.0, 3, 50, 0, true, 3.0 },
+                    { 4, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5658), "<p>111</p>", new DateTime(2025, 1, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5659), false, null, 60.0, 4, 50, 0, true, 3.0 },
+                    { 5, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5662), "<p></p>", new DateTime(2025, 1, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5663), false, null, 40.0, 5, 10, 0, true, 1.0 },
+                    { 6, new DateTime(2024, 12, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5665), "<p></p>", new DateTime(2025, 1, 25, 9, 19, 29, 170, DateTimeKind.Local).AddTicks(5666), false, null, 50.0, 5, 18, 0, true, 1.0 }
                 });
 
             migrationBuilder.CreateIndex(

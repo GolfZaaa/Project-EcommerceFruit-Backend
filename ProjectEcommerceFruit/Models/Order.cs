@@ -8,7 +8,7 @@ namespace ProjectEcommerceFruit.Models
         public string? OrderId { get; set; } 
         public string? PaymentImage { get; set; }
         public DateTime CreatedAt { get; set; }
-        public int Status { get; set; } // 0 === กำลังรออนุมัติ, 1 === ยืนยันคำสั่งซื้อแล้ว, 2 === ยกเลิกคำสั่งซื้อแล้ว
+        public int Status { get; set; } // 0 === กำลังรออนุมัติ, 1 === ยืนยันคำสั่งซื้อแล้ว, 2 === ยกเลิกคำสั่งซื้อแล้ว, 5 === คืนเงิน
         public string? ShippingType { get; set; }
         public string? Tag { get; set; }
         public int ConfirmReceipt { get; set; } // 0 === กำลังดำเนินการ, 1 === ได้รับพัสดุแล้ว, 2 === ไม่ได้รับพัสดุ, 3 === ผู้รับหิ้วเข้าพัสดุแล้ว
