@@ -780,5 +780,32 @@ namespace ProjectEcommerceFruit.Service.OrderS
 
             return (errorMessge, imageName);
         }
+
+        public async Task<dynamic> RefundOrderAsync(int orderId)
+        {
+            StripeConfiguration.ApiKey = _configuration["StripeSettings:SecretKey"];
+            var order = await _context.Orders.Include(x => x.OrderItems).SingleOrDefaultAsync(x => x.Id == orderId);
+            if(order == null)  return "Order not Found";
+            if (order.Status == 2) return "Order Can't Refund";
+            if (order.Status == 5) return "Order Refund Already";
+            if (order.PaymentIntentId != null)
+            {
+                var refundOptions = new RefundCreateOptions
+                {
+                    PaymentIntent = order.PaymentIntentId,
+                };
+
+                var refundService = new RefundService();
+                var refund = await refundService.CreateAsync(refundOptions);
+                order.Status = 5;
+            }
+            else
+            {
+                order.Status = 5;
+            }
+            await _context.SaveChangesAsync();
+            return "Refund Success";
+        }
+
     }
 }
