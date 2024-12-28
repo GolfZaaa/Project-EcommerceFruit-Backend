@@ -27,9 +27,11 @@ namespace ProjectEcommerceFruit.Service.CartS
             var user = await _authService.GetUserByIdAsync();
 
             var cartItems = await _context.CartItems
+                            .Include(x => x.Product)
                             .Where(ci => ci.UserId == user.Id)
                             .Select(ci => new
                             {
+                                CartItemId = ci.Id,
                                 ci.Product.Id,
                                 ci.Product.Images,
                                 WeightInCartItem = ci.Quantity,
@@ -38,9 +40,24 @@ namespace ProjectEcommerceFruit.Service.CartS
                                 ci.Product.Sold,
                                 ci.Product.Detail,
                                 ci.Product.Status,
-                                ci.Product.CreatedAt
+                                ci.Product.CreatedAt,
+                                ci.Product.Expire
                             })
                             .ToListAsync();
+
+            foreach (var item in cartItems)
+            {
+                var CheckExpire = item.Expire < DateTime.Now;
+
+                if (!!CheckExpire)
+                {
+                    var cartItem = await _context.CartItems.FirstOrDefaultAsync(x => x.Id == item.CartItemId);
+
+                    _context.CartItems.Remove(cartItem);
+                }
+            }
+            
+            await _context.SaveChangesAsync();
 
             return cartItems;
         }
@@ -84,12 +101,12 @@ namespace ProjectEcommerceFruit.Service.CartS
         //    return cartItemsByStore; 
         //}
 
-         
         public async Task<object> GetCartItemByUserOrderByStoreAsync()
         {
             var user = await _authService.GetUserByIdAsync();
 
             var cartItemsByStore = await _context.CartItems
+                .Include(x => x.Product)
             .Where(ci => ci.UserId == user.Id)
             .Select(ci => new
             {
@@ -122,9 +139,27 @@ namespace ProjectEcommerceFruit.Service.CartS
                     item.Product.Detail,
                     item.Product.Status,
                     item.Product.CreatedAt,
+                    item.Product.Expire,
                 }).ToList()
             })
             .ToListAsync();
+            
+            foreach (var items in cartItemsByStore)
+            {
+                foreach (var item in items.Products)
+                {
+                    var CheckExpire = item.Expire < DateTime.Now;
+
+                    if (!!CheckExpire)
+                    {
+                        var cartItem = await _context.CartItems.FirstOrDefaultAsync(x => x.Id == items.CartItemId);
+
+                        _context.CartItems.Remove(cartItem);
+                    }
+                }
+            }
+
+            await _context.SaveChangesAsync();
 
             return cartItemsByStore;
         }
@@ -191,7 +226,7 @@ namespace ProjectEcommerceFruit.Service.CartS
 
             if(!!CheckExpire)
             {
-                _context.Remove(cartItem);
+                _context.CartItems.Remove(cartItem);
             }
 
             return await _context.SaveChangesAsync() > 0;
